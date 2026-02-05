@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
@@ -17,10 +19,12 @@ import Toast from "../../components/Toast";
 
 // Illustration from assets
 import Qeydiyyat from "../../assets/qeydiyyat.png";
+import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
+import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
 const Verification = () => {
   const router = useRouter();
-  const { email: emailParam } = useLocalSearchParams();
+  const { email: emailParam, role } = useLocalSearchParams();
   const displayEmail = emailParam || "goycekqaloyeva@gmail.com";
 
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -56,6 +60,8 @@ const Verification = () => {
     // Auto-focus next input
     if (value && index < 3) {
       inputRefs[index + 1].current.focus();
+    } else if (value && index === 3) {
+      Keyboard.dismiss();
     }
   };
 
@@ -72,73 +78,90 @@ const Verification = () => {
       return;
     }
     console.log("Verifying OTP:", code);
-    router.push("/newpassword");
+    Keyboard.dismiss();
+    router.push({ pathname: "/(auth)/newpassword", params: { role } });
+  };
+
+  // Determine illustration based on role
+  const getIllustration = () => {
+    switch (role) {
+      case "chef":
+        return AspazQeydiyyat;
+      case "courier":
+        return KuryerQeydiyyat;
+      default:
+        return Qeydiyyat;
+    }
   };
 
   return (
-    <>
-      <Stack.Screen options={{ headerShown: false }} />
-      <StatusBar style="light" />
-      {toastMessage && (
-        <Toast message={toastMessage} onHide={() => setToastMessage(null)} />
-      )}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={{ flex: 1 }}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <StatusBar style="light" />
+        {toastMessage && (
+          <Toast message={toastMessage} onHide={() => setToastMessage(null)} />
+        )}
 
-      <View style={styles.container}>
-        {/* Top Green Section */}
-        <View style={styles.topSection}>
-          <View style={styles.illustrationContainer}>
-            <Image
-              source={Qeydiyyat}
-              style={styles.illustration}
-              resizeMode="contain"
-            />
+        <View style={styles.container}>
+          {/* Top Green Section */}
+          <View style={styles.topSection}>
+            <View style={styles.illustrationContainer}>
+              <Image
+                source={getIllustration()}
+                style={styles.illustration}
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+
+          {/* Bottom White Section */}
+          <View style={styles.bottomSection}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={{ flex: 1 }}>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}>
+                <Text style={styles.title}>
+                  Doğrulama kodunu{"\n"}daxil edin
+                </Text>
+
+                <View style={styles.otpContainer}>
+                  {otp.map((digit, index) => (
+                    <TextInput
+                      key={index}
+                      ref={inputRefs[index]}
+                      style={styles.otpInput}
+                      maxLength={1}
+                      keyboardType="number-pad"
+                      value={digit}
+                      onChangeText={(v) => handleOtpChange(v, index)}
+                      onKeyPress={(e) => handleKeyPress(e, index)}
+                    />
+                  ))}
+                </View>
+
+                <Text style={styles.infoText}>
+                  Biz <Text style={styles.boldText}>{displayEmail}</Text>{" "}
+                  e-poçtunuza dörd rəqəmli doğrulama kodu göndərdik. Gələnlər
+                  qutusunu yoxlaya bilərsiniz
+                </Text>
+
+                <View style={styles.timerContainer}>
+                  <Text style={styles.timerLabel}>Kodu yenidən göndər</Text>
+                  <Text style={styles.timerValue}>{formatTime(timer)}</Text>
+                </View>
+
+                <TouchableOpacity style={styles.button} onPress={handleVerify}>
+                  <Text style={styles.buttonText}>Doğrulayın</Text>
+                </TouchableOpacity>
+              </ScrollView>
+            </KeyboardAvoidingView>
           </View>
         </View>
-
-        {/* Bottom White Section */}
-        <View style={styles.bottomSection}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}>
-              <Text style={styles.title}>Doğrulama kodunu{"\n"}daxil edin</Text>
-
-              <View style={styles.otpContainer}>
-                {otp.map((digit, index) => (
-                  <TextInput
-                    key={index}
-                    ref={inputRefs[index]}
-                    style={styles.otpInput}
-                    maxLength={1}
-                    keyboardType="number-pad"
-                    value={digit}
-                    onChangeText={(v) => handleOtpChange(v, index)}
-                    onKeyPress={(e) => handleKeyPress(e, index)}
-                  />
-                ))}
-              </View>
-
-              <Text style={styles.infoText}>
-                Biz <Text style={styles.boldText}>{displayEmail}</Text>{" "}
-                e-poçtunuza dörd rəqəmli doğrulama kodu göndərdik. Gələnlər
-                qutusunu yoxlaya bilərsiniz
-              </Text>
-
-              <View style={styles.timerContainer}>
-                <Text style={styles.timerLabel}>Kodu yenidən göndər</Text>
-                <Text style={styles.timerValue}>{formatTime(timer)}</Text>
-              </View>
-
-              <TouchableOpacity style={styles.button} onPress={handleVerify}>
-                <Text style={styles.buttonText}>Doğrulayın</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </View>
       </View>
-    </>
+    </TouchableWithoutFeedback>
   );
 };
 

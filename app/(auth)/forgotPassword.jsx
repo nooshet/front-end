@@ -16,6 +16,8 @@ import Input from "../../components/Input";
 import Toast from "../../components/Toast";
 
 import Qeydiyyat from "../../assets/qeydiyyat.png";
+import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
+import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -35,33 +37,28 @@ const ForgotPassword = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  // Determine illustration based on role
+  const getIllustration = () => {
+    switch (role) {
+      case "chef":
+        return AspazQeydiyyat;
+      case "courier":
+        return KuryerQeydiyyat;
+      default:
+        return Qeydiyyat;
+    }
+  };
+
   const handleForgotPassword = () => {
     setPasswordError(false);
 
-    if (!email || !password || !confirmPassword) {
-      showToast("Zəhmət olmasa bütün xanaları doldurun");
-      return;
-    }
-
-    if (password.length < 8) {
-      setPasswordError(true);
-      showToast("Şifrə ən azı 8 simvol olmalıdır");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setPasswordError(true);
-      showToast("Şifrələr eyni deyil");
-      return;
-    }
-
-    if (!agree) {
-      showToast("Zəhmət olmasa şərtləri qəbul edin");
+    if (!email) {
+      showToast("Zəhmət olmasa e-poçt ünvanınızı daxil edin");
       return;
     }
 
     console.log("ForgotPassword:", { email, role });
-    router.push({ pathname: "/(auth)/verification", params: { email } });
+    router.push({ pathname: "/(auth)/verification", params: { email, role } });
   };
 
   return (
@@ -77,7 +74,7 @@ const ForgotPassword = () => {
         <View style={styles.topSection}>
           <View style={styles.illustrationContainer}>
             <Image
-              source={Qeydiyyat}
+              source={getIllustration()}
               style={styles.illustration}
               resizeMode="contain"
             />
@@ -116,7 +113,7 @@ const ForgotPassword = () => {
                 {/* Buttons */}
                 <TouchableOpacity
                   style={[styles.button, { backgroundColor: "#00AA13" }]}
-                  onPress={() => router.push("/(auth)/verification")}>
+                  onPress={handleForgotPassword}>
                   <Text style={[styles.buttonText, { color: "#fff" }]}>
                     Göndər
                   </Text>

@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import React, { useState } from "react";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "../../components/Input";
@@ -17,9 +17,11 @@ import Toast from "../../components/Toast";
 
 // Illustration from assets
 import Qeydiyyat from "../../assets/qeydiyyat.png";
-
+import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
+import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 const NewPassword = () => {
   const router = useRouter();
+  const { role } = useLocalSearchParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +38,8 @@ const NewPassword = () => {
   const hasNumber = /\d/.test(password);
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const hasUppercase = /[A-Z]/.test(password);
-  const allRequirementsMet = hasMinLength && hasNumber && hasSpecialChar && hasUppercase;
+  const allRequirementsMet =
+    hasMinLength && hasNumber && hasSpecialChar && hasUppercase;
 
   const handleContinue = () => {
     if (!password || !confirmPassword) {
@@ -54,18 +57,31 @@ const NewPassword = () => {
       return;
     }
 
-    router.push("/thanks");
+    router.push({ pathname: "/(auth)/login", params: { role } });
+  };
+
+  // Determine illustration based on role
+  const getIllustration = () => {
+    switch (role) {
+      case "chef":
+        return AspazQeydiyyat;
+      case "courier":
+        return KuryerQeydiyyat;
+      default:
+        return Qeydiyyat;
+    }
   };
 
   const RequirementItem = ({ text, isMet }) => (
     <View style={styles.requirementItem}>
-      <Ionicons 
-        name={isMet ? "checkmark-circle" : "ellipse-outline"} 
-        size={16} 
-        color={isMet ? "#00AA13" : "#999"} 
+      <Ionicons
+        name={isMet ? "checkmark-circle" : "ellipse-outline"}
+        size={16}
+        color={isMet ? "#00AA13" : "#999"}
         style={styles.checkIcon}
       />
-      <Text style={[styles.requirementText, isMet && styles.requirementMetText]}>
+      <Text
+        style={[styles.requirementText, isMet && styles.requirementMetText]}>
         {text}
       </Text>
     </View>
@@ -84,7 +100,7 @@ const NewPassword = () => {
         <View style={styles.topSection}>
           <View style={styles.illustrationContainer}>
             <Image
-              source={Qeydiyyat}
+              source={getIllustration()}
               style={styles.illustration}
               resizeMode="contain"
             />
@@ -166,15 +182,21 @@ const NewPassword = () => {
                   <Text style={styles.requirementsTitle}>
                     Güclü şifrə təyin edin
                   </Text>
-                  
+
                   <RequirementItem text="8 simvol" isMet={hasMinLength} />
                   <RequirementItem text="1 rəqəm" isMet={hasNumber} />
-                  <RequirementItem text="1 xüsusi xarakter" isMet={hasSpecialChar} />
+                  <RequirementItem
+                    text="1 xüsusi xarakter"
+                    isMet={hasSpecialChar}
+                  />
                   <RequirementItem text="1 böyük hərf" isMet={hasUppercase} />
                 </View>
 
                 <TouchableOpacity
-                  style={[styles.button, !allRequirementsMet && styles.buttonDisabled]}
+                  style={[
+                    styles.button,
+                    !allRequirementsMet && styles.buttonDisabled,
+                  ]}
                   onPress={handleContinue}
                   disabled={!allRequirementsMet && password.length > 0}>
                   <Text style={styles.buttonText}>Davam et</Text>

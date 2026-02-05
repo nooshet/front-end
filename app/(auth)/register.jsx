@@ -7,22 +7,24 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { Stack, useRouter, Link, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import Toast from "../../components/Toast";
 
-// Placeholder for the top illustration - can use LogoMain or generic placeholder
 import Qeydiyyat from "../../assets/qeydiyyat.png";
+import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
+import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
 const Register = () => {
-  
   const router = useRouter();
-  const { role } = useLocalSearchParams(); // Get role from previous screen
+  const { role } = useLocalSearchParams();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -30,6 +32,17 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
+
+  // Chef/Courier common fields
+  const [bankAccount, setBankAccount] = useState("");
+
+  // Chef-specific fields
+  const [storeAddress, setStoreAddress] = useState("");
+  const [kitchenImage, setKitchenImage] = useState(null);
+
+  // Courier-specific fields
+  const [vehicleType, setVehicleType] = useState("");
+  const [vehicleImage, setVehicleImage] = useState(null);
 
   // Toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -60,9 +73,25 @@ const Register = () => {
     }
 
     if (password !== confirmPassword) {
-        setPasswordError(true);
-        showToast("Şifrələr eyni deyil");
+      setPasswordError(true);
+      showToast("Şifrələr eyni deyil");
+      return;
+    }
+
+    // Chef validation
+    if (role === "chef") {
+      if (!storeAddress || !bankAccount) {
+        showToast("Zəhmət olmasa bütün məlumatları doldurun");
         return;
+      }
+    }
+
+    // Courier validation
+    if (role === "courier") {
+      if (!bankAccount || !vehicleType) {
+        showToast("Zəhmət olmasa bütün məlumatları doldurun");
+        return;
+      }
     }
 
     if (!agree) {
@@ -70,22 +99,69 @@ const Register = () => {
       return;
     }
 
-    console.log("Register:", { name, phone, email, password, role });
+    console.log("Register:", { name, phone, email, password, role, storeAddress, bankAccount, kitchenImage });
     router.push("/thanks");
+  };
+
+  const pickImage = async (target) => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (status !== "granted") {
+      showToast("Şəkil seçmək üçün qalereya icazəsi lazımdır");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      if (target === "kitchen") {
+        setKitchenImage(result.assets[0].uri);
+      } else if (target === "vehicle") {
+        setVehicleImage(result.assets[0].uri);
+      }
+    }
+  };
+
+  const selectVehicle = () => {
+    Alert.alert("Nəqliyyat vasitəsi", "Zəhmət olmasa seçin:", [
+      { text: "Velosiped", onPress: () => setVehicleType("Velosiped") },
+      { text: "Motosikl", onPress: () => setVehicleType("Motosikl") },
+      { text: "Avtomobil", onPress: () => setVehicleType("Avtomobil") },
+      { text: "Ləğv et", style: "cancel" },
+    ]);
+  };
+
+  // Determine illustration based on role
+  const getIllustration = () => {
+    switch (role) {
+      case "chef":
+        return AspazQeydiyyat;
+      case "courier":
+        return KuryerQeydiyyat;
+      default:
+        return Qeydiyyat;
+    }
   };
 
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <StatusBar style="light" />
-      {toastMessage && <Toast message={toastMessage} onHide={() => setToastMessage(null)} />}
+      {toastMessage && (
+        <Toast message={toastMessage} onHide={() => setToastMessage(null)} />
+      )}
 
       <View style={styles.container}>
         {/* Top Green Section */}
         <View style={styles.topSection}>
           <View style={styles.illustrationContainer}>
             <Image
-              source={Qeydiyyat}
+              source={getIllustration()}
               style={styles.illustration}
               resizeMode="contain"
             />
@@ -152,8 +228,8 @@ const Register = () => {
                     spellCheck={false}
                     value={password}
                     onChangeText={(text) => {
-                         setPassword(text);
-                         if(passwordError) setPasswordError(false);
+                      setPassword(text);
+                      if (passwordError) setPasswordError(false);
                     }}
                     secureTextEntry={!showPassword}
                     variant="underline"
@@ -167,19 +243,19 @@ const Register = () => {
                     }
                   />
                   <View style={styles.rightIcons}>
-                      <TouchableOpacity
-                        onPress={() => setShowPassword(!showPassword)}>
-                        <Ionicons
-                          name={showPassword ? "eye-off-outline" : "eye-outline"}
-                          size={20}
-                          color="#0B0E0B"
-                        />
-                      </TouchableOpacity>
-                      {passwordError && (
-                          <View style={styles.warningIcon}>
-                               <Ionicons name="warning" size={20} color="#FF0000" />
-                          </View>
-                      )}
+                    <TouchableOpacity
+                      onPress={() => setShowPassword(!showPassword)}>
+                      <Ionicons
+                        name={showPassword ? "eye-off-outline" : "eye-outline"}
+                        size={20}
+                        color="#0B0E0B"
+                      />
+                    </TouchableOpacity>
+                    {passwordError && (
+                      <View style={styles.warningIcon}>
+                        <Ionicons name="warning" size={20} color="#FF0000" />
+                      </View>
+                    )}
                   </View>
                 </View>
 
@@ -188,8 +264,8 @@ const Register = () => {
                     placeholder="Şifrə yenidən"
                     value={confirmPassword}
                     onChangeText={(text) => {
-                        setConfirmPassword(text);
-                        if(passwordError) setPasswordError(false);
+                      setConfirmPassword(text);
+                      if (passwordError) setPasswordError(false);
                     }}
                     secureTextEntry={!showConfirmPassword}
                     variant="underline"
@@ -207,25 +283,125 @@ const Register = () => {
                     }
                   />
                   <View style={styles.rightIcons}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }>
-                        <Ionicons
-                          name={
-                            showConfirmPassword ? "eye-off-outline" : "eye-outline"
-                          }
-                          size={20}
-                          color="#0B0E0B"
-                        />
-                      </TouchableOpacity>
-                       {passwordError && (
-                          <View style={styles.warningIcon}>
-                               <Ionicons name="warning" size={20} color="#FF0000" />
-                          </View>
-                      )}
+                    <TouchableOpacity
+                      onPress={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }>
+                      <Ionicons
+                        name={
+                          showConfirmPassword
+                            ? "eye-off-outline"
+                            : "eye-outline"
+                        }
+                        size={20}
+                        color="#0B0E0B"
+                      />
+                    </TouchableOpacity>
+                    {passwordError && (
+                      <View style={styles.warningIcon}>
+                        <Ionicons name="warning" size={20} color="#FF0000" />
+                      </View>
+                    )}
                   </View>
                 </View>
+
+                {role === "chef" && (
+                  <>
+                    <Input
+                      placeholder="Mağaza/Ünvan"
+                      value={storeAddress}
+                      onChangeText={setStoreAddress}
+                      variant="underline"
+                      icon={
+                        <Ionicons name="storefront-outline" size={20} color="#0B0E0B" />
+                      }
+                    />
+
+                    <Input
+                      placeholder="Bank hesabı"
+                      value={bankAccount}
+                      onChangeText={setBankAccount}
+                      variant="underline"
+                      icon={
+                        <Ionicons name="business-outline" size={20} color="#0B0E0B" />
+                      }
+                    />
+
+                    <View style={styles.imageUploadSection}>
+                      <Text style={styles.uploadTitle}>
+                        Mətbəxin şəklini əlavə edin
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.uploadContainer}
+                        onPress={() => pickImage("kitchen")}>
+                        {kitchenImage ? (
+                          <Image
+                            source={{ uri: kitchenImage }}
+                            style={styles.previewImage}
+                          />
+                        ) : (
+                          <>
+                            <Ionicons name="camera-outline" size={40} color="#000" />
+                            <Text style={styles.uploadText}>+Şəkil əlavə et</Text>
+                            <Text style={styles.uploadSubtext}>
+                              PNG, JPG, max 5MB
+                            </Text>
+                          </>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                )}
+
+                {role === "courier" && (
+                  <>
+                    <Input
+                      placeholder="Bank hesabı"
+                      value={bankAccount}
+                      onChangeText={setBankAccount}
+                      variant="underline"
+                      icon={
+                        <Ionicons name="business-outline" size={20} color="#0B0E0B" />
+                      }
+                    />
+
+                    <TouchableOpacity 
+                      style={styles.pickerContainer}
+                      onPress={selectVehicle}>
+                      <View style={styles.pickerLeft}>
+                        <Ionicons name="car-outline" size={24} color="#000" />
+                        <Text style={[styles.pickerText, !vehicleType && styles.placeholderText]}>
+                          {vehicleType || "Nəqliyyat vasitəsini seçin"}
+                        </Text>
+                      </View>
+                      <Ionicons name="chevron-down" size={24} color="#000" />
+                    </TouchableOpacity>
+
+                    <View style={styles.imageUploadSection}>
+                      <Text style={styles.uploadTitle}>
+                        Çatdırılma vasitəsinin şəklini əlavə edin
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.uploadContainer}
+                        onPress={() => pickImage("vehicle")}>
+                        {vehicleImage ? (
+                          <Image
+                            source={{ uri: vehicleImage }}
+                            style={styles.previewImage}
+                          />
+                        ) : (
+                          <>
+                            <Ionicons name="camera-outline" size={40} color="#000" />
+                            <Text style={styles.uploadText}>+Şəkil əlavə et</Text>
+                            <Text style={styles.uploadSubtext}>
+                              PNG, JPG, max 5MB
+                            </Text>
+                          </>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                )}
 
                 {/* Terms Checkbox */}
                 <View style={styles.checkboxContainer}>
@@ -259,7 +435,7 @@ const Register = () => {
 
                 <View style={styles.footer}>
                   <Text style={styles.footerText}>Artıq hesabınız var? </Text>
-                  <Link href="/(auth)/login" asChild>
+                  <Link href={{ pathname: "/(auth)/login", params: { role } }} asChild>
                     <TouchableOpacity>
                       <Text style={styles.loginLink}>Daxil ol</Text>
                     </TouchableOpacity>
@@ -320,18 +496,18 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   rightIcons: {
-      position: 'absolute',
-      right: 0,
-      top: 15,
-      flexDirection: 'row',
-      alignItems: 'center',
+    position: "absolute",
+    right: 0,
+    top: 15,
+    flexDirection: "row",
+    alignItems: "center",
   },
   eyeIcon: {
     padding: 5,
   },
   warningIcon: {
-      padding: 5,
-      marginLeft: 5,
+    padding: 5,
+    marginLeft: 5,
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -371,5 +547,64 @@ const styles = StyleSheet.create({
     color: "#00AA13",
     fontWeight: "bold",
     fontSize: 14,
+  },
+  imageUploadSection: {
+    marginTop: 20,
+  },
+  uploadTitle: {
+    fontSize: 16,
+    color: "#000",
+    marginBottom: 10,
+    fontWeight: "500",
+  },
+  uploadContainer: {
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+    borderRadius: 12,
+    borderStyle: "dashed",
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  uploadText: {
+    fontSize: 18,
+    color: "#00C853",
+    fontWeight: "600",
+    marginTop: 8,
+  },
+  uploadSubtext: {
+    fontSize: 12,
+    color: "#999",
+    marginTop: 4,
+  },
+  previewImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 8,
+    resizeMode: "cover",
+  },
+  pickerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 20,
+    backgroundColor: "#fff",
+  },
+  pickerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  pickerText: {
+    fontSize: 16,
+    color: "#000",
+  },
+  placeholderText: {
+    color: "#999",
   },
 });

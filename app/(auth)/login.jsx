@@ -16,6 +16,9 @@ import Input from "../../components/Input";
 import Toast from "../../components/Toast";
 
 import Qeydiyyat from "../../assets/qeydiyyat.png";
+import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
+import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
+
 
 const Login = () => {
   const router = useRouter();
@@ -64,6 +67,18 @@ const Login = () => {
     router.push("/thanks");
   };
 
+  // Determine illustration based on role
+  const getIllustration = () => {
+    switch (role) {
+      case "chef":
+        return AspazQeydiyyat;
+      case "courier":
+        return KuryerQeydiyyat;
+      default:
+        return Qeydiyyat;
+    }
+  };
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -77,7 +92,7 @@ const Login = () => {
         <View style={styles.topSection}>
           <View style={styles.illustrationContainer}>
             <Image
-              source={Qeydiyyat}
+              source={getIllustration()}
               style={styles.illustration}
               resizeMode="contain"
             />
@@ -168,7 +183,12 @@ const Login = () => {
 
                   <TouchableOpacity
                     style={{ marginLeft: "auto" }}
-                    onPress={() => router.push("/(auth)/forgotPassword")}>
+                    onPress={() =>
+                      router.push({
+                        pathname: "/(auth)/forgotPassword",
+                        params: { role },
+                      })
+                    }>
                     <Text
                       style={[
                         styles.forgotText,
@@ -198,7 +218,12 @@ const Login = () => {
                       marginTop: 10,
                     },
                   ]}
-                  onPress={() => router.push("/(auth)/register")}>
+                  onPress={() =>
+                    router.push({
+                      pathname: "/(auth)/register",
+                      params: { role },
+                    })
+                  }>
                   <Text style={[styles.buttonText, { color: "#08A30D" }]}>
                     Qeydiyyatdan keç
                   </Text>
