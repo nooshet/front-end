@@ -99,13 +99,22 @@ const Register = () => {
       return;
     }
 
-    console.log("Register:", { name, phone, email, password, role, storeAddress, bankAccount, kitchenImage });
+    console.log("Register:", {
+      name,
+      phone,
+      email,
+      password,
+      role,
+      storeAddress,
+      bankAccount,
+      kitchenImage,
+    });
     router.push("/thanks");
   };
 
   const pickImage = async (target) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
+
     if (status !== "granted") {
       showToast("Şəkil seçmək üçün qalereya icazəsi lazımdır");
       return;
@@ -176,7 +185,13 @@ const Register = () => {
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.scrollContent}>
-              <Text style={styles.title}>Qeydiyyat</Text>
+              <Text style={styles.title}>
+                {role === "chef"
+                  ? "Aşpaz Qeydiyyatı"
+                  : role === "courier"
+                    ? "Kuryer Qeydiyyatı"
+                    : "Qeydiyyat"}
+              </Text>
 
               <View style={styles.form}>
                 <Input
@@ -313,7 +328,11 @@ const Register = () => {
                       onChangeText={setStoreAddress}
                       variant="underline"
                       icon={
-                        <Ionicons name="storefront-outline" size={20} color="#0B0E0B" />
+                        <Ionicons
+                          name="storefront-outline"
+                          size={20}
+                          color="#0B0E0B"
+                        />
                       }
                     />
 
@@ -323,7 +342,11 @@ const Register = () => {
                       onChangeText={setBankAccount}
                       variant="underline"
                       icon={
-                        <Ionicons name="business-outline" size={20} color="#0B0E0B" />
+                        <Ionicons
+                          name="business-outline"
+                          size={20}
+                          color="#0B0E0B"
+                        />
                       }
                     />
 
@@ -341,8 +364,14 @@ const Register = () => {
                           />
                         ) : (
                           <>
-                            <Ionicons name="camera-outline" size={40} color="#000" />
-                            <Text style={styles.uploadText}>+Şəkil əlavə et</Text>
+                            <Ionicons
+                              name="camera-outline"
+                              size={40}
+                              color="#000"
+                            />
+                            <Text style={styles.uploadText}>
+                              +Şəkil əlavə et
+                            </Text>
                             <Text style={styles.uploadSubtext}>
                               PNG, JPG, max 5MB
                             </Text>
@@ -361,16 +390,24 @@ const Register = () => {
                       onChangeText={setBankAccount}
                       variant="underline"
                       icon={
-                        <Ionicons name="business-outline" size={20} color="#0B0E0B" />
+                        <Ionicons
+                          name="business-outline"
+                          size={20}
+                          color="#0B0E0B"
+                        />
                       }
                     />
 
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={styles.pickerContainer}
                       onPress={selectVehicle}>
                       <View style={styles.pickerLeft}>
                         <Ionicons name="car-outline" size={24} color="#000" />
-                        <Text style={[styles.pickerText, !vehicleType && styles.placeholderText]}>
+                        <Text
+                          style={[
+                            styles.pickerText,
+                            !vehicleType && styles.placeholderText,
+                          ]}>
                           {vehicleType || "Nəqliyyat vasitəsini seçin"}
                         </Text>
                       </View>
@@ -391,8 +428,14 @@ const Register = () => {
                           />
                         ) : (
                           <>
-                            <Ionicons name="camera-outline" size={40} color="#000" />
-                            <Text style={styles.uploadText}>+Şəkil əlavə et</Text>
+                            <Ionicons
+                              name="camera-outline"
+                              size={40}
+                              color="#000"
+                            />
+                            <Text style={styles.uploadText}>
+                              +Şəkil əlavə et
+                            </Text>
                             <Text style={styles.uploadSubtext}>
                               PNG, JPG, max 5MB
                             </Text>
@@ -435,7 +478,9 @@ const Register = () => {
 
                 <View style={styles.footer}>
                   <Text style={styles.footerText}>Artıq hesabınız var? </Text>
-                  <Link href={{ pathname: "/(auth)/login", params: { role } }} asChild>
+                  <Link
+                    href={{ pathname: "/(auth)/login", params: { role } }}
+                    asChild>
                     <TouchableOpacity>
                       <Text style={styles.loginLink}>Daxil ol</Text>
                     </TouchableOpacity>

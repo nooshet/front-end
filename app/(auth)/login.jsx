@@ -19,14 +19,24 @@ import Qeydiyyat from "../../assets/qeydiyyat.png";
 import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
 import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
-
 const Login = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
 
+  // Determine illustration based on role
+  const getIllustration = () => {
+    switch (role) {
+      case "chef":
+        return AspazQeydiyyat;
+      case "courier":
+        return KuryerQeydiyyat;
+      default:
+        return Qeydiyyat;
+    }
+  };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +51,7 @@ const Login = () => {
   const handleLogin = () => {
     setPasswordError(false);
 
-    if (!email || !password || !confirmPassword) {
+    if (!email || !password) {
       showToast("Zəhmət olmasa bütün xanaları doldurun");
       return;
     }
@@ -52,31 +62,8 @@ const Login = () => {
       return;
     }
 
-    if (password !== confirmPassword) {
-      setPasswordError(true);
-      showToast("Şifrələr eyni deyil");
-      return;
-    }
-
-    if (!agree) {
-      showToast("Zəhmət olmasa şərtləri qəbul edin");
-      return;
-    }
-
     console.log("Login:", { email, password, role });
     router.push("/thanks");
-  };
-
-  // Determine illustration based on role
-  const getIllustration = () => {
-    switch (role) {
-      case "chef":
-        return AspazQeydiyyat;
-      case "courier":
-        return KuryerQeydiyyat;
-      default:
-        return Qeydiyyat;
-    }
   };
 
   return (
@@ -183,12 +170,7 @@ const Login = () => {
 
                   <TouchableOpacity
                     style={{ marginLeft: "auto" }}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/(auth)/forgotPassword",
-                        params: { role },
-                      })
-                    }>
+                    onPress={() => router.push("/(auth)/forgotPassword")}>
                     <Text
                       style={[
                         styles.forgotText,
@@ -218,12 +200,7 @@ const Login = () => {
                       marginTop: 10,
                     },
                   ]}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/(auth)/register",
-                      params: { role },
-                    })
-                  }>
+                  onPress={() => router.push("/(auth)/register")}>
                   <Text style={[styles.buttonText, { color: "#08A30D" }]}>
                     Qeydiyyatdan keç
                   </Text>
