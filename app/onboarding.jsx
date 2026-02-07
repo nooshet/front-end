@@ -58,7 +58,7 @@ const Onboarding = () => {
         index: currentIndex + 1,
       });
     } else {
-      router.replace("/role-selection");
+      router.replace("(tabs)");
     }
   };
 
@@ -89,7 +89,8 @@ const Onboarding = () => {
                 {currentIndex < slides.length - 1 && (
                   <TouchableOpacity
                     style={styles.skipButton}
-                    onPress={handleSkip}>
+                    onPress={handleSkip}
+                  >
                     <Text style={styles.skipText}>Keç</Text>
                   </TouchableOpacity>
                 )}
@@ -122,12 +123,14 @@ const Onboarding = () => {
                 styles.button,
                 currentIndex === slides.length - 1 && styles.startButton,
               ]}
-              onPress={handleNext}>
+              onPress={handleNext}
+            >
               <Text
                 style={[
                   styles.buttonText,
                   currentIndex === slides.length - 1 && styles.startButtonText,
-                ]}>
+                ]}
+              >
                 {currentIndex === slides.length - 1 ? "Başla" : "Növbəti"}
               </Text>
             </TouchableOpacity>
