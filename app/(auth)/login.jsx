@@ -174,7 +174,12 @@ const Login = () => {
 
                   <TouchableOpacity
                     style={{ marginLeft: "auto" }}
-                    onPress={() => router.push("/(auth)/forgotPassword")}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/(auth)/forgotPassword",
+                        params: { role },
+                      })
+                    }
                   >
                     <Text
                       style={[
