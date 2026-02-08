@@ -141,7 +141,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Ekranı tam tutması üçün vacibdir
+    flex: 1,
     backgroundColor: "#fff",
   },
   categoriesScroll: {

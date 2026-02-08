@@ -1,16 +1,102 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Animated,
+  Easing,
+} from "react-native";
 import { ALL_COLOR } from "../constant/all-color";
 import { Ionicons } from "@expo/vector-icons";
 import Feather from "@expo/vector-icons/Feather";
 import { Font } from "../constant/fonts";
 import { BlurView } from "expo-blur";
 
-const FoodCard = ({ title, price, rating, image, onPress }) => {
+// TouchableOpacity-ni animasiyalı komponentə çeviririk
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
+
+const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
+  // 1. Giriş Animasiyası (Yuxarı sürüşmə və Görünmə)
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(50)).current;
+
+  // 2. Karta toxunanda kiçilmə (Scale) effekti
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  // 3. Bookmark ikonunun animasiyası
+  const bookmarkScale = useRef(new Animated.Value(1)).current;
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  useEffect(() => {
+    // Kart ekrana gələndə işə düşən animasiya
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        delay: index * 100, // Siyahıdada hər kart bir az gecikmə ilə gəlsin
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 500,
+        delay: index * 100,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  // Karta barmaq vuranda (Sıxılma)
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Barmağı çəkəndə (Əvvəlki halına qayıtma)
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 3,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Bookmark animasiyası
+  const handleBookmark = () => {
+    setIsBookmarked(!isBookmarked);
+    Animated.sequence([
+      Animated.timing(bookmarkScale, {
+        toValue: 1.2,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.spring(bookmarkScale, {
+        toValue: 1,
+        friction: 4,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
+    <AnimatedTouchableOpacity
+      activeOpacity={1} // Opacity-ni ləğv edirik, çünki scale istifadə edirik
       onPress={onPress}
-      style={styles.cardContainer}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={[
+        styles.cardContainer,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: translateY }, { scale: scaleAnim }],
+        },
+      ]}
     >
       <View style={styles.imageBox}>
         <Image source={image} style={styles.image} />
@@ -30,12 +116,20 @@ const FoodCard = ({ title, price, rating, image, onPress }) => {
             <Text style={styles.price}>{price} AZN</Text>
           </View>
 
-          <TouchableOpacity>
-            <Ionicons name="bookmark-outline" size={24} color="#000" />
+          <TouchableOpacity onPress={handleBookmark} activeOpacity={0.7}>
+            <Animated.View style={{ transform: [{ scale: bookmarkScale }] }}>
+              <Ionicons
+                name={isBookmarked ? "bookmark" : "bookmark-outline"}
+                size={24}
+                color={
+                  isBookmarked ? ALL_COLOR["--bg-color"] || "#000" : "#000"
+                }
+              />
+            </Animated.View>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} activeOpacity={0.8}>
           <Text style={styles.buttonText}>Səbətə at</Text>
           <View style={styles.iconCircle}>
             <Feather
@@ -46,7 +140,7 @@ const FoodCard = ({ title, price, rating, image, onPress }) => {
           </View>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </AnimatedTouchableOpacity>
   );
 };
 
