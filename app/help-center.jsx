@@ -14,7 +14,7 @@ import {
 import { Stack, useRouter } from "expo-router";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
-import AspazQeydiyyat from "../assets/aspazQeydiyyatı.png";
+import AspazQeydiyyat from "../assets/HelpCenterImg.png";
 
 const HelpCenter = () => {
   const router = useRouter();
@@ -157,9 +157,12 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: "#08A30D",
-    borderRadius: 12,
     padding: 16,
     backgroundColor: "#fff",
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 25,
+    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 25,
   },
   chatTitle: {
     fontSize: 16,
