@@ -46,7 +46,9 @@ const ProfileScreen = () => {
       id: "1",
       title: "Hesabı redaktə edin",
       icon: <Feather name="user" size={24} color={ALL_COLOR["--text-color"]} />,
-      onPress: () => {},
+      onPress: () => {
+        router.push("/edit-profile");
+      },
     },
     {
       id: "2",
