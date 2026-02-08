@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Font } from "../constant/fonts";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ALL_COLOR } from "../constant/all-color";
 import Icon from "react-native-vector-icons/Feather";
 

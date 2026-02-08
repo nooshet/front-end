@@ -3,11 +3,11 @@ import React from "react";
 import { ALL_COLOR } from "../constant/all-color";
 import { Font } from "../constant/fonts";
 
-const SectionHeader = ({ title, subtitle }) => {
+const SectionHeader = ({ title, subtitle, onPress }) => {
   return (
     <View style={style.sectionContainer}>
       <Text style={style.title}>{title}</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
         <Text style={style.subtitle}>{subtitle ?? "Hamısı"}</Text>
       </TouchableOpacity>
     </View>

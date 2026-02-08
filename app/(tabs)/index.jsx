@@ -16,6 +16,7 @@ import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
 import FeaturesSection from "../../components/home/FeaturesSection";
 import { FOOD_DATA } from "../../mock/FOOD_DATA";
+import { router } from "expo-router";
 
 const HomeScreen = () => {
   const [search, setSearch] = useState("");
@@ -28,6 +29,10 @@ const HomeScreen = () => {
     { id: 4, title: "Salatlar və\nqəlyanaltılar", active: false },
     { id: 5, title: "İçkilər", active: false },
   ];
+
+  const handleCategoryPress = (id) => {
+    router.push("(screens)/category");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +53,7 @@ const HomeScreen = () => {
             filter
           />
           <Banner />
-          <SectionHeader title="Kateqoriyalar" />
+          <SectionHeader title="Kateqoriyalar" onPress={handleCategoryPress} />
         </Container>
 
         <View>

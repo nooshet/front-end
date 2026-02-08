@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   Alert,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
@@ -15,6 +14,7 @@ import { Font } from "../../constant/fonts";
 import Button from "../../components/Button";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProfileScreen = () => {
   const router = useRouter();
@@ -109,7 +109,8 @@ const ProfileScreen = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}>
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.avatarWrapper}>
@@ -119,7 +120,8 @@ const ProfileScreen = () => {
             />
             <TouchableOpacity
               style={styles.editIconContainer}
-              onPress={pickImage}>
+              onPress={pickImage}
+            >
               <Feather
                 name="edit-3"
                 size={18}
@@ -161,14 +163,16 @@ const ProfileScreen = () => {
             <TouchableOpacity
               key={item.id}
               style={styles.menuItem}
-              onPress={item.onPress}>
+              onPress={item.onPress}
+            >
               <View style={styles.menuItemLeft}>
                 <View style={styles.iconWrapper}>{item.icon}</View>
                 <Text
                   style={[
                     styles.menuItemTitle,
                     item.isLogout && styles.logoutText,
-                  ]}>
+                  ]}
+                >
                   {item.title}
                 </Text>
               </View>
@@ -193,7 +197,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 20,
     paddingTop: 40,
-    paddingBottom: 100, // For tab bar space
+    paddingBottom: 100,
   },
   header: {
     flexDirection: "row",

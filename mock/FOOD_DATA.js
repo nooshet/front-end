@@ -104,3 +104,54 @@ export const VIDEO_DATA = [
     description: "Avokado tost və qayğanaq.",
   },
 ];
+
+export const CATEGORY_DATA = [
+  {
+    id: "1",
+    title: "Gündəlik yeməklər",
+    count: "32 növ",
+    image: {
+      uri: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Qızardılmış toyuq/ət
+    },
+  },
+  {
+    id: "2",
+    title: "Dietik yeməklər",
+    count: "41 növ",
+    image: {
+      uri: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Tərəvəzli kotlet/salat
+    },
+  },
+  {
+    id: "3",
+    title: "Uşaq yeməkləri",
+    count: "14 növ",
+    image: {
+      uri: "https://images.unsplash.com/photo-1517244683847-7456b63c5969?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Sıyıq/Kaşa
+    },
+  },
+  {
+    id: "4",
+    title: "Salatlar və qəlyanaltılar",
+    count: "22 növ",
+    image: {
+      uri: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Salat
+    },
+  },
+  {
+    id: "5",
+    title: "İçkilər",
+    count: "18 növ",
+    image: {
+      uri: "https://images.unsplash.com/photo-1544145945-f90425340c7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+  },
+  {
+    id: "6",
+    title: "Şirniyyatlar",
+    count: "56 növ",
+    image: {
+      uri: "https://images.unsplash.com/photo-1563729768-6afa67e60539?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+  },
+];
