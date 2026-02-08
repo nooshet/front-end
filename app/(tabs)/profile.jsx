@@ -68,7 +68,9 @@ const ProfileScreen = () => {
       icon: (
         <Feather name="settings" size={24} color={ALL_COLOR["--text-color"]} />
       ),
-      onPress: () => {},
+      onPress: () => {
+        router.push("/settings");
+      },
     },
     {
       id: "4",
@@ -80,7 +82,9 @@ const ProfileScreen = () => {
           color={ALL_COLOR["--text-color"]}
         />
       ),
-      onPress: () => {},
+      onPress: () => {
+        router.push("/language-selection");
+      },
     },
     {
       id: "5",
@@ -92,7 +96,9 @@ const ProfileScreen = () => {
           color={ALL_COLOR["--text-color"]}
         />
       ),
-      onPress: () => {},
+      onPress: () => {
+        router.push("/help-center");
+      },
     },
     {
       id: "6",

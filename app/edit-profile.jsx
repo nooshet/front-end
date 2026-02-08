@@ -148,7 +148,9 @@ const EditProfile = () => {
 
         {/* Delete Account Button */}
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.deleteButton}>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => router.push("/delete-account")}>
             <Feather
               name="log-out"
               size={20}
