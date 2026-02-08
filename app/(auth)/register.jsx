@@ -181,10 +181,12 @@ const Register = () => {
         <View style={styles.bottomSection}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}>
+            style={{ flex: 1 }}
+          >
             <ScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}>
+              contentContainerStyle={styles.scrollContent}
+            >
               <Text style={styles.title}>
                 {role === "chef"
                   ? "Aşpaz Qeydiyyatı"
@@ -259,7 +261,8 @@ const Register = () => {
                   />
                   <View style={styles.rightIcons}>
                     <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}>
+                      onPress={() => setShowPassword(!showPassword)}
+                    >
                       <Ionicons
                         name={showPassword ? "eye-off-outline" : "eye-outline"}
                         size={20}
@@ -301,7 +304,8 @@ const Register = () => {
                     <TouchableOpacity
                       onPress={() =>
                         setShowConfirmPassword(!showConfirmPassword)
-                      }>
+                      }
+                    >
                       <Ionicons
                         name={
                           showConfirmPassword
@@ -356,7 +360,8 @@ const Register = () => {
                       </Text>
                       <TouchableOpacity
                         style={styles.uploadContainer}
-                        onPress={() => pickImage("kitchen")}>
+                        onPress={() => pickImage("kitchen")}
+                      >
                         {kitchenImage ? (
                           <Image
                             source={{ uri: kitchenImage }}
@@ -400,14 +405,16 @@ const Register = () => {
 
                     <TouchableOpacity
                       style={styles.pickerContainer}
-                      onPress={selectVehicle}>
+                      onPress={selectVehicle}
+                    >
                       <View style={styles.pickerLeft}>
                         <Ionicons name="car-outline" size={24} color="#000" />
                         <Text
                           style={[
                             styles.pickerText,
                             !vehicleType && styles.placeholderText,
-                          ]}>
+                          ]}
+                        >
                           {vehicleType || "Nəqliyyat vasitəsini seçin"}
                         </Text>
                       </View>
@@ -420,7 +427,8 @@ const Register = () => {
                       </Text>
                       <TouchableOpacity
                         style={styles.uploadContainer}
-                        onPress={() => pickImage("vehicle")}>
+                        onPress={() => pickImage("vehicle")}
+                      >
                         {vehicleImage ? (
                           <Image
                             source={{ uri: vehicleImage }}
@@ -450,7 +458,8 @@ const Register = () => {
                 <View style={styles.checkboxContainer}>
                   <TouchableOpacity
                     onPress={() => setAgree(!agree)}
-                    style={styles.checkbox}>
+                    style={styles.checkbox}
+                  >
                     {agree ? (
                       <Ionicons
                         name="checkmark-circle"
@@ -480,7 +489,8 @@ const Register = () => {
                   <Text style={styles.footerText}>Artıq hesabınız var? </Text>
                   <Link
                     href={{ pathname: "/(auth)/login", params: { role } }}
-                    asChild>
+                    asChild
+                  >
                     <TouchableOpacity>
                       <Text style={styles.loginLink}>Daxil ol</Text>
                     </TouchableOpacity>

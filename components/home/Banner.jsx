@@ -16,7 +16,7 @@ const Banner = () => {
         paddingRight: 9,
         flexDirection: "row",
         gap: 2,
-        justifyContent: "space-between",
+        justifyContent: "space-betweenq",
       }}
     >
       <View style={{ flexDirection: "column", gap: 8 }}>

@@ -184,12 +184,12 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    bottom: 30, // Aşağıdan məsafə
-    marginHorizontal: 30, // SAĞ VƏ SOLDAN KİÇİLT (Bura əsas hissədir)
+    bottom: 30,
+    marginHorizontal: 30,
     height: 70,
     backgroundColor: "#FFFFFF",
     borderRadius: 35,
-    // Kölgə effektləri
+
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.15,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     paddingHorizontal: 10,
     flexDirection: "row",
-    justifyContent: "space-between", // Elementlər arası məsafəni bərabər bölür
+    justifyContent: "space-between",
     alignItems: "center",
   },
 

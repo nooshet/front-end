@@ -62,19 +62,8 @@ const Login = () => {
       return;
     }
 
-    if (password !== confirmPassword) {
-      setPasswordError(true);
-      showToast("Şifrələr eyni deyil");
-      return;
-    }
-
-    if (!agree) {
-      showToast("Zəhmət olmasa şərtləri qəbul edin");
-      return;
-    }
-
     console.log("Login:", { email, password, role });
-    router.push("(home)");
+    router.push("/thanks");
   };
 
   return (
@@ -185,12 +174,7 @@ const Login = () => {
 
                   <TouchableOpacity
                     style={{ marginLeft: "auto" }}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/(auth)/forgotPassword",
-                        params: { role },
-                      })
-                    }
+                    onPress={() => router.push("/(auth)/forgotPassword")}
                   >
                     <Text
                       style={[
@@ -223,12 +207,7 @@ const Login = () => {
                       marginTop: 10,
                     },
                   ]}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/(auth)/register",
-                      params: { role },
-                    })
-                  }
+                  onPress={() => router.push("/(auth)/register")}
                 >
                   <Text style={[styles.buttonText, { color: "#08A30D" }]}>
                     Qeydiyyatdan keç
