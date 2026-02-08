@@ -12,7 +12,10 @@ const NewMenu = ({ FOOD_DATA, title }) => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.foodListScroll}
+        contentContainerStyle={[
+          styles.foodListScroll,
+          { paddingHorizontal: 16, gap: 16 },
+        ]}
       >
         {FOOD_DATA.map((food) => (
           <FoodCard

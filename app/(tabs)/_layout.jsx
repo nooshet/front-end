@@ -122,7 +122,7 @@ export default function TabLayout() {
       screenOptions={{ headerShown: false }}
     >
       <Tabs.Screen name="index" options={{ title: "Əsas səhifə" }} />
-      <Tabs.Screen name="favourites" options={{ title: "Favorit" }} />
+      <Tabs.Screen name="favourites" options={{ title: "Favorilər" }} />
       <Tabs.Screen name="video" options={{ title: "Video" }} />
       <Tabs.Screen name="basket" options={{ title: "Səbət" }} />
       <Tabs.Screen name="profile" options={{ title: "Profil" }} />

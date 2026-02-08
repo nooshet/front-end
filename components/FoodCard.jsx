@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Feather from "@expo/vector-icons/Feather";
 import { Font } from "../constant/fonts";
 import { BlurView } from "expo-blur";
+import CustomButton from "./CustomButton";
 
 // TouchableOpacity-ni animasiyalı komponentə çeviririk
 const AnimatedTouchableOpacity =
@@ -129,16 +130,12 @@ const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.addButton} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>Səbətə at</Text>
-          <View style={styles.iconCircle}>
-            <Feather
-              name="arrow-up-right"
-              size={25}
-              color={ALL_COLOR["--bg-color"] || "#4CAF50"}
-            />
-          </View>
-        </TouchableOpacity>
+        <CustomButton
+          title="Səbətə at"
+          variant="primary"
+          icon="arrow-up-right"
+          width={"100%"}
+        />
       </View>
     </AnimatedTouchableOpacity>
   );
@@ -152,7 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 172,
     marginBottom: 20,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     paddingBottom: 9,
 
     shadowColor: "#000",
@@ -221,30 +218,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: Font.semibold,
     color: "#0B0E0B",
-  },
-  addButton: {
-    backgroundColor: ALL_COLOR["--bg-color"],
-    borderRadius: 20,
-    height: 37,
-    width: 142,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    // paddingHorizontal: 10,
-    paddingLeft: 20,
-    paddingRight: 5,
-  },
-  buttonText: {
-    color: ALL_COLOR["--white"],
-    fontSize: 16,
-    fontFamily: Font.semibold,
-  },
-  iconCircle: {
-    width: 31.3,
-    height: 31.3,
-    backgroundColor: "#fff",
-    borderRadius: 18,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

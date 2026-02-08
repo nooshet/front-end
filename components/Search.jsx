@@ -9,7 +9,7 @@ import {
 import SearchIcon from "../assets/search.png";
 import FilterIcon from "../assets/filter.png";
 
-const Search = ({ inputRef, search, setSearch }) => {
+const Search = ({ inputRef, search, setSearch, placeholder, filter }) => {
   return (
     <Pressable
       onPress={() => inputRef.current?.focus()}
@@ -19,7 +19,7 @@ const Search = ({ inputRef, search, setSearch }) => {
         <Image source={SearchIcon} />
         <TextInput
           ref={inputRef}
-          placeholder="Nə yemək istəyirsən?"
+          placeholder={placeholder}
           value={search}
           onChangeText={setSearch}
           autoCapitalize="none"
@@ -28,9 +28,11 @@ const Search = ({ inputRef, search, setSearch }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.filterBtn}>
-        <Image source={FilterIcon} />
-      </TouchableOpacity>
+      {filter && (
+        <TouchableOpacity style={styles.filterBtn}>
+          <Image source={FilterIcon} />
+        </TouchableOpacity>
+      )}
     </Pressable>
   );
 };
