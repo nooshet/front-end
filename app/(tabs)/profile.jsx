@@ -60,7 +60,9 @@ const ProfileScreen = () => {
           color={ALL_COLOR["--text-color"]}
         />
       ),
-      onPress: () => {},
+      onPress: () => {
+        router.push("/my-orders");
+      },
     },
     {
       id: "3",
@@ -149,7 +151,7 @@ const ProfileScreen = () => {
         <View style={styles.actionSection}>
           <Button
             title="Statusunu dəyiş"
-            onPress={() => {}}
+            onPress={() => router.push("/change-status")}
             style={styles.statusButton}
             textStyle={styles.statusButtonText}
           />

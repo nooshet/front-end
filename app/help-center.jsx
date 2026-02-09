@@ -15,6 +15,7 @@ import { Stack, useRouter } from "expo-router";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 import AspazQeydiyyat from "../assets/HelpCenterImg.png";
+import Help from "../assets/Help.png";
 
 const HelpCenter = () => {
   const router = useRouter();
@@ -51,7 +52,10 @@ const HelpCenter = () => {
         {/* Support Card / Message */}
         <View style={styles.supportContainer}>
           <View style={styles.supportIconWrapper}>
-            <Feather name="headphones" size={24} color="#08A30D" />
+            <Image
+              source={Help}
+              style={{ width: "100%", height: "100%", resizeMode: "contain" }}
+            />
           </View>
           <View style={styles.chatBubble}>
             <Text style={styles.chatTitle}>
@@ -140,18 +144,18 @@ const styles = StyleSheet.create({
   },
   supportContainer: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
   },
   supportIconWrapper: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    marginRight: 5,
     borderWidth: 1,
     borderColor: "#E5E5EA",
+    marginBottom: 280,
   },
   chatBubble: {
     flex: 1,

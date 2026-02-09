@@ -9,35 +9,27 @@ import {
   ScrollView,
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 
-const SettingToggle = ({ label, value, onValueChange, activeColor }) => (
-  <View style={styles.settingItem}>
-    <Text style={styles.settingLabel}>{label}</Text>
+const PermissionToggle = ({ label, value, onValueChange }) => (
+  <View style={styles.permissionItem}>
+    <Text style={styles.permissionLabel}>{label}</Text>
     <Switch
       value={value}
       onValueChange={onValueChange}
-      trackColor={{ false: "#D1D1D6", true: activeColor || "#34C759" }}
+      trackColor={{ false: "#D1D1D6", true: "#34C759" }} // Green when active
       thumbColor="#fff"
       ios_backgroundColor="#D1D1D6"
     />
   </View>
 );
 
-const SettingLink = ({ label, onPress }) => (
-  <TouchableOpacity style={styles.settingItem} onPress={onPress}>
-    <Text style={styles.settingLabel}>{label}</Text>
-    <Feather name="chevron-right" size={24} color="#C7C7CC" />
-  </TouchableOpacity>
-);
-
-const Settings = () => {
+const Permissions = () => {
   const router = useRouter();
-
-  const [notifications, setNotifications] = useState(true);
-  const [location, setLocation] = useState(false);
-  const [theme, setTheme] = useState(true);
+  const [camera, setCamera] = useState(false);
+  const [microphone, setMicrophone] = useState(false);
+  const [gallery, setGallery] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,56 +39,43 @@ const Settings = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={styles.backButton}>
+          style={styles.backButton}
+        >
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Parametrlər</Text>
+        <Text style={styles.headerTitle}>İcazələr</Text>
         <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView style={styles.content}>
+      <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.section}>
-          <SettingToggle
-            label="Bildirişlər"
-            value={notifications}
-            onValueChange={setNotifications}
-            activeColor="#4CD964"
-          />
-          <View style={styles.separator} />
-          
-          <SettingToggle
-            label="Yerləşmə icazəsi"
-            value={location}
-            onValueChange={setLocation}
-            activeColor="#8E8E93"
+          <PermissionToggle
+            label="Kamera"
+            value={camera}
+            onValueChange={setCamera}
           />
           <View style={styles.separator} />
 
-          <SettingToggle
-            label="Tema (seçilmiş)"
-            value={theme}
-            onValueChange={setTheme}
-            activeColor="#FFCC00"
+          <PermissionToggle
+            label="Mikrofon"
+            value={microphone}
+            onValueChange={setMicrophone}
           />
           <View style={styles.separator} />
 
-          <SettingLink
-            label="Tətbiq kilidi"
-            onPress={() => router.push("/app-lock")}
+          <PermissionToggle
+            label="Qalereya"
+            value={gallery}
+            onValueChange={setGallery}
           />
           <View style={styles.separator} />
-
-          <SettingLink
-            label="İcazələr"
-            onPress={() => router.push("/permissions")}
-          />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Settings;
+export default Permissions;
 
 const styles = StyleSheet.create({
   container: {
@@ -119,19 +98,18 @@ const styles = StyleSheet.create({
     color: "#0B0E0B",
   },
   content: {
-    flex: 1,
+    paddingTop: 20,
   },
   section: {
     paddingHorizontal: 20,
-    marginTop: 20,
   },
-  settingItem: {
+  permissionItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 16,
   },
-  settingLabel: {
+  permissionLabel: {
     fontSize: 18,
     fontFamily: Font.regular,
     color: "#0B0E0B",
@@ -139,6 +117,5 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: "#E5E5EA",
-    width: "100%",
   },
 });
