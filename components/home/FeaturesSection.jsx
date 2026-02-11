@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import Container from "../Container";
 import SectionHeader from "../SectionHeader";
 import FoodCard from "../FoodCard";
+import { router } from "expo-router";
 
 const NewMenu = ({ FOOD_DATA, title }) => {
   return (

@@ -4,6 +4,7 @@ const OtherScreensLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="category" options={{ headerShown: false }} />
+      <Stack.Screen name="catalog" options={{ headerShown: false }} />
     </Stack>
   );
 };

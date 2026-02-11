@@ -5,19 +5,30 @@ import Container from "../../components/Container";
 import { CATEGORY_DATA } from "../../mock/FOOD_DATA";
 import CategoryCard from "../../components/CategoryCard";
 import { router } from "expo-router";
+import { handleBackBtnPress } from "../../helper/backButtonFunction";
+import FoodScrollViewVertical from "../../components/FoodScrollViewVertical";
 
 const CategoryScreen = () => {
-  const handleBackBtnPress = () => {
-    router.back();
-  };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <Container>
         <ScreenHeader title="Kateqoriyalar" onBackPress={handleBackBtnPress} />
       </Container>
 
-      <ScrollView
+      <FoodScrollViewVertical
+        data={CATEGORY_DATA}
+        renderItem={({ item, index }) => (
+          <CategoryCard
+            title={item.title}
+            count={item.count}
+            image={item.image}
+            index={index}
+            onPress={() => console.log(item.title)}
+          />
+        )}
+      />
+
+      {/* <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
@@ -34,7 +45,7 @@ const CategoryScreen = () => {
             </View>
           ))}
         </View>
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 };

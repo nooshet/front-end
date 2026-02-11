@@ -34,6 +34,14 @@ const HomeScreen = () => {
     router.push("(screens)/category");
   };
 
+  const handleAllPress = (title) => {
+    console.log("All Pressed");
+    router.push({
+      pathname: "/(screens)/catalog",
+      params: { title: title },
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Container>
@@ -63,7 +71,11 @@ const HomeScreen = () => {
             contentContainerStyle={styles.categoriesScroll}
           >
             {categories.map((item, index) => (
-              <TouchableOpacity key={item.id} style={styles.categoryItem}>
+              <TouchableOpacity
+                key={item.id}
+                style={styles.categoryItem}
+                onPress={() => handleAllPress(item.title)}
+              >
                 <View
                   style={[
                     styles.imageContainer,
