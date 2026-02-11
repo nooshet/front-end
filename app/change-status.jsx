@@ -25,8 +25,7 @@ const ChangeStatus = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={styles.backButton}
-        >
+          style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Statusun dəyişməsi</Text>
@@ -43,15 +42,13 @@ const ChangeStatus = () => {
           <TouchableOpacity
             style={styles.optionItem}
             onPress={() => setSelectedRole("aspaz")}
-            activeOpacity={0.8}
-          >
+            activeOpacity={0.8}>
             <View style={styles.radioContainer}>
               <View
                 style={[
                   styles.radioOuter,
                   selectedRole === "aspaz" && styles.radioActive,
-                ]}
-              >
+                ]}>
                 {selectedRole === "aspaz" && <View style={styles.radioInner} />}
               </View>
             </View>
@@ -70,15 +67,13 @@ const ChangeStatus = () => {
           <TouchableOpacity
             style={styles.optionItem}
             onPress={() => setSelectedRole("kurye")}
-            activeOpacity={0.8}
-          >
+            activeOpacity={0.8}>
             <View style={styles.radioContainer}>
               <View
                 style={[
                   styles.radioOuter,
                   selectedRole === "kurye" && styles.radioActive,
-                ]}
-              >
+                ]}>
                 {selectedRole === "kurye" && <View style={styles.radioInner} />}
               </View>
             </View>
@@ -115,6 +110,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: 50,
+    paddingBottom: 30,
   },
   header: {
     flexDirection: "row",

@@ -29,18 +29,22 @@ const OrderDetails = () => {
       {
         id: "p1",
         name: "Yarpaq Dolması",
-        description: "Düyü, soğan, göyərti, pomidor pastası, zeytun yağı və ədviyyatlar.",
+        description:
+          "Düyü, soğan, göyərti, pomidor pastası, zeytun yağı və ədviyyatlar.",
         quantity: "1 porsiya",
         price: "4.95 AZN",
-        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+        image:
+          "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
       },
-       {
+      {
         id: "p2",
         name: "Səbzili aş",
-        description: "Düyü, soğan, yerkökü, kartof, pomidor, bol göyərti, ədviyyat və yağ.",
+        description:
+          "Düyü, soğan, yerkökü, kartof, pomidor, bol göyərti, ədviyyat və yağ.",
         quantity: "1 porsiya",
         price: "7.38 AZN",
-        image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+        image:
+          "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
       },
     ],
   };
@@ -53,8 +57,7 @@ const OrderDetails = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={styles.backButton}
-        >
+          style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Sifarişlərim</Text>
@@ -64,7 +67,7 @@ const OrderDetails = () => {
       <ScrollView contentContainerStyle={styles.content}>
         {/* Order Info Header */}
         <View style={styles.orderInfoContainer}>
-             <Text style={styles.infoLine}>
+          <Text style={styles.infoLine}>
             <Text style={styles.infoLabel}>Təxmini çatdırılma müddəti:</Text>{" "}
             <Text style={styles.infoValue}>{orderInfo.deliveryDate}</Text>
           </Text>
@@ -84,66 +87,73 @@ const OrderDetails = () => {
 
         <View style={styles.separator} />
 
-
         {orderInfo.products.map((product, index) => (
-            <View key={product.id}>
-                {/* Delivery Status */}
-                 <View style={styles.statusContainer}>
-                    <View style={styles.statusRow}>
-                        <Ionicons name="checkmark-sharp" size={20} color="#34C759" />
-                        <Text style={styles.statusText}>{orderInfo.status}</Text>
-                    </View>
-                    <Text style={styles.deliveryMsg}>{orderInfo.deliveryMsg}</Text>
-                    <Text style={styles.cargoCompany}>
-                        Yükdaşıma şirkəti: <Text style={styles.boldText}>{orderInfo.cargoCompany}</Text>
-                    </Text>
-                </View>
-
-                {/* Product Card */}
-                <View style={styles.productCard}>
-                <Image source={{ uri: product.image }} style={styles.productImage} />
-                <View style={styles.productDetails}>
-                    <Text style={styles.productName}>{product.name}</Text>
-                    <Text style={styles.productDescription} numberOfLines={2}>
-                    {product.description}
-                    </Text>
-                    <Text style={styles.productMeta}>
-                    Miqdar: <Text style={styles.boldText}>{product.quantity}</Text>
-                    </Text>
-                    <Text style={styles.productMeta}>
-                    Qiymət: <Text style={styles.boldText}>{product.price}</Text>
-                    </Text>
-                </View>
-                </View>
-
-                {/* Actions */}
-                <View style={styles.actionButtons}>
-                <TouchableOpacity
-                    style={[styles.actionButton, styles.rateButton]}
-                    onPress={() => router.push("/rate-product")}
-                >
-                    <Text style={styles.rateButtonText}>Məhsulu qiymətləndir</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.actionButton, styles.followButton]}>
-                     <Text style={styles.followButtonText}>Satıcını izlə</Text>
-                </TouchableOpacity>
-                </View>
-
-                 {/* Support Links */}
-                <View style={styles.supportLinks}>
-                <TouchableOpacity style={styles.supportItem}>
-                    <Feather name="headphones" size={20} color="#0B0E0B" />
-                    <Text style={styles.supportText}>NooshEt köməkçisi</Text>
-                </TouchableOpacity>
-                 <TouchableOpacity style={styles.supportItem}>
-                    <Ionicons name="document-text-outline" size={20} color="#0B0E0B" />
-                    <Text style={styles.supportText}>Faktura</Text>
-                </TouchableOpacity>
-                </View>
-                 <View style={styles.separator} />
+          <View key={product.id}>
+            {/* Delivery Status */}
+            <View style={styles.statusContainer}>
+              <View style={styles.statusRow}>
+                <Ionicons name="checkmark-sharp" size={20} color="#34C759" />
+                <Text style={styles.statusText}>{orderInfo.status}</Text>
+              </View>
+              <Text style={styles.deliveryMsg}>{orderInfo.deliveryMsg}</Text>
+              <Text style={styles.cargoCompany}>
+                Yükdaşıma şirkəti:{" "}
+                <Text style={styles.boldText}>{orderInfo.cargoCompany}</Text>
+              </Text>
             </View>
-        ))}
 
+            {/* Product Card */}
+            <View style={styles.productCard}>
+              <Image
+                source={{ uri: product.image }}
+                style={styles.productImage}
+              />
+              <View style={styles.productDetails}>
+                <Text style={styles.productName}>{product.name}</Text>
+                <Text style={styles.productDescription} numberOfLines={2}>
+                  {product.description}
+                </Text>
+                <Text style={styles.productMeta}>
+                  Miqdar:{" "}
+                  <Text style={styles.boldText}>{product.quantity}</Text>
+                </Text>
+                <Text style={styles.productMeta}>
+                  Qiymət: <Text style={styles.boldText}>{product.price}</Text>
+                </Text>
+              </View>
+            </View>
+
+            {/* Actions */}
+            <View style={styles.actionButtons}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.rateButton]}
+                onPress={() => router.push("/rate-product")}>
+                <Text style={styles.rateButtonText}>Məhsulu qiymətləndir</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.followButton]}>
+                <Text style={styles.followButtonText}>Satıcını izlə</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Support Links */}
+            <View style={styles.supportLinks}>
+              <TouchableOpacity style={styles.supportItem}>
+                <Feather name="headphones" size={20} color="#0B0E0B" />
+                <Text style={styles.supportText}>NooshEt köməkçisi</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.supportItem}>
+                <Ionicons
+                  name="document-text-outline"
+                  size={20}
+                  color="#0B0E0B"
+                />
+                <Text style={styles.supportText}>Faktura</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.separator} />
+          </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -155,6 +165,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: 50,
   },
   header: {
     flexDirection: "row",
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 6,
     color: "#8E8E93",
-     fontFamily: Font.regular,
+    fontFamily: Font.regular,
   },
   infoLabel: {
     color: "#A29E9E",
@@ -253,14 +264,14 @@ const styles = StyleSheet.create({
   productDescription: {
     fontSize: 12,
     color: "#3C3C4399", // secondary label color
-     fontFamily: Font.regular,
+    fontFamily: Font.regular,
     marginBottom: 8,
   },
   productMeta: {
     fontSize: 14,
     color: "#8E8E93",
     marginBottom: 2,
-     fontFamily: Font.regular,
+    fontFamily: Font.regular,
   },
   actionButtons: {
     flexDirection: "row",
@@ -306,6 +317,6 @@ const styles = StyleSheet.create({
   supportText: {
     fontSize: 14,
     color: "#A29E9E", // Light gray
-     fontFamily: Font.regular,
+    fontFamily: Font.regular,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,11 +10,30 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useRouter } from "expo-router";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { ALL_COLOR } from "../constant/all-color";
 import { Font } from "../constant/fonts";
 import * as ImagePicker from "expo-image-picker";
+
+const EditField = ({ label, value, onChangeText, isPassword }) => (
+  <View style={styles.fieldContainer}>
+    <Text style={styles.fieldLabel}>{label}</Text>
+    <View style={styles.inputWrapper}>
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChangeText}
+        secureTextEntry={isPassword}
+        autoCapitalize="none"
+      />
+      <TouchableOpacity style={styles.fieldIcon}>
+        <Feather name="edit-2" size={18} color="#C7C7CC" />
+      </TouchableOpacity>
+    </View>
+  </View>
+);
 
 const EditProfile = () => {
   const router = useRouter();
@@ -50,23 +69,57 @@ const EditProfile = () => {
     }
   };
 
-  const EditField = ({ label, value, onChangeText, isPassword }) => (
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          value={value}
-          onChangeText={onChangeText}
-          secureTextEntry={isPassword}
-          autoCapitalize="none"
-        />
-        <TouchableOpacity style={styles.fieldIcon}>
-          <Feather name="edit-2" size={18} color="#C7C7CC" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const savedProfile = await AsyncStorage.getItem("userProfile");
+      if (savedProfile) {
+        const {
+          name,
+          email,
+          phone,
+          homeAddress,
+          workAddress,
+          password,
+          image,
+        } = JSON.parse(savedProfile);
+        setName(name);
+        setEmail(email);
+        setPhone(phone);
+        setHomeAddress(homeAddress);
+        setWorkAddress(workAddress);
+        setPassword(password);
+        setImage(image);
+      }
+    } catch (error) {
+      console.error("Failed to load profile", error);
+    }
+  };
+
+  const saveProfile = async () => {
+    try {
+      const profileData = {
+        name,
+        email,
+        phone,
+        homeAddress,
+        workAddress,
+        password,
+        image,
+      };
+      await AsyncStorage.setItem("userProfile", JSON.stringify(profileData));
+      Alert.alert("Uğurlu", "Məlumatlarınız yadda saxlanıldı.");
+      // router.back(); // Optional: go back after saving
+    } catch (error) {
+      console.error("Failed to save profile", error);
+      Alert.alert("Xəta", "Məlumatları yadda saxlamaq mümkün olmadı.");
+    }
+  };
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,7 +133,11 @@ const EditProfile = () => {
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Hesabı redaktə edin</Text>
-        <View style={{ width: 40 }} />
+        <TouchableOpacity onPress={saveProfile}>
+          <Text style={{ color: ALL_COLOR["--primary-color"], fontSize: 16 }}>
+            Yadda saxla
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView
@@ -171,6 +228,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+       paddingTop: 50,
+    paddingBottom: 50,
   },
   header: {
     flexDirection: "row",

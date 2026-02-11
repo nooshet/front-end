@@ -13,12 +13,33 @@ import { ALL_COLOR } from "../../constant/all-color";
 import { Font } from "../../constant/fonts";
 import Button from "../../components/Button";
 import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
   const router = useRouter();
   const [image, setImage] = useState(null);
+  const [name, setName] = useState("Qaloyeva Göyçək");
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadProfile();
+    }, [])
+  );
+
+  const loadProfile = async () => {
+    try {
+      const savedProfile = await AsyncStorage.getItem("userProfile");
+      if (savedProfile) {
+        const { name, image } = JSON.parse(savedProfile);
+        if (name) setName(name);
+        if (image) setImage(image);
+      }
+    } catch (error) {
+      console.error("Failed to load profile", error);
+    }
+  };
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -138,7 +159,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>Qaloyeva Göyçək</Text>
+            <Text style={styles.userName}>{name}</Text>
             <View style={styles.statusRow}>
               <Text style={styles.statusLabel}>Status: </Text>
               <Text style={styles.statusValue}>İstifadəçi</Text>
@@ -201,6 +222,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: ALL_COLOR["--white"],
+    
   },
   scrollContent: {
     paddingHorizontal: 20,
