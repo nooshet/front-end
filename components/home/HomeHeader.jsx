@@ -8,6 +8,7 @@ import {
   Animated,
   Easing,
 } from "react-native";
+import { useRouter } from "expo-router";
 
 // Şəkilləri öz yolunuzla idxal etməyə davam edin
 import Contact from "../../assets/Vector.png";
@@ -29,6 +30,7 @@ const headerIcons = [
 ];
 
 const HomeHeader = () => {
+  const router = useRouter();
   // 1. Sol tərəf üçün animasiya dəyərləri (Slide & Fade)
   const slideAnim = useRef(new Animated.Value(-50)).current; // Soldan (-50px) başlayır
   const fadeAnim = useRef(new Animated.Value(0)).current; // Görünməz (0)-dan başlayır
@@ -119,7 +121,15 @@ const HomeHeader = () => {
               transform: [{ scale: iconAnims[index] }], // Pop effekti
             }}
           >
-            <TouchableOpacity activeOpacity={0.7} style={styles.iconBtn}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.iconBtn}
+              onPress={() => {
+                if (header.id === 1) {
+                  router.push("/notifications");
+                }
+              }}
+            >
               {header.badge && (
                 <Animated.View
                   style={[

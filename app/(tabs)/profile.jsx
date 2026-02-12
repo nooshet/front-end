@@ -86,6 +86,14 @@ const ProfileScreen = () => {
       },
     },
     {
+      id: "2.5",
+      title: "Bildirişlər",
+      icon: <Feather name="bell" size={24} color={ALL_COLOR["--text-color"]} />,
+      onPress: () => {
+        router.push("/notifications");
+      },
+    },
+    {
       id: "3",
       title: "Parametrlər",
       icon: (

@@ -15,7 +15,7 @@ import Button from "../components/Button";
 
 const ChangeStatus = () => {
   const router = useRouter();
-  const [selectedRole, setSelectedRole] = useState("aspaz"); // 'aspaz' or 'kurye'
+  const [selectedRole, setSelectedRole] = useState("aspaz"); 
 
   return (
     <SafeAreaView style={styles.container}>
