@@ -32,8 +32,12 @@ const SettingLink = ({ label, onPress }) => (
   </TouchableOpacity>
 );
 
+import { useTranslation } from "react-i18next";
+
+
 const Settings = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [notifications, setNotifications] = useState(true);
   const [location, setLocation] = useState(false);
@@ -50,14 +54,14 @@ const Settings = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Parametrlər</Text>
+        <Text style={styles.headerTitle}>{t("settings.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <ScrollView style={styles.content}>
         <View style={styles.section}>
           <SettingToggle
-            label="Bildirişlər"
+            label={t("settings.notifications")}
             value={notifications}
             onValueChange={setNotifications}
             activeColor="#4CD964"
@@ -65,7 +69,7 @@ const Settings = () => {
           <View style={styles.separator} />
           
           <SettingToggle
-            label="Yerləşmə icazəsi"
+            label={t("settings.location")}
             value={location}
             onValueChange={setLocation}
             activeColor="#8E8E93"
@@ -73,7 +77,7 @@ const Settings = () => {
           <View style={styles.separator} />
 
           <SettingToggle
-            label="Tema (seçilmiş)"
+            label={t("settings.theme")}
             value={theme}
             onValueChange={setTheme}
             activeColor="#FFCC00"
@@ -81,13 +85,13 @@ const Settings = () => {
           <View style={styles.separator} />
 
           <SettingLink
-            label="Tətbiq kilidi"
+            label={t("settings.appLock")}
             onPress={() => router.push("/app-lock")}
           />
           <View style={styles.separator} />
 
           <SettingLink
-            label="İcazələr"
+            label={t("settings.permissions")}
             onPress={() => router.push("/permissions")}
           />
         </View>

@@ -16,7 +16,6 @@ const OrderDetails = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
 
-  // Mock Data (In a real app, fetch based on params.id)
   const orderInfo = {
     deliveryDate: "04.12.25",
     orderNo: "4185252",

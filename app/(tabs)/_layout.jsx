@@ -115,17 +115,21 @@ function MyTabBar({ state, descriptors, navigation }) {
   );
 }
 
+import { useTranslation } from "react-i18next";
+
 export default function TabLayout() {
+  const { t } = useTranslation();
+
   return (
     <Tabs
       tabBar={(props) => <MyTabBar {...props} />}
       screenOptions={{ headerShown: false }}
     >
-      <Tabs.Screen name="index" options={{ title: "Əsas səhifə" }} />
-      <Tabs.Screen name="favourites" options={{ title: "Favorilər" }} />
-      <Tabs.Screen name="video" options={{ title: "Video" }} />
-      <Tabs.Screen name="basket" options={{ title: "Səbət" }} />
-      <Tabs.Screen name="profile" options={{ title: "Profil" }} />
+      <Tabs.Screen name="index" options={{ title: t("tabs.home") }} />
+      <Tabs.Screen name="favourites" options={{ title: t("tabs.favorites") }} />
+      <Tabs.Screen name="video" options={{ title: t("tabs.video") }} />
+      <Tabs.Screen name="basket" options={{ title: t("tabs.basket") }} />
+      <Tabs.Screen name="profile" options={{ title: t("tabs.profile") }} />
     </Tabs>
   );
 }

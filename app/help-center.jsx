@@ -17,14 +17,19 @@ import { Font } from "../constant/fonts";
 import AspazQeydiyyat from "../assets/HelpCenterImg.png";
 import Help from "../assets/Help.png";
 
+import { useTranslation } from "react-i18next";
+
+// ...
+
 const HelpCenter = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [message, setMessage] = useState("");
 
   const quickQuestions = [
-    "Necə istifadə edəcəyimi bilmirəm",
-    "Necə satıcı ola bilərəm",
-    "Canlı dəstəyə qoşulmaq istəyirəm",
+    t("help.q1"),
+    t("help.q2"),
+    t("help.q3"),
   ];
 
   return (
@@ -38,7 +43,7 @@ const HelpCenter = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Yardım mərkəzi</Text>
+        <Text style={styles.headerTitle}>{t("help.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -46,7 +51,7 @@ const HelpCenter = () => {
         {/* Illustration Section */}
         <View style={styles.illustrationContainer}>
           <Image source={AspazQeydiyyat} style={styles.illustration} />
-          <Text style={styles.helpText}>Biz sənə kömək üçün buradayırıq</Text>
+          <Text style={styles.helpText}>{t("help.subtitle")}</Text>
         </View>
 
         {/* Support Card / Message */}
@@ -59,7 +64,7 @@ const HelpCenter = () => {
           </View>
           <View style={styles.chatBubble}>
             <Text style={styles.chatTitle}>
-              Probleminiz aşağıdakılardan biridirmi?
+              {t("help.questionTitle")}
             </Text>
             <View style={styles.optionsContainer}>
               {quickQuestions.map((q, index) => (
@@ -83,7 +88,7 @@ const HelpCenter = () => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Yazın..."
+              placeholder={t("help.placeholder")}
               value={message}
               onChangeText={setMessage}
             />

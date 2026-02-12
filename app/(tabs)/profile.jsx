@@ -17,8 +17,11 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useTranslation } from "react-i18next";
+
 const ProfileScreen = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [image, setImage] = useState(null);
   const [name, setName] = useState("Qaloyeva Göyçək");
 
@@ -45,8 +48,8 @@ const ProfileScreen = () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       Alert.alert(
-        "İcazə lazımdır",
-        "Şəkil seçmək üçün qalereyaya giriş icazəsi verməlisiniz.",
+        t("editProfile.permissionTitle"),
+        t("editProfile.permissionMsg"),
       );
       return;
     }
@@ -65,7 +68,7 @@ const ProfileScreen = () => {
   const menuItems = [
     {
       id: "1",
-      title: "Hesabı redaktə edin",
+      title: t("profile.menu.editProfile"),
       icon: <Feather name="user" size={24} color={ALL_COLOR["--text-color"]} />,
       onPress: () => {
         router.push("/edit-profile");
@@ -73,7 +76,7 @@ const ProfileScreen = () => {
     },
     {
       id: "2",
-      title: "Sifarişlərim",
+      title: t("profile.menu.myOrders"),
       icon: (
         <Feather
           name="shopping-bag"
@@ -87,7 +90,7 @@ const ProfileScreen = () => {
     },
     {
       id: "2.5",
-      title: "Bildirişlər",
+      title: t("profile.menu.notifications"),
       icon: <Feather name="bell" size={24} color={ALL_COLOR["--text-color"]} />,
       onPress: () => {
         router.push("/notifications");
@@ -95,7 +98,7 @@ const ProfileScreen = () => {
     },
     {
       id: "3",
-      title: "Parametrlər",
+      title: t("profile.menu.settings"),
       icon: (
         <Feather name="settings" size={24} color={ALL_COLOR["--text-color"]} />
       ),
@@ -105,7 +108,7 @@ const ProfileScreen = () => {
     },
     {
       id: "4",
-      title: "Dil seçimi",
+      title: t("profile.menu.language"),
       icon: (
         <Ionicons
           name="globe-outline"
@@ -119,7 +122,7 @@ const ProfileScreen = () => {
     },
     {
       id: "5",
-      title: "Yardım mərkəzi",
+      title: t("profile.menu.help"),
       icon: (
         <Feather
           name="help-circle"
@@ -133,7 +136,7 @@ const ProfileScreen = () => {
     },
     {
       id: "6",
-      title: "Çıxmaq",
+      title: t("profile.menu.logout"),
       icon: <Feather name="log-out" size={24} color="#FF3D00" />,
       onPress: () => {
         router.push("/(auth)/login");
@@ -169,26 +172,27 @@ const ProfileScreen = () => {
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{name}</Text>
             <View style={styles.statusRow}>
-              <Text style={styles.statusLabel}>Status: </Text>
-              <Text style={styles.statusValue}>İstifadəçi</Text>
+              <Text style={styles.statusLabel}>{t("profile.status")}: </Text>
+              <Text style={styles.statusValue}>{t("profile.user")}</Text>
             </View>
-            <Text style={styles.dateText}>21.11.25 tarixindən</Text>
+            <Text style={styles.dateText}>21.11.25 {t("profile.since")}</Text>
           </View>
         </View>
 
         {/* Action Button Section */}
         <View style={styles.actionSection}>
           <Button
-            title="Statusunu dəyiş"
+            title={t("profile.changeStatus")}
             onPress={() => router.push("/change-status")}
             style={styles.statusButton}
             textStyle={styles.statusButtonText}
           />
           <Text style={styles.infoText}>
-            istifadəçi statusunuzu dəyişərək, Siz{" "}
-            <Text style={styles.boldText}>Aşbaz</Text> və ya{" "}
-            <Text style={styles.boldText}>Kurye</Text> kimi davam edə
-            bilərsiniz.
+             {/* Note: Bold text logic might need adjustment if using full string translation, 
+                 but for now keeping simple string concatenation or rich text if supported by translation system. 
+                 My current t() is simple key-value. 
+                 I'll use the plain text from translations for now. */}
+            {t("profile.statusInfo").replace(/\*\*/g, '')} 
           </Text>
         </View>
 

@@ -10,22 +10,30 @@ import { FOOD_DATA, VIDEO_DATA } from "../../mock/FOOD_DATA";
 import FoodCard from "../../components/FoodCard";
 import VideoCard from "../../components/VideoCard";
 
-const CUSTOM_BUTTONS = [
-  { id: 1, title: "Yeməklər" },
-  { id: 2, title: "Videolar" },
-];
+import { useTranslation } from "react-i18next";
+
+// ...
 
 const FavouriteScreen = () => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
-  const [activeTab, setActiveTab] = useState("Yeməklər");
+  
+  // Initialize with the translation of the first tab or maintain state ID based logic
+  // Better to use IDs for logic and translate display text
+  const [activeTabId, setActiveTabId] = useState(1); 
 
-  const handleTabPress = (title) => {
-    setActiveTab(title);
+  const CUSTOM_BUTTONS = [
+    { id: 1, titleKey: "favorites.tab.foods" },
+    { id: 2, titleKey: "favorites.tab.videos" },
+  ];
+
+  const handleTabPress = (id) => {
+    setActiveTabId(id);
   };
 
   const renderContent = () => {
-    if (activeTab === "Yeməklər") {
+    if (activeTabId === 1) {
       return FOOD_DATA.map((food, index) => (
         <View key={food.id} style={styles.cardWrapper}>
           <FoodCard
@@ -49,23 +57,23 @@ const FavouriteScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Container>
-        <ScreenHeader title="Favorilərim" />
+        <ScreenHeader title={t("favorites.title")} />
         <Search
           inputRef={inputRef}
           search={search}
           setSearch={setSearch}
-          placeholder="Nə axtarırsan?"
+          placeholder={t("favorites.searchPlaceholder")}
         />
 
         <View style={styles.buttonContainer}>
           {CUSTOM_BUTTONS.map((btn) => {
-            const isSelected = activeTab === btn.title;
+            const isSelected = activeTabId === btn.id;
             return (
               <CustomButton
                 key={btn.id}
-                title={btn.title}
+                title={t(btn.titleKey)}
                 variant={isSelected ? "primary" : "outline"}
-                onPress={() => handleTabPress(btn.title)}
+                onPress={() => handleTabPress(btn.id)}
                 style={{ flex: 1 }}
               />
             );

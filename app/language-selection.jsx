@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -11,15 +12,23 @@ import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 
+import { useTranslation } from "react-i18next";
+
 const languages = [
-  { id: "az", label: "Azərbaycan dili" },
-  { id: "tr", label: "Türk dili" },
-  { id: "ru", label: "Rus dili" },
+  { id: "az", labelKey: "language.az" },
+  { id: "en", labelKey: "language.en" },
+  { id: "ru", labelKey: "language.ru" },
 ];
 
 const LanguageSelection = () => {
+  
   const router = useRouter();
-  const [selectedLanguage, setSelectedLanguage] = useState("az");
+  const { t, i18n } = useTranslation();
+  const [selected, setSelected] = useState(i18n.language);
+
+  React.useEffect(() => {
+      setSelected(i18n.language);
+  }, [i18n.language]);
 
   const RadioButton = ({ id, label, isSelected, onSelect }) => (
     <TouchableOpacity
@@ -40,7 +49,7 @@ const LanguageSelection = () => {
   );
 
   const handleSave = () => {
-    // Placeholder for saving language setting
+    i18n.changeLanguage(selected);
     router.back();
   };
 
@@ -55,28 +64,28 @@ const LanguageSelection = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Dil seçimi</Text>
+        <Text style={styles.headerTitle}>{t("language.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.sectionTitle}>Təklif olunur</Text>
+        <Text style={styles.sectionTitle}>{t("language.suggested")}</Text>
 
         <View style={styles.languagesContainer}>
           {languages.map((lang) => (
             <RadioButton
               key={lang.id}
               id={lang.id}
-              label={lang.label}
-              isSelected={selectedLanguage === lang.id}
-              onSelect={setSelectedLanguage}
+              label={t(lang.labelKey)}
+              isSelected={selected === lang.id}
+              onSelect={setSelected}
             />
           ))}
         </View>
 
         <View style={styles.footer}>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Yadda saxla</Text>
+            <Text style={styles.saveButtonText}>{t("common.save")}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-       paddingTop: 40,
+    paddingTop: 40,
     paddingBottom: 30,
   },
   header: {

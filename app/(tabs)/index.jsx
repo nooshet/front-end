@@ -18,16 +18,19 @@ import FeaturesSection from "../../components/home/FeaturesSection";
 import { FOOD_DATA } from "../../mock/FOOD_DATA";
 import { router } from "expo-router";
 
+import { useTranslation } from "react-i18next";
+
 const HomeScreen = () => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
 
   const categories = [
-    { id: 1, title: "Gündəlik\nyeməklər", active: true },
-    { id: 2, title: "Dietik\nyeməklər", active: false },
-    { id: 3, title: "Uşaq\nyeməkləri", active: false },
-    { id: 4, title: "Salatlar və\nqəlyanaltılar", active: false },
-    { id: 5, title: "İçkilər", active: false },
+    { id: 1, title: t("home.cat.daily"), active: true },
+    { id: 2, title: t("home.cat.diet"), active: false },
+    { id: 3, title: t("home.cat.kids"), active: false },
+    { id: 4, title: t("home.cat.salads"), active: false },
+    { id: 5, title: t("home.cat.drinks"), active: false },
   ];
 
   const handleCategoryPress = (id) => {
@@ -57,11 +60,11 @@ const HomeScreen = () => {
             inputRef={inputRef}
             search={search}
             setSearch={setSearch}
-            placeholder="Nə yemək istəyirsən?"
+            placeholder={t("home.searchPlaceholder")}
             filter
           />
           <Banner />
-          <SectionHeader title="Kateqoriyalar" onPress={handleCategoryPress} />
+          <SectionHeader title={t("home.categories")} onPress={handleCategoryPress} />
         </Container>
 
         <View>
@@ -91,16 +94,16 @@ const HomeScreen = () => {
         </View>
 
         {/* Gunun menusu */}
-        <FeaturesSection FOOD_DATA={FOOD_DATA} title={"Günün menyusu"} />
+        <FeaturesSection FOOD_DATA={FOOD_DATA} title={t("home.menuOfDay")} />
 
         {/* Populyar ev yemeyi */}
         <FeaturesSection
           FOOD_DATA={FOOD_DATA}
-          title={"Populyar ev yeməkləri "}
+          title={t("home.popularHomeFood")}
         />
 
         {/* Yeni menyular */}
-        <FeaturesSection FOOD_DATA={FOOD_DATA} title={"Yeni menyular"} />
+        <FeaturesSection FOOD_DATA={FOOD_DATA} title={t("home.newMenus")} />
       </ScrollView>
     </SafeAreaView>
   );

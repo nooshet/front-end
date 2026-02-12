@@ -35,8 +35,11 @@ const EditField = ({ label, value, onChangeText, isPassword }) => (
   </View>
 );
 
+import { useTranslation } from "react-i18next";
+
 const EditProfile = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   // Form State
   const [name, setName] = useState("Göyçək Qaloyeva");
@@ -51,8 +54,8 @@ const EditProfile = () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       Alert.alert(
-        "İcazə lazımdır",
-        "Şəkil seçmək üçün qalereyaya giriş icazəsi verməlisiniz."
+        t("editProfile.permissionTitle"),
+        t("editProfile.permissionMsg"),
       );
       return;
     }
@@ -74,6 +77,7 @@ const EditProfile = () => {
   }, []);
 
   const loadProfile = async () => {
+    // ... (load logic same)
     try {
       const savedProfile = await AsyncStorage.getItem("userProfile");
       if (savedProfile) {
@@ -111,15 +115,13 @@ const EditProfile = () => {
         image,
       };
       await AsyncStorage.setItem("userProfile", JSON.stringify(profileData));
-      Alert.alert("Uğurlu", "Məlumatlarınız yadda saxlanıldı.");
+      Alert.alert(t("common.success"), t("editProfile.saveSuccess"));
       // router.back(); // Optional: go back after saving
     } catch (error) {
       console.error("Failed to save profile", error);
-      Alert.alert("Xəta", "Məlumatları yadda saxlamaq mümkün olmadı.");
+      Alert.alert(t("common.error"), t("editProfile.saveError"));
     }
   };
-
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -132,10 +134,10 @@ const EditProfile = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Hesabı redaktə edin</Text>
+        <Text style={styles.headerTitle}>{t("editProfile.title")}</Text>
         <TouchableOpacity onPress={saveProfile}>
           <Text style={{ color: ALL_COLOR["--primary-color"], fontSize: 16 }}>
-            Yadda saxla
+            {t("common.save")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -150,9 +152,7 @@ const EditProfile = () => {
               source={image ? { uri: image } : require("../assets/Gcs.png")}
               style={styles.avatar}
             />
-            <TouchableOpacity
-              style={styles.avatarEditIcon}
-              onPress={pickImage}>
+            <TouchableOpacity style={styles.avatarEditIcon} onPress={pickImage}>
               <Feather name="edit-3" size={16} color="#0B0E0B" />
             </TouchableOpacity>
           </View>
@@ -160,19 +160,29 @@ const EditProfile = () => {
 
         {/* Form Fields */}
         <View style={styles.form}>
-          <EditField label="Ad soyad" value={name} onChangeText={setName} />
           <EditField
-            label="E-mail"
+            label={t("editProfile.nameLabel")}
+            value={name}
+            onChangeText={setName}
+          />
+          <EditField
+            label={t("editProfile.emailLabel")}
             value={email}
             onChangeText={setEmail}
           />
-          <EditField label="Nömrə" value={phone} onChangeText={setPhone} />
+          <EditField
+            label={t("editProfile.phoneLabel")}
+            value={phone}
+            onChangeText={setPhone}
+          />
 
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Ünvanlar</Text>
+            <Text style={styles.fieldLabel}>{t("editProfile.addresses")}</Text>
             <View style={styles.addressWrapper}>
               <View style={styles.addressItem}>
-                <Text style={styles.addressLabel}>Ev: </Text>
+                <Text style={styles.addressLabel}>
+                  {t("editProfile.homeAddress")}:{" "}
+                </Text>
                 <TextInput
                   style={styles.addressInput}
                   value={homeAddress}
@@ -181,7 +191,9 @@ const EditProfile = () => {
                 />
               </View>
               <View style={styles.addressItem}>
-                <Text style={styles.addressLabel}>İş yerim: </Text>
+                <Text style={styles.addressLabel}>
+                  {t("editProfile.workAddress")}:{" "}
+                </Text>
                 <TextInput
                   style={styles.addressInput}
                   value={workAddress}
@@ -196,7 +208,7 @@ const EditProfile = () => {
           </View>
 
           <EditField
-            label="Şifrə"
+            label={t("editProfile.password")}
             value={password}
             onChangeText={setPassword}
             isPassword={true}
@@ -214,7 +226,9 @@ const EditProfile = () => {
               color="#fff"
               style={styles.deleteIcon}
             />
-            <Text style={styles.deleteButtonText}>Hesabı sil</Text>
+            <Text style={styles.deleteButtonText}>
+              {t("editProfile.deleteAccount")}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -228,7 +242,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-       paddingTop: 50,
+    paddingTop: 50,
     paddingBottom: 50,
   },
   header: {

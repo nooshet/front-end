@@ -18,7 +18,7 @@ const PermissionToggle = ({ label, value, onValueChange }) => (
     <Switch
       value={value}
       onValueChange={onValueChange}
-      trackColor={{ false: "#D1D1D6", true: "#34C759" }} // Green when active
+      trackColor={{ false: "#D1D1D6", true: "#34C759" }} 
       thumbColor="#fff"
       ios_backgroundColor="#D1D1D6"
     />

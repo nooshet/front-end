@@ -4,6 +4,8 @@ import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 
+import "./i18n";
+
 const RootLayout = () => {
   const [loaded, error] = useFonts({
     poppins_bold: require("../assets/fonts/Poppins/Poppins-Bold.ttf"),

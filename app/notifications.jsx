@@ -57,8 +57,12 @@ const NotificationItem = ({ item }) => (
   </View>
 );
 
+import { useTranslation } from "react-i18next";
+
+
 const Notifications = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,16 +73,16 @@ const Notifications = () => {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Bildirişlər</Text>
+        <Text style={styles.headerTitle}>{t("notifications.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Today Section */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Bu gün</Text>
+          <Text style={styles.sectionTitle}>{t("notifications.today")}</Text>
           <TouchableOpacity>
-            <Text style={styles.markAllRead}>Hamısını oxundu et</Text>
+            <Text style={styles.markAllRead}>{t("notifications.markAllRead")}</Text>
           </TouchableOpacity>
         </View>
 
@@ -88,7 +92,7 @@ const Notifications = () => {
 
         {/* Yesterday Section */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Dünən</Text>
+          <Text style={styles.sectionTitle}>{t("notifications.yesterday")}</Text>
         </View>
 
         {notificationsYesterday.map((item) => (
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
   markAllRead: {
     fontSize: 14,
     fontFamily: Font.medium,
-    color: "#34C759", // Green color matching the design
+    color: "#34C759",
   },
   notificationCard: {
     flexDirection: "row",
@@ -154,8 +158,8 @@ const styles = StyleSheet.create({
     borderColor: "#E5E5EA",
   },
   newNotificationCard: {
-    borderColor: "#34C759", // Green border for new notifications
-    backgroundColor: "#F2FCF4", // Slight green tint background
+    borderColor: "#34C759", 
+    backgroundColor: "#F2FCF4", 
   },
   notificationImage: {
     width: 60,

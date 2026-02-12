@@ -21,13 +21,14 @@ const RateProduct = () => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
 
-  // Mock Data (In a real app, use params to fetch or display specific product)
   const product = {
     name: "Yarpaq Dolması",
-    description: "Düyü, soğan, göyərti, pomidor pastası, zeytun yağı və ədviyyatlar.",
+    description:
+      "Düyü, soğan, göyərti, pomidor pastası, zeytun yağı və ədviyyatlar.",
     quantity: "1 porsiya",
     price: "4.95 AZN",
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image:
+      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
   };
 
   return (
@@ -38,8 +39,7 @@ const RateProduct = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={styles.backButton}
-        >
+          style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Qiymətləndir</Text>
@@ -48,15 +48,17 @@ const RateProduct = () => {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
+        style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.content}>
           {/* Product Card */}
           <View style={styles.productCard}>
             <View style={styles.selectionIndicator}>
-                 <Ionicons name="radio-button-on" size={24} color="#08A30D" />
+              <Ionicons name="radio-button-on" size={24} color="#08A30D" />
             </View>
-            <Image source={{ uri: product.image }} style={styles.productImage} />
+            <Image
+              source={{ uri: product.image }}
+              style={styles.productImage}
+            />
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{product.name}</Text>
               <Text style={styles.productDescription} numberOfLines={2}>
@@ -77,25 +79,23 @@ const RateProduct = () => {
           <Text style={styles.sectionTitle}>
             Aşağıda məhsulu qiymətləndirə və rəy yaza bilərsiniz.
           </Text>
-          
+
           <View style={styles.starsContainer}>
             {[1, 2, 3, 4, 5].map((star) => (
               <TouchableOpacity key={star} onPress={() => setRating(star)}>
                 <Ionicons
                   name="star"
                   size={46}
-                  style={{ opacity: star <= rating ? 1 : 0.4 }} 
+                  style={{ opacity: star <= rating ? 1 : 0.4 }}
                   color={star <= rating ? "#FFD700" : "#D1D1D6"}
                 />
               </TouchableOpacity>
             ))}
-            {/* The screenshot shows large grey stars. I will implement large grey stars that might turn color on selection, 
-                but based on image they look like placeholders. I'll stick to a standard interaction. */}
           </View>
 
-           {/* Review Input */}
-           <Text style={styles.inputLabel}>Məhsulu qiymətləndir</Text>
-           <TextInput
+          {/* Review Input */}
+          <Text style={styles.inputLabel}>Məhsulu qiymətləndir</Text>
+          <TextInput
             style={styles.reviewInput}
             placeholder="Məhsulla bağlı Rəylərinizi bizimlə paylaşa bilərsiniz."
             placeholderTextColor="#A29E9E"
@@ -104,16 +104,16 @@ const RateProduct = () => {
             value={review}
             onChangeText={setReview}
           />
-
         </ScrollView>
-        
-        {/* Submit Button */}
-         <View style={styles.footer}>
-            <TouchableOpacity style={styles.submitButton} onPress={() => router.push("/rate-success")}>
-                <Text style={styles.submitButtonText}>Qiymətləndir</Text>
-            </TouchableOpacity>
-         </View>
 
+        {/* Submit Button */}
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() => router.push("/rate-success")}>
+            <Text style={styles.submitButtonText}>Qiymətləndir</Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 40,
     paddingBottom: 50,
-
   },
   header: {
     flexDirection: "row",
@@ -149,11 +148,11 @@ const styles = StyleSheet.create({
   },
   productCard: {
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   selectionIndicator: {
-      marginRight: 10,
+    marginRight: 10,
   },
   productImage: {
     width: 100,
@@ -175,65 +174,64 @@ const styles = StyleSheet.create({
   productDescription: {
     fontSize: 12,
     color: "#3C3C4399",
-     fontFamily: Font.regular,
+    fontFamily: Font.regular,
     marginBottom: 8,
   },
   productMeta: {
     fontSize: 14,
     color: "#8E8E93",
     marginBottom: 2,
-     fontFamily: Font.regular,
+    fontFamily: Font.regular,
   },
   boldText: {
     fontFamily: Font.medium,
     color: "#0B0E0B",
   },
-   separator: {
+  separator: {
     height: 1,
     backgroundColor: "#E5E5EA",
     width: "100%",
     marginBottom: 20,
   },
   sectionTitle: {
-      fontSize: 14,
-      fontFamily: Font.medium,
-      color: "#0B0E0B",
-      marginBottom: 20,
+    fontSize: 14,
+    fontFamily: Font.medium,
+    color: "#0B0E0B",
+    marginBottom: 20,
   },
   starsContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      paddingHorizontal: 20,
-      marginBottom: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    marginBottom: 30,
   },
   inputLabel: {
-      fontSize: 16,
-      fontFamily: Font.medium,
-      color: "#0B0E0B",
-      marginBottom: 10,
+    fontSize: 16,
+    fontFamily: Font.medium,
+    color: "#0B0E0B",
+    marginBottom: 10,
   },
   reviewInput: {
-      backgroundColor: "#D9D9D9", // Light grey background as in screenshot
-      borderRadius: 12,
-      padding: 16,
-      height: 120,
-      fontSize: 14,
-      fontFamily: Font.regular,
-      color: "#0B0E0B",
+    backgroundColor: "#D9D9D9", 
+    borderRadius: 12,
+    padding: 16,
+    height: 120,
+    fontSize: 14,
+    fontFamily: Font.regular,
+    color: "#0B0E0B",
   },
   footer: {
-      padding: 20,
+    padding: 20,
   },
   submitButton: {
-      backgroundColor: "#08A30D",
-      paddingVertical: 16,
-      borderRadius: 25, // Rounded pill shape
-      alignItems: "center",
+    backgroundColor: "#08A30D",
+    paddingVertical: 16,
+    borderRadius: 25,
+    alignItems: "center",
   },
   submitButtonText: {
-      color: "#fff",
-      fontSize: 16,
-      fontFamily: Font.bold,
-  }
-
+    color: "#fff",
+    fontSize: 16,
+    fontFamily: Font.bold,
+  },
 });
