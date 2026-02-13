@@ -20,7 +20,15 @@ import { useTranslation } from "react-i18next";
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
-const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
+const FoodCard = ({
+  title,
+  price,
+  rating,
+  image,
+  onPress,
+  index = 0,
+  hideButton = false,
+}) => {
   // 1. Giriş Animasiyası (Yuxarı sürüşmə və Görünmə)
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(50)).current;
@@ -132,12 +140,14 @@ const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
           </TouchableOpacity>
         </View>
 
-        <CustomButton
-          title={t("foodCard.addToBasket")}
-          variant="primary"
-          icon="arrow-up-right"
-          width={"100%"}
-        />
+        {!hideButton && (
+          <CustomButton
+            title={t("foodCard.addToBasket")}
+            variant="primary"
+            icon="arrow-up-right"
+            width={"100%"}
+          />
+        )}
       </View>
     </AnimatedTouchableOpacity>
   );

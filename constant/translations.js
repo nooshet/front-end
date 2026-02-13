@@ -201,6 +201,9 @@ export const translations = {
     // Category Screen
     "category.title": "Kateqoriyalar",
     "category.count": "{{count}} növ",
+
+    // Basket
+    "basket.title": "Səbət",
   },
   en: {
     // General
@@ -403,6 +406,9 @@ export const translations = {
     // Category Screen
     "category.title": "Categories",
     "category.count": "{{count}} types",
+
+    // Basket
+    "basket.title": "Basket",
   },
   ru: {
     // General
@@ -605,5 +611,8 @@ export const translations = {
     // Category Screen
     "category.title": "Категории",
     "category.count": "{{count}} видов",
+
+    // Basket
+    "basket.title": "Корзина",
   }
 };
