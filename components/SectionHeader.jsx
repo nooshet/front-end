@@ -3,12 +3,15 @@ import React from "react";
 import { ALL_COLOR } from "../constant/all-color";
 import { Font } from "../constant/fonts";
 
+import { useTranslation } from "react-i18next";
+
 const SectionHeader = ({ title, subtitle, onPress }) => {
+  const { t } = useTranslation();
   return (
     <View style={style.sectionContainer}>
       <Text style={style.title}>{title}</Text>
       <TouchableOpacity onPress={onPress}>
-        <Text style={style.subtitle}>{subtitle ?? "Hamısı"}</Text>
+        <Text style={style.subtitle}>{subtitle ?? t("common.all")}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -8,6 +8,7 @@ export const translations = {
     "common.back": "Geri",
     "common.error": "Xəta",
     "common.success": "Uğurlu",
+    "common.all": "Hamısı",
     
     // Auth & Onboarding
     "auth.login": "Giriş",
@@ -23,6 +24,7 @@ export const translations = {
     
     // Home
     "home.welcome": "Xoş gəlmisən!",
+    "home.userName": "Göyçək",
     "home.searchPlaceholder": "Nə yemək istəyirsən?",
     "home.categories": "Kateqoriyalar",
     "home.menuOfDay": "Günün menyusu",
@@ -171,6 +173,34 @@ export const translations = {
 
     // Food Card
     "foodCard.addToBasket": "Səbətə at",
+
+    // Food Items
+    "food.1.title": "Klassik Burger Menyu",
+    "food.1.desc": "Təzə mal əti, çedar pendiri və xüsusi sous ilə.",
+    "food.2.title": "Margarita Pizza",
+    "food.2.desc": "İtalyan xəmiri, mozzarella pendiri və pomidor sousu.",
+    "food.3.title": "Sezar Salatı",
+    "food.3.desc": "Toyuq filesi, aysberq kahı və parmezan pendiri.",
+    "food.4.title": "Suşi Seti (24 ədəd)",
+    "food.4.desc": "Filadelfiya, Kaliforniya və Maki rolları.",
+    "food.5.title": "Qril Toyuq",
+    "food.5.desc": "Odun atəşində bişmiş bütöv toyuq.",
+
+    // Videos
+    "video.1.title": "Ev üsulu Burger hazırlanması",
+    "video.1.desc": "Ən dadlı və şirəli burgeri evdə necə hazırlamaq olar?",
+    "video.2.title": "İtalyan Pizza sirrləri",
+    "video.2.desc": "Xəmirin düzgün açılması və sousun hazırlanması.",
+    "video.3.title": "Mükəmməl Steyk bişirmək",
+    "video.3.desc": "Steykin qızardılma dərəcələri və marinad qaydası.",
+    "video.4.title": "Şokoladlı Sufle resepti",
+    "video.4.desc": "İçi axışqan şokoladlı desertin hazırlanması.",
+    "video.5.title": "Sağlam Səhər Yeməyi",
+    "video.5.desc": "Avokado tost və qayğanaq.",
+
+    // Category Screen
+    "category.title": "Kateqoriyalar",
+    "category.count": "{{count}} növ",
   },
   en: {
     // General
@@ -181,6 +211,7 @@ export const translations = {
     "common.back": "Back",
     "common.error": "Error",
     "common.success": "Success",
+    "common.all": "All",
     
     // Auth & Onboarding
     "auth.login": "Login",
@@ -196,6 +227,7 @@ export const translations = {
     
     // Home
     "home.welcome": "Welcome!",
+    "home.userName": "Goychak",
     "home.searchPlaceholder": "What do you want to eat?",
     "home.categories": "Categories",
     "home.menuOfDay": "Menu of the Day",
@@ -343,6 +375,34 @@ export const translations = {
 
     // Food Card
     "foodCard.addToBasket": "Add to Basket",
+
+    // Food Items
+    "food.1.title": "Classic Burger Menu",
+    "food.1.desc": "With fresh beef, cheddar cheese and special sauce.",
+    "food.2.title": "Margherita Pizza",
+    "food.2.desc": "Italian dough, mozzarella cheese and tomato sauce.",
+    "food.3.title": "Caesar Salad",
+    "food.3.desc": "Chicken fillet, iceberg lettuce and parmesan cheese.",
+    "food.4.title": "Sushi Set (24 pieces)",
+    "food.4.desc": "Philadelphia, California and Maki rolls.",
+    "food.5.title": "Grilled Chicken",
+    "food.5.desc": "Whole chicken cooked over wood fire.",
+
+    // Videos
+    "video.1.title": "Homemade Burger preparation",
+    "video.1.desc": "How to make the tastiest and juiciest burger at home?",
+    "video.2.title": "secrets of Italian Pizza",
+    "video.2.desc": "Correct opening of dough and preparation of sauce.",
+    "video.3.title": "Perfect Steak cooking",
+    "video.3.desc": "Steak frying degrees and marinade rules.",
+    "video.4.title": "Chocolate Souffle recipe",
+    "video.4.desc": "Preparing a dessert with flowing chocolate inside.",
+    "video.5.title": "Healthy Breakfast",
+    "video.5.desc": "Avocado toast and scrambled eggs.",
+
+    // Category Screen
+    "category.title": "Categories",
+    "category.count": "{{count}} types",
   },
   ru: {
     // General
@@ -353,6 +413,7 @@ export const translations = {
     "common.back": "Назад",
     "common.error": "Ошибка",
     "common.success": "Успешно",
+    "common.all": "Все",
     
     // Auth & Onboarding
     "auth.login": "Вход",
@@ -368,6 +429,7 @@ export const translations = {
     
     // Home
     "home.welcome": "Добро пожаловать!",
+    "home.userName": "Гёйчек",
     "home.searchPlaceholder": "Что вы хотите поесть?",
     "home.categories": "Категории",
     "home.menuOfDay": "Меню дня",
@@ -515,5 +577,33 @@ export const translations = {
 
     // Food Card
     "foodCard.addToBasket": "В корзину",
+
+    // Food Items
+    "food.1.title": "Классическое меню бургеров",
+    "food.1.desc": "Со свежей говядиной, сыром чеддер и специальным соусом.",
+    "food.2.title": "Маргарита Пицца",
+    "food.2.desc": "Итальянское тесто, сыр моцарелла и томатный соус.",
+    "food.3.title": "Салат Цезарь",
+    "food.3.desc": "Куриное филе, салат айсберг и сыр пармезан.",
+    "food.4.title": "Суши-сет (24 шт.)",
+    "food.4.desc": "Роллы Филадельфия, Калифорния и Маки.",
+    "food.5.title": "Курица-гриль",
+    "food.5.desc": "Целая курица, приготовленная на дровах.",
+
+    // Videos
+    "video.1.title": "Приготовление бургера по-домашнему",
+    "video.1.desc": "Как приготовить самый вкусный и сочный бургер дома?",
+    "video.2.title": "Секреты итальянской пиццы",
+    "video.2.desc": "Правильное раскатывание теста и приготовление соуса.",
+    "video.3.title": "Приготовление идеального стейка",
+    "video.3.desc": "Степени прожарки стейка и правила маринования.",
+    "video.4.title": "Рецепт шоколадного суфле",
+    "video.4.desc": "Приготовление десерта с текучим шоколадом внутри.",
+    "video.5.title": "Здоровый завтрак",
+    "video.5.desc": "Тост с авокадо и яичница.",
+
+    // Category Screen
+    "category.title": "Категории",
+    "category.count": "{{count}} видов",
   }
 };

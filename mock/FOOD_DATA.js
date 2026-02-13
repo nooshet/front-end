@@ -58,6 +58,7 @@ export const VIDEO_DATA = [
     title: "Ev üsulu Burger hazırlanması",
     time: 12, // Dəqiqə
     rating: 4.9,
+    chefName: "Əhməd bəyin mətbəxi",
     image: {
       uri: "https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-4.0.3&auto=format&fit=crop&w=765&q=80",
     },
@@ -68,6 +69,7 @@ export const VIDEO_DATA = [
     title: "İtalyan Pizza sirrləri",
     time: 15,
     rating: 4.7,
+    chefName: "Gülşən xalanın mətbəxi",
     image: {
       uri: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&auto=format&fit=crop&w=1769&q=80",
     },
@@ -78,6 +80,7 @@ export const VIDEO_DATA = [
     title: "Mükəmməl Steyk bişirmək",
     time: 8,
     rating: 4.8,
+    chefName: "Kənan usta",
     image: {
       uri: "https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80",
     },
@@ -88,6 +91,7 @@ export const VIDEO_DATA = [
     title: "Şokoladlı Sufle resepti",
     time: 20,
     rating: 5.0,
+    chefName: "Leyla xanım",
     image: {
       uri: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80",
     },
@@ -98,6 +102,7 @@ export const VIDEO_DATA = [
     title: "Sağlam Səhər Yeməyi",
     time: 10,
     rating: 4.6,
+    chefName: "Sənan usta",
     image: {
       uri: "https://images.unsplash.com/photo-1494859802809-d069c3b71a8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80",
     },

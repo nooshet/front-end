@@ -110,7 +110,7 @@ const HomeHeader = () => {
         <Avatar source={AvatarIcon} />
         <View>
           <Text style={styles.welcomeTexxt}>{t("home.welcome")}</Text>
-          <Text style={styles.nameText}>Göyçək</Text>
+          <Text style={styles.nameText}>{t("home.userName")}</Text>
         </View>
       </Animated.View>
 
