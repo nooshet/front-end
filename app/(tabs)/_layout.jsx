@@ -54,8 +54,7 @@ function MyTabBar({ state, descriptors, navigation }) {
         const iconSource = isFocused ? iconSet?.active : iconSet?.inactive;
 
         // Mətn məntiqi
-        const labelText =
-          options.title === "Əsas səhifə" ? "Əsas\nsəhifə" : options.title;
+        const labelText = options.title;
 
         return (
           <TouchableOpacity

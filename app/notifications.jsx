@@ -12,14 +12,16 @@ import { useRouter, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 import { ALL_COLOR } from "../constant/all-color";
+import { useTranslation } from "react-i18next";
 
-// Mock Data
+// Mock Data with keys for translation
 const notificationsToday = [
   {
     id: "1",
-    title: "Sifariş təsdiqi",
-    description: "2458659 nömrəli sifarişiniz alınmışdır tezliklə sifarişiniz hazırlanıb yola çıxacaq.",
-    time: "İndi",
+    titleKey: "notifications.orderConfirmed",
+    descKey: "notifications.orderReceivedMsg",
+    orderNo: "2458659",
+    time: "İndi", // "Now" - could be translated too if needed, but leaving as is strictly per request or adding key if simple
     image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D",
     isNew: true,
   },
@@ -28,37 +30,41 @@ const notificationsToday = [
 const notificationsYesterday = [
   {
     id: "2",
-    title: "Sifariş çatdırılmışdır",
-    description: "5648235 sifarişiniz qeyd etdiyiniz ünvana çatdırılmışdır.",
+    titleKey: "notifications.orderDelivered",
+    descKey: "notifications.orderDeliveredMsg",
+    orderNo: "5648235",
     time: "13:56",
     image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D",
     isNew: false,
   },
   {
     id: "3",
-    title: "Sifariş təsdiqi",
-    description: "7548621 sifarişiniz alınmışdır tezliklə sifarişiniz hazırlanıb yola çıxacaq.",
+    titleKey: "notifications.orderConfirmed",
+    descKey: "notifications.orderReceivedMsg",
+    orderNo: "7548621",
     time: "11:37",
     image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D",
     isNew: false,
   },
 ];
 
-const NotificationItem = ({ item }) => (
-  <View style={[styles.notificationCard, item.isNew && styles.newNotificationCard]}>
-    <Image source={{ uri: item.image }} style={styles.notificationImage} />
-    <View style={styles.notificationContent}>
-      <View style={styles.notificationHeader}>
-        <Text style={styles.notificationTitle}>{item.title}</Text>
-        <Text style={styles.notificationTime}>{item.time}</Text>
+const NotificationItem = ({ item }) => {
+  const { t } = useTranslation();
+  return (
+    <View style={[styles.notificationCard, item.isNew && styles.newNotificationCard]}>
+      <Image source={{ uri: item.image }} style={styles.notificationImage} />
+      <View style={styles.notificationContent}>
+        <View style={styles.notificationHeader}>
+          <Text style={styles.notificationTitle}>{t(item.titleKey)}</Text>
+          <Text style={styles.notificationTime}>{item.time}</Text>
+        </View>
+        <Text style={styles.notificationDescription}>
+          {t(item.descKey, { orderNo: item.orderNo })}
+        </Text>
       </View>
-      <Text style={styles.notificationDescription}>{item.description}</Text>
     </View>
-  </View>
-);
-
-import { useTranslation } from "react-i18next";
-
+  );
+};
 
 const Notifications = () => {
   const router = useRouter();

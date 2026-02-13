@@ -14,13 +14,15 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 import { ALL_COLOR } from "../constant/all-color";
 
+import { useTranslation } from "react-i18next";
+
 // Mock Data
 const orders = [
   {
     id: "1",
     date: "02.08.25",
     total: "13.98 AZN",
-    status: "Çatdırıldı",
+    statusKey: "orders.status.delivered",
     itemCount: 2,
     images: [
       "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D",
@@ -31,7 +33,7 @@ const orders = [
     id: "2",
     date: "28.07.25",
     total: "4.36 AZN",
-    status: "Çatdırıldı",
+    statusKey: "orders.status.delivered",
     itemCount: 1,
     images: [
       "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZHxlbnwwfHwwfHx8MA%3D%3D",
@@ -41,6 +43,7 @@ const orders = [
 
 const OrderCard = ({ order }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.cardContainer}>
@@ -49,7 +52,7 @@ const OrderCard = ({ order }) => {
         <View>
           <Text style={styles.dateText}>{order.date}</Text>
           <Text style={styles.totalText}>
-            Ümumi: <Text style={styles.totalValue}>{order.total}</Text>
+            {t("orders.total")}: <Text style={styles.totalValue}>{order.total}</Text>
           </Text>
         </View>
         <TouchableOpacity
@@ -60,7 +63,7 @@ const OrderCard = ({ order }) => {
               params: { id: order.id },
             })
           }>
-          <Text style={styles.detailsText}>Təfərrüatlar</Text>
+          <Text style={styles.detailsText}>{t("orders.details")}</Text>
           <Ionicons name="chevron-forward" size={16} color="#0B0E0B" />
         </TouchableOpacity>
       </View>
@@ -68,7 +71,7 @@ const OrderCard = ({ order }) => {
       {/* Status */}
       <View style={styles.statusRow}>
         <Ionicons name="checkmark-sharp" size={20} color="#34C759" />
-        <Text style={styles.statusText}>{order.status}</Text>
+        <Text style={styles.statusText}>{t(order.statusKey)}</Text>
       </View>
 
       {/* Images */}
@@ -87,7 +90,7 @@ const OrderCard = ({ order }) => {
 
       {/* Footer: Item Count */}
       <Text style={styles.itemCountText}>
-        {order.itemCount} məhsul təslim edildi
+        {order.itemCount} {t("orders.itemsDelivered")}
       </Text>
 
       <View style={styles.separator} />
@@ -97,6 +100,7 @@ const OrderCard = ({ order }) => {
 
 const MyOrders = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -110,7 +114,7 @@ const MyOrders = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Sifarişlərim</Text>
+        <Text style={styles.headerTitle}>{t("orders.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -125,7 +129,7 @@ const MyOrders = () => {
           />
           <TextInput
             style={styles.searchInput}
-            placeholder="Axtar"
+            placeholder={t("orders.searchPlaceholder")}
             placeholderTextColor="#A29E9E"
             value={searchQuery}
             onChangeText={setSearchQuery}

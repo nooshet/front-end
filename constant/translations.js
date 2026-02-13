@@ -72,6 +72,8 @@ export const translations = {
     "notifications.yesterday": "Dünən",
     "notifications.orderConfirmed": "Sifariş təsdiqi",
     "notifications.orderDelivered": "Sifariş çatdırılmışdır",
+    "notifications.orderReceivedMsg": "{{orderNo}} nömrəli sifarişiniz alınmışdır tezliklə sifarişiniz hazırlanıb yola çıxacaq.",
+    "notifications.orderDeliveredMsg": "{{orderNo}} sifarişiniz qeyd etdiyiniz ünvana çatdırılmışdır.",
     // Mock notification contents can be kept as is or genericized if we want full translation of mocks
     
     // Language Selection
@@ -103,6 +105,72 @@ export const translations = {
     "help.q2": "Necə satıcı ola bilərəm",
     "help.q3": "Canlı dəstəyə qoşulmaq istəyirəm",
     "help.placeholder": "Yazın...",
+
+    // Orders
+    "orders.title": "Sifarişlərim",
+    "orders.total": "Ümumi",
+    "orders.details": "Təfərrüatlar",
+    "orders.itemsDelivered": "məhsul təslim edildi",
+    "orders.searchPlaceholder": "Axtar",
+    "orders.status.delivered": "Çatdırıldı",
+
+    // Order Details
+    "orderDetails.estimatedDelivery": "Təxmini çatdırılma müddəti",
+    "orderDetails.deliveryNo": "Çatdırılma №",
+    "orderDetails.finCode": "Fin Kod",
+    "orderDetails.seller": "Satıcı",
+    "orderDetails.cargoCompany": "Yükdaşıma şirkəti",
+    "orderDetails.deliveryMessage": "Məhsulunuz sifariş verərkən seçdiyiniz ünvana çatdırıldı",
+    "orderDetails.rateProduct": "Məhsulu qiymətləndir",
+    "orderDetails.followSeller": "Satıcını izlə",
+    "orderDetails.help": "NooshEt köməkçisi",
+    "orderDetails.invoice": "Faktura",
+    "orderDetails.quantity": "Miqdar",
+    "orderDetails.price": "Qiymət",
+    
+    // Rate Product
+    "rate.title": "Qiymətləndir",
+    "rate.subtitle": "Aşağıda məhsulu qiymətləndirə və rəy yaza bilərsiniz.",
+    "rate.inputLabel": "Məhsulu qiymətləndir",
+    "rate.inputPlaceholder": "Məhsulla bağlı Rəylərinizi bizimlə paylaşa bilərsiniz.",
+    "rate.submit": "Qiymətləndir",
+
+    // Rate Success
+    "rateSuccess.title": "Uğurlu!",
+    "rateSuccess.subtitle": "Qiymətləndirməniz üçün təşəkkür edirik.",
+    "rateSuccess.description": "Qiymətləndirməniz uğurla qeyd edildi.\nAlış-verişiniz və vaxt ayırıb\nqiymətləndirdiyiniz üçün təşəkkür edirik.",
+    "rateSuccess.button": "Səbətə qayıt",
+
+    // Change Status
+    "changeStatus.title": "Statusun dəyişməsi",
+    "changeStatus.question": "İstifadəçi statusunuzu dəyişmək istədiyinizdən əminsinizmi?",
+    "changeStatus.chefOption": "Aşpaz kimi davam et",
+    "changeStatus.chefDesc": "Aşpaz olmağı seçdikdə siz yenidən qeydiyyatdan keçib məlumatlarınızı daha ətraflı daxil edəcəksiniz.",
+    "changeStatus.courierOption": "Kuryer kimi davam et",
+    "changeStatus.courierDesc": "Kuryer olmağı seçdikdə siz yenidən qeydiyyatdan keçib məlumatlarınızı daha ətraflı daxil edəcəksiniz.",
+    "changeStatus.continue": "Davam et",
+
+    // App Lock
+    "appLock.title": "Tətbiq kilidi",
+    "appLock.off": "Söndürülüb",
+    "appLock.password": "Şifrə",
+    "appLock.faceId": "Face ID",
+    "appLock.fingerPrint": "Barmaq izi",
+
+    // Permissions
+    "permissions.title": "İcazələr",
+    "permissions.camera": "Kamera",
+    "permissions.microphone": "Mikrofon",
+    "permissions.gallery": "Qalereya",
+
+    // Banner
+    "banner.discount": "40% endirim!",
+    "banner.subtitle": "İlk sifarişinizə",
+    "banner.promo": "Nuş et! Evdən gəlir!",
+    "banner.buyNow": "İndi al",
+
+    // Food Card
+    "foodCard.addToBasket": "Səbətə at",
   },
   en: {
     // General
@@ -177,6 +245,8 @@ export const translations = {
     "notifications.yesterday": "Yesterday",
     "notifications.orderConfirmed": "Order Confirmed",
     "notifications.orderDelivered": "Order Delivered",
+    "notifications.orderReceivedMsg": "Your order {{orderNo}} has been received, it will be prepared and shipped soon.",
+    "notifications.orderDeliveredMsg": "Your order {{orderNo}} has been delivered to your selected address.",
     
     // Language Selection
     "language.title": "Language Selection",
@@ -207,6 +277,72 @@ export const translations = {
     "help.q2": "How can I become a seller?",
     "help.q3": "I want to connect to live support",
     "help.placeholder": "Write...",
+
+    // Orders
+    "orders.title": "My Orders",
+    "orders.total": "Total",
+    "orders.details": "Details",
+    "orders.itemsDelivered": "items delivered",
+    "orders.searchPlaceholder": "Search",
+    "orders.status.delivered": "Delivered",
+
+    // Order Details
+    "orderDetails.estimatedDelivery": "Estimated Delivery Time",
+    "orderDetails.deliveryNo": "Delivery No",
+    "orderDetails.finCode": "Fin Code",
+    "orderDetails.seller": "Seller",
+    "orderDetails.cargoCompany": "Cargo Company",
+    "orderDetails.deliveryMessage": "Your product has been delivered to the address you selected when ordering",
+    "orderDetails.rateProduct": "Rate Product",
+    "orderDetails.followSeller": "Follow Seller",
+    "orderDetails.help": "NooshEt Assistant",
+    "orderDetails.invoice": "Invoice",
+    "orderDetails.quantity": "Quantity",
+    "orderDetails.price": "Price",
+
+    // Rate Product
+    "rate.title": "Rate",
+    "rate.subtitle": "You can rate the product and write a review below.",
+    "rate.inputLabel": "Rate Product",
+    "rate.inputPlaceholder": "You can share your reviews about the product with us.",
+    "rate.submit": "Submit",
+
+    // Rate Success
+    "rateSuccess.title": "Success!",
+    "rateSuccess.subtitle": "Thank you for your rating.",
+    "rateSuccess.description": "Your rating has been successfully recorded.\nThank you for your purchase and for taking the time\nto rate us.",
+    "rateSuccess.button": "Back to Basket",
+
+    // Change Status
+    "changeStatus.title": "Change Status",
+    "changeStatus.question": "Are you sure you want to change your user status?",
+    "changeStatus.chefOption": "Continue as Chef",
+    "changeStatus.chefDesc": "When you choose to be a Chef, you will register again and enter your details in more detail.",
+    "changeStatus.courierOption": "Continue as Courier",
+    "changeStatus.courierDesc": "When you choose to be a Courier, you will register again and enter your details in more detail.",
+    "changeStatus.continue": "Continue",
+
+    // App Lock
+    "appLock.title": "App Lock",
+    "appLock.off": "Off",
+    "appLock.password": "Password",
+    "appLock.faceId": "Face ID",
+    "appLock.fingerPrint": "Fingerprint",
+
+    // Permissions
+    "permissions.title": "Permissions",
+    "permissions.camera": "Camera",
+    "permissions.microphone": "Microphone",
+    "permissions.gallery": "Gallery",
+
+    // Banner
+    "banner.discount": "40% discount!",
+    "banner.subtitle": "On your first order",
+    "banner.promo": "Bon Appetit! Comes from home!",
+    "banner.buyNow": "Buy Now",
+
+    // Food Card
+    "foodCard.addToBasket": "Add to Basket",
   },
   ru: {
     // General
@@ -281,6 +417,8 @@ export const translations = {
     "notifications.yesterday": "Вчера",
     "notifications.orderConfirmed": "Заказ подтвержден",
     "notifications.orderDelivered": "Заказ доставлен",
+    "notifications.orderReceivedMsg": "Ваш заказ {{orderNo}} был принят, он будет подготовлен и отправлен в ближайшее время.",
+    "notifications.orderDeliveredMsg": "Ваш заказ {{orderNo}} был доставлен по выбранному вами адресу.",
     
     // Language Selection
     "language.title": "Выбор языка",
@@ -311,5 +449,71 @@ export const translations = {
     "help.q2": "Как я могу стать продавцом?",
     "help.q3": "Я хочу связаться с живой поддержкой",
     "help.placeholder": "Напишите...",
+
+    // Orders
+    "orders.title": "Мои заказы",
+    "orders.total": "Итого",
+    "orders.details": "Подробности",
+    "orders.itemsDelivered": "товаров доставлено",
+    "orders.searchPlaceholder": "Поиск",
+    "orders.status.delivered": "Доставлено",
+
+    // Order Details
+    "orderDetails.estimatedDelivery": "Ориентировочное время доставки",
+    "orderDetails.deliveryNo": "Номер доставки",
+    "orderDetails.finCode": "Фин-код",
+    "orderDetails.seller": "Продавец",
+    "orderDetails.cargoCompany": "Транспортная компания",
+    "orderDetails.deliveryMessage": "Ваш товар был доставлен по адресу, который вы выбрали при заказе",
+    "orderDetails.rateProduct": "Оценить продукт",
+    "orderDetails.followSeller": "Подписаться на продавца",
+    "orderDetails.help": "Помощник NooshEt",
+    "orderDetails.invoice": "Счет-фактура",
+    "orderDetails.quantity": "Количество",
+    "orderDetails.price": "Цена",
+    
+    // Rate Product
+    "rate.title": "Оценить",
+    "rate.subtitle": "Вы можете оценить продукт и написать отзыв ниже.",
+    "rate.inputLabel": "Оценить продукт",
+    "rate.inputPlaceholder": "Вы можете поделиться с нами своими отзывами о продукте.",
+    "rate.submit": "Отправить",
+
+    // Rate Success
+    "rateSuccess.title": "Успешно!",
+    "rateSuccess.subtitle": "Спасибо за вашу оценку.",
+    "rateSuccess.description": "Ваша оценка успешно записана.\nСпасибо за покупку и за то, что уделили время\nна оценку.",
+    "rateSuccess.button": "Вернуться в корзину",
+
+    // Change Status
+    "changeStatus.title": "Изменение статуса",
+    "changeStatus.question": "Вы уверены, что хотите изменить свой статус пользователя?",
+    "changeStatus.chefOption": "Продолжить как Повар",
+    "changeStatus.chefDesc": "Выбрав стать Поваром, вы пройдете повторную регистрацию и введете свои данные более подробно.",
+    "changeStatus.courierOption": "Продолжить как Курьер",
+    "changeStatus.courierDesc": "Выбрав стать Курьером, вы пройдете повторную регистрацию и введете свои данные более подробно.",
+    "changeStatus.continue": "Продолжить",
+
+    // App Lock
+    "appLock.title": "Блокировка приложения",
+    "appLock.off": "Выключено",
+    "appLock.password": "Пароль",
+    "appLock.faceId": "Face ID",
+    "appLock.fingerPrint": "Отпечаток пальца",
+
+    // Permissions
+    "permissions.title": "Разрешения",
+    "permissions.camera": "Камера",
+    "permissions.microphone": "Микрофон",
+    "permissions.gallery": "Галерея",
+
+    // Banner
+    "banner.discount": "Скидка 40%!",
+    "banner.subtitle": "На ваш первый заказ",
+    "banner.promo": "Приятного аппетита! Домашняя еда!",
+    "banner.buyNow": "Купить сейчас",
+
+    // Food Card
+    "foodCard.addToBasket": "В корзину",
   }
 };

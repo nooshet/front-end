@@ -14,12 +14,14 @@ import {
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
+import { useTranslation } from "react-i18next";
 
 const RateProduct = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const { t } = useTranslation();
 
   const product = {
     name: "Yarpaq Dolması",
@@ -42,7 +44,7 @@ const RateProduct = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Qiymətləndir</Text>
+        <Text style={styles.headerTitle}>{t("rate.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -65,10 +67,10 @@ const RateProduct = () => {
                 {product.description}
               </Text>
               <Text style={styles.productMeta}>
-                Miqdar: <Text style={styles.boldText}>{product.quantity}</Text>
+                {t("orderDetails.quantity")}: <Text style={styles.boldText}>{product.quantity}</Text>
               </Text>
               <Text style={styles.productMeta}>
-                Qiymət: <Text style={styles.boldText}>{product.price}</Text>
+                {t("orderDetails.price")}: <Text style={styles.boldText}>{product.price}</Text>
               </Text>
             </View>
           </View>
@@ -77,7 +79,7 @@ const RateProduct = () => {
 
           {/* Rating Section */}
           <Text style={styles.sectionTitle}>
-            Aşağıda məhsulu qiymətləndirə və rəy yaza bilərsiniz.
+            {t("rate.subtitle")}
           </Text>
 
           <View style={styles.starsContainer}>
@@ -94,10 +96,10 @@ const RateProduct = () => {
           </View>
 
           {/* Review Input */}
-          <Text style={styles.inputLabel}>Məhsulu qiymətləndir</Text>
+          <Text style={styles.inputLabel}>{t("rate.inputLabel")}</Text>
           <TextInput
             style={styles.reviewInput}
-            placeholder="Məhsulla bağlı Rəylərinizi bizimlə paylaşa bilərsiniz."
+            placeholder={t("rate.inputPlaceholder")}
             placeholderTextColor="#A29E9E"
             multiline
             textAlignVertical="top"
@@ -111,7 +113,7 @@ const RateProduct = () => {
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => router.push("/rate-success")}>
-            <Text style={styles.submitButtonText}>Qiymətləndir</Text>
+            <Text style={styles.submitButtonText}>{t("rate.submit")}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

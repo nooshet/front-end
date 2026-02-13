@@ -10,29 +10,29 @@ import {
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
+import { useTranslation } from "react-i18next";
 
 const RateSuccess = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
 
       <View style={styles.content}>
-        <Text style={styles.title}>Uğurlu!</Text>
+        <Text style={styles.title}>{t("rateSuccess.title")}</Text>
 
         <View style={styles.iconContainer}>
           <Ionicons name="checkmark-circle-outline" size={80} color="#08A30D" />
         </View>
 
         <Text style={styles.subtitle}>
-          Qiymətləndirməniz üçün təşəkkür edirik.
+          {t("rateSuccess.subtitle")}
         </Text>
 
         <Text style={styles.description}>
-          Qiymətləndirməniz uğurla qeyd edildi.{"\n"}
-          Alış-verişiniz və vaxt ayırıb{"\n"}
-          qiymətləndirdiyiniz üçün təşəkkür edirik.
+          {t("rateSuccess.description")}
         </Text>
       </View>
 
@@ -40,7 +40,7 @@ const RateSuccess = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => router.push("/(tabs)/basket")}>
-          <Text style={styles.buttonText}>Səbətə qayıt</Text>
+          <Text style={styles.buttonText}>{t("rateSuccess.button")}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

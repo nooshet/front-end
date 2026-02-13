@@ -12,10 +12,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 import { ALL_COLOR } from "../constant/all-color";
 import Button from "../components/Button";
+import { useTranslation } from "react-i18next";
 
 const ChangeStatus = () => {
   const router = useRouter();
   const [selectedRole, setSelectedRole] = useState("aspaz"); 
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,13 +30,13 @@ const ChangeStatus = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Statusun dəyişməsi</Text>
+        <Text style={styles.headerTitle}>{t("changeStatus.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.questionText}>
-          İstifadəçi statusunuzu dəyişmək istədiyinizdən əminsinizmi?
+          {t("changeStatus.question")}
         </Text>
 
         <View style={styles.optionsContainer}>
@@ -53,11 +55,10 @@ const ChangeStatus = () => {
               </View>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.optionTitle}>Aşpaz kimi davam et</Text>
+              <Text style={styles.optionTitle}>{t("changeStatus.chefOption")}</Text>
               {selectedRole === "aspaz" && (
                 <Text style={styles.optionDescription}>
-                  Aşpaz olmağı seçdikdə siz yenidən qeydiyyatdan keçib
-                  məlumatlarınızı daha ətraflı daxil edəcəksiniz.
+                  {t("changeStatus.chefDesc")}
                 </Text>
               )}
             </View>
@@ -78,11 +79,10 @@ const ChangeStatus = () => {
               </View>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.optionTitle}>Kurye kimi davam et</Text>
+              <Text style={styles.optionTitle}>{t("changeStatus.courierOption")}</Text>
               {selectedRole === "kurye" && (
                 <Text style={styles.optionDescription}>
-                  Kuryer olmağı seçdikdə siz yenidən qeydiyyatdan keçib
-                  məlumatlarınızı daha ətraflı daxil edəcəksiniz.
+                  {t("changeStatus.courierDesc")}
                 </Text>
               )}
             </View>
@@ -91,7 +91,7 @@ const ChangeStatus = () => {
 
         <View style={styles.footer}>
           <Button
-            title="Davam et"
+            title={t("changeStatus.continue")}
             onPress={() => {
               // Handle role change logic here
               console.log("Selected role:", selectedRole);

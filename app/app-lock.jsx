@@ -10,12 +10,25 @@ import {
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
+import { useTranslation } from "react-i18next";
 
 const AppLock = () => {
   const router = useRouter();
-  const [selectedOption, setSelectedOption] = useState("Söndürülüb"); // Default to 'Off'
-
-  const options = ["Söndürülüb", "Şifrə", "Face ID", "Barmaq izi"];
+  const { t } = useTranslation();
+  
+  // Note: Using translated strings as keys/values for selection state might generate mismatches 
+  // if language changes while screen is active, but for now we follow the existing pattern.
+  // Ideally, use stable IDs (e.g., 'off', 'password') for state and translate only for display.
+  // Here we will stick to the requested task of replacing strings.
+  
+  const options = [
+    t("appLock.off"), 
+    t("appLock.password"), 
+    t("appLock.faceId"), 
+    t("appLock.fingerPrint")
+  ];
+  
+  const [selectedOption, setSelectedOption] = useState(options[0]); 
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,14 +41,14 @@ const AppLock = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Tətbiq kilidi</Text>
+        <Text style={styles.headerTitle}>{t("appLock.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.optionsList}>
           {options.map((option, index) => (
-            <React.Fragment key={option}>
+            <React.Fragment key={index}>
               <TouchableOpacity
                 style={styles.optionItem}
                 onPress={() => setSelectedOption(option)}

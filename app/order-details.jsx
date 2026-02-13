@@ -11,18 +11,21 @@ import {
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
+import { useTranslation } from "react-i18next";
 
 const OrderDetails = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
+  const { t } = useTranslation();
 
   const orderInfo = {
     deliveryDate: "04.12.25",
     orderNo: "4185252",
     finCode: "RG45LKF",
     seller: "Bəsti xalanın mətbəxi",
-    status: "Çatdırıldı",
-    deliveryMsg: "Məhsulunuz sifariş verərkən seçdiyiniz ünvana çatdırıldı",
+    statusKey: "orders.status.delivered",
+    // In a real app, deliveryMsg might be dynamic or generic. Using generic key here.
+    deliveryMsgKey: "orderDetails.deliveryMessage", 
     cargoCompany: "SezarCargo",
     products: [
       {
@@ -59,7 +62,7 @@ const OrderDetails = () => {
           style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Sifarişlərim</Text>
+        <Text style={styles.headerTitle}>{t("orders.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -67,19 +70,19 @@ const OrderDetails = () => {
         {/* Order Info Header */}
         <View style={styles.orderInfoContainer}>
           <Text style={styles.infoLine}>
-            <Text style={styles.infoLabel}>Təxmini çatdırılma müddəti:</Text>{" "}
+            <Text style={styles.infoLabel}>{t("orderDetails.estimatedDelivery")}:</Text>{" "}
             <Text style={styles.infoValue}>{orderInfo.deliveryDate}</Text>
           </Text>
           <Text style={styles.infoLine}>
-            <Text style={styles.infoLabel}>Çatdırılma №:</Text>{" "}
+            <Text style={styles.infoLabel}>{t("orderDetails.deliveryNo")}:</Text>{" "}
             <Text style={styles.infoValue}>{orderInfo.orderNo}</Text>
           </Text>
           <Text style={styles.infoLine}>
-            <Text style={styles.infoLabel}>Fin Kod:</Text>{" "}
+            <Text style={styles.infoLabel}>{t("orderDetails.finCode")}:</Text>{" "}
             <Text style={styles.infoValue}>{orderInfo.finCode}</Text>
           </Text>
           <Text style={styles.infoLine}>
-            <Text style={styles.infoLabel}>Satıcı:</Text>{" "}
+            <Text style={styles.infoLabel}>{t("orderDetails.seller")}:</Text>{" "}
             <Text style={styles.infoValue}>{orderInfo.seller}</Text>
           </Text>
         </View>
@@ -92,11 +95,11 @@ const OrderDetails = () => {
             <View style={styles.statusContainer}>
               <View style={styles.statusRow}>
                 <Ionicons name="checkmark-sharp" size={20} color="#34C759" />
-                <Text style={styles.statusText}>{orderInfo.status}</Text>
+                <Text style={styles.statusText}>{t(orderInfo.statusKey)}</Text>
               </View>
-              <Text style={styles.deliveryMsg}>{orderInfo.deliveryMsg}</Text>
+              <Text style={styles.deliveryMsg}>{t(orderInfo.deliveryMsgKey)}</Text>
               <Text style={styles.cargoCompany}>
-                Yükdaşıma şirkəti:{" "}
+                {t("orderDetails.cargoCompany")}:{" "}
                 <Text style={styles.boldText}>{orderInfo.cargoCompany}</Text>
               </Text>
             </View>
@@ -113,11 +116,11 @@ const OrderDetails = () => {
                   {product.description}
                 </Text>
                 <Text style={styles.productMeta}>
-                  Miqdar:{" "}
+                  {t("orderDetails.quantity")}:{" "}
                   <Text style={styles.boldText}>{product.quantity}</Text>
                 </Text>
                 <Text style={styles.productMeta}>
-                  Qiymət: <Text style={styles.boldText}>{product.price}</Text>
+                  {t("orderDetails.price")}: <Text style={styles.boldText}>{product.price}</Text>
                 </Text>
               </View>
             </View>
@@ -127,11 +130,11 @@ const OrderDetails = () => {
               <TouchableOpacity
                 style={[styles.actionButton, styles.rateButton]}
                 onPress={() => router.push("/rate-product")}>
-                <Text style={styles.rateButtonText}>Məhsulu qiymətləndir</Text>
+                <Text style={styles.rateButtonText}>{t("orderDetails.rateProduct")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.actionButton, styles.followButton]}>
-                <Text style={styles.followButtonText}>Satıcını izlə</Text>
+                <Text style={styles.followButtonText}>{t("orderDetails.followSeller")}</Text>
               </TouchableOpacity>
             </View>
 
@@ -139,7 +142,7 @@ const OrderDetails = () => {
             <View style={styles.supportLinks}>
               <TouchableOpacity style={styles.supportItem}>
                 <Feather name="headphones" size={20} color="#0B0E0B" />
-                <Text style={styles.supportText}>NooshEt köməkçisi</Text>
+                <Text style={styles.supportText}>{t("orderDetails.help")}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.supportItem}>
                 <Ionicons
@@ -147,7 +150,7 @@ const OrderDetails = () => {
                   size={20}
                   color="#0B0E0B"
                 />
-                <Text style={styles.supportText}>Faktura</Text>
+                <Text style={styles.supportText}>{t("orderDetails.invoice")}</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.separator} />

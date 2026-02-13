@@ -15,6 +15,7 @@ import Contact from "../../assets/Vector.png";
 import Notification from "../../assets/notification.png";
 import Avatar from "../Avatar";
 import AvatarIcon from "../../assets/Gcs.png";
+import { useTranslation } from "react-i18next";
 
 const headerIcons = [
   {
@@ -31,6 +32,7 @@ const headerIcons = [
 
 const HomeHeader = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   // 1. Sol tərəf üçün animasiya dəyərləri (Slide & Fade)
   const slideAnim = useRef(new Animated.Value(-50)).current; // Soldan (-50px) başlayır
   const fadeAnim = useRef(new Animated.Value(0)).current; // Görünməz (0)-dan başlayır
@@ -107,7 +109,7 @@ const HomeHeader = () => {
       >
         <Avatar source={AvatarIcon} />
         <View>
-          <Text style={styles.welcomeTexxt}>Xoş gəlmisən!</Text>
+          <Text style={styles.welcomeTexxt}>{t("home.welcome")}</Text>
           <Text style={styles.nameText}>Göyçək</Text>
         </View>
       </Animated.View>

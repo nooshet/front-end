@@ -11,6 +11,7 @@ import {
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
+import { useTranslation } from "react-i18next";
 
 const PermissionToggle = ({ label, value, onValueChange }) => (
   <View style={styles.permissionItem}>
@@ -30,6 +31,7 @@ const Permissions = () => {
   const [camera, setCamera] = useState(false);
   const [microphone, setMicrophone] = useState(false);
   const [gallery, setGallery] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,28 +45,28 @@ const Permissions = () => {
         >
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>İcazələr</Text>
+        <Text style={styles.headerTitle}>{t("permissions.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.section}>
           <PermissionToggle
-            label="Kamera"
+            label={t("permissions.camera")}
             value={camera}
             onValueChange={setCamera}
           />
           <View style={styles.separator} />
 
           <PermissionToggle
-            label="Mikrofon"
+            label={t("permissions.microphone")}
             value={microphone}
             onValueChange={setMicrophone}
           />
           <View style={styles.separator} />
 
           <PermissionToggle
-            label="Qalereya"
+            label={t("permissions.gallery")}
             value={gallery}
             onValueChange={setGallery}
           />

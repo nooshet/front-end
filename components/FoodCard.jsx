@@ -14,6 +14,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { Font } from "../constant/fonts";
 import { BlurView } from "expo-blur";
 import CustomButton from "./CustomButton";
+import { useTranslation } from "react-i18next";
 
 // TouchableOpacity-ni animasiyalı komponentə çeviririk
 const AnimatedTouchableOpacity =
@@ -30,6 +31,7 @@ const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
   // 3. Bookmark ikonunun animasiyası
   const bookmarkScale = useRef(new Animated.Value(1)).current;
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Kart ekrana gələndə işə düşən animasiya
@@ -131,7 +133,7 @@ const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
         </View>
 
         <CustomButton
-          title="Səbətə at"
+          title={t("foodCard.addToBasket")}
           variant="primary"
           icon="arrow-up-right"
           width={"100%"}
@@ -140,7 +142,6 @@ const FoodCard = ({ title, price, rating, image, onPress, index = 0 }) => {
     </AnimatedTouchableOpacity>
   );
 };
-
 export default FoodCard;
 
 const styles = StyleSheet.create({

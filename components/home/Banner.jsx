@@ -2,8 +2,10 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { ALL_COLOR } from "../../constant/all-color";
 import BannerImage from "../../assets/food.png";
+import { useTranslation } from "react-i18next";
 
 const Banner = () => {
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -27,8 +29,8 @@ const Banner = () => {
             fontSize: 16,
           }}
         >
-          İlk sifarişinizə{" "}
-          <Text style={{ fontWeight: "bold" }}>40% endirim!</Text>
+          {t("banner.subtitle")}{" "}
+          <Text style={{ fontWeight: "bold" }}>{t("banner.discount")}</Text>
         </Text>
         <Text
           style={{
@@ -37,7 +39,7 @@ const Banner = () => {
             fontSize: 16,
           }}
         >
-          Nuş et! Evdən gəlir!
+          {t("banner.promo")}
         </Text>
 
         <View style={{ alignItems: "center" }}>
@@ -58,7 +60,7 @@ const Banner = () => {
                 color: ALL_COLOR["--bg-color"],
               }}
             >
-              İndi al
+              {t("banner.buyNow")}
             </Text>
           </TouchableOpacity>
         </View>
