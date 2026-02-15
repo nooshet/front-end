@@ -16,6 +16,7 @@ import { Font } from "../../constant/fonts";
 import FoodCard from "../../components/FoodCard";
 import { FOOD_DATA, VIDEO_DATA } from "../../mock/FOOD_DATA";
 import Container from "../../components/Container";
+import ProfileVideoCard from "../../components/ProfileVideoCard";
 
 const { width } = Dimensions.get("window");
 
@@ -100,17 +101,11 @@ const ChefProfile = () => {
           } else {
             return (
               <View style={styles.cardWrapper}>
-                <TouchableOpacity activeOpacity={0.9} style={styles.videoCard}>
-                  <Image source={item.image} style={styles.videoImage} resizeMode="cover" />
-                  <View style={styles.playOverlay}>
-                    <View style={styles.playCircle}>
-                      <Ionicons name="play" size={24} color="#fff" style={{ marginLeft: 3 }} />
-                    </View>
-                  </View>
-                  <TouchableOpacity style={styles.bookmarkBtn}>
-                    <Ionicons name="bookmark" size={20} color="#fff" />
-                  </TouchableOpacity>
-                </TouchableOpacity>
+                <ProfileVideoCard
+                  image={item.image}
+                  width={(width - 50) / 2}
+                  onPress={() => console.log("Video pressed")}
+                />
               </View>
             );
           }
@@ -226,39 +221,5 @@ const styles = StyleSheet.create({
   cardWrapper: {
     width: (width - 60) / 2, // 2 columns with 20px gaps
     marginBottom: 10,
-  },
-  videoCard: {
-    width: "100%",
-    height: 180,
-    borderRadius: 24,
-    overflow: "hidden",
-    backgroundColor: "#eee",
-    position: "relative",
-  },
-  videoImage: {
-    width: "100%",
-    height: "100%",
-  },
-  playOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.1)",
-  },
-  playCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "rgba(255, 255, 255, 0.4)",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1.5,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-  },
-  bookmarkBtn: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    zIndex: 2,
   },
 });

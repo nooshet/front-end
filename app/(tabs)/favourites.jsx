@@ -8,7 +8,7 @@ import CustomButton from "../../components/CustomButton";
 
 import { FOOD_DATA, VIDEO_DATA } from "../../mock/FOOD_DATA";
 import FoodCard from "../../components/FoodCard";
-import VideoCard from "../../components/VideoCard";
+import ProfileVideoCard from "../../components/ProfileVideoCard";
 
 import { useTranslation } from "react-i18next";
 
@@ -48,7 +48,11 @@ const FavouriteScreen = () => {
     } else {
       return VIDEO_DATA.map((video, index) => (
         <View key={video.id} style={styles.cardWrapper}>
-          <VideoCard image={video.image} index={index} />
+          <ProfileVideoCard 
+            image={video.image} 
+            index={index} 
+            onPress={() => console.log("Video pressed")}
+          />
         </View>
       ));
     }
