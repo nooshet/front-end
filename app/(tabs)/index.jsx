@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   categoryItem: {
     alignItems: "center",
     marginRight: 20,
-    width: 80,
+    minWidth: 80,
   },
   imageContainer: {
     width: 78,

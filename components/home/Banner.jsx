@@ -9,7 +9,7 @@ const Banner = () => {
   return (
     <View
       style={{
-        height: 123,
+        minHeight: 123,
         borderRadius: 30,
         backgroundColor: ALL_COLOR["--bg-color"],
         paddingLeft: 9,
@@ -21,7 +21,7 @@ const Banner = () => {
         justifyContent: "space-between",
       }}
     >
-      <View style={{ flexDirection: "column", gap: 8 }}>
+      <View style={{ flex: 1, flexDirection: "column", gap: 8 }}>
         <Text
           style={{
             color: ALL_COLOR["--white"],
@@ -36,13 +36,13 @@ const Banner = () => {
           style={{
             color: ALL_COLOR["--white"],
             fontWeight: "bold",
-            fontSize: 16,
+            fontSize: 14,
           }}
         >
           {t("banner.promo")}
         </Text>
 
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "flex-start" }}>
           <TouchableOpacity
             style={{
               backgroundColor: ALL_COLOR["--white"],
@@ -50,13 +50,13 @@ const Banner = () => {
               alignItems: "center",
               justifyContent: "center",
               height: 34,
-              width: 112,
+              paddingHorizontal: 16,
             }}
           >
             <Text
               style={{
                 fontWeight: "bold",
-                fontSize: 16,
+                fontSize: 14,
                 color: ALL_COLOR["--bg-color"],
               }}
             >

@@ -28,6 +28,7 @@ const FoodCard = ({
   onPress,
   index = 0,
   hideButton = false,
+  width: cardWidth,
 }) => {
   // 1. Giriş Animasiyası (Yuxarı sürüşmə və Görünmə)
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -106,6 +107,7 @@ const FoodCard = ({
         {
           opacity: fadeAnim,
           transform: [{ translateY: translateY }, { scale: scaleAnim }],
+          width: cardWidth || styles.cardContainer.width,
         },
       ]}
     >

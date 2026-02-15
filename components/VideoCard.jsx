@@ -23,6 +23,7 @@ const VideoCard = ({
   chefName,
   image,
   onPress,
+  onDetailPress,
   index = 0,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -175,7 +176,7 @@ const VideoCard = ({
           {description}
         </Text>
 
-        <TouchableOpacity style={styles.actionBtn} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.actionBtn} activeOpacity={0.8} onPress={onDetailPress}>
           <Text style={styles.actionBtnText}>Ətraflı bax</Text>
           <View style={styles.arrowCircle}>
             <Ionicons

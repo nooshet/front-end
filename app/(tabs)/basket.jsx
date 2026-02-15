@@ -8,6 +8,7 @@ import {
 import React, { useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "expo-router";
 import Container from "../../components/Container";
 import Search from "../../components/Search";
 import FoodCard from "../../components/FoodCard";
@@ -17,10 +18,10 @@ import { Font } from "../../constant/fonts";
 
 const BasketScreen = () => {
   const { t } = useTranslation();
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
 
-  // Mock data for the basket (using first 2 items from FOOD_DATA)
   const basketItems = FOOD_DATA.slice(0, 2);
   const totalPrice = basketItems.reduce((sum, item) => sum + item.price, 0);
 
@@ -61,7 +62,10 @@ const BasketScreen = () => {
           <View style={styles.priceContainer}>
             <Text style={styles.priceLabel}>Qiymət {totalPrice.toFixed(2)}</Text>
           </View>
-          <TouchableOpacity style={styles.payButton}>
+          <TouchableOpacity 
+            style={styles.payButton} 
+            onPress={() => router.push("/(screens)/product-detail")}
+          >
             <Text style={styles.payButtonText}>Ödə</Text>
           </TouchableOpacity>
         </View>

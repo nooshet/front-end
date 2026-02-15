@@ -8,11 +8,13 @@ import VideoCard from "../../components/VideoCard";
 import Container from "../../components/Container";
 import { Font } from "../../constant/fonts";
 import { VIDEO_DATA } from "../../mock/FOOD_DATA";
+import { useRouter } from "expo-router";
 
 const VideoScreen = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
+  const router = useRouter();
 
   const renderItem = ({ item, index }) => (
     <VideoCard
@@ -22,6 +24,10 @@ const VideoScreen = () => {
       image={item.image}
       index={index}
       onPress={() => console.log("Video pressed", item.id)}
+      onDetailPress={() => router.push({
+        pathname: "/(screens)/chef-profile",
+        params: { chefName: item.chefName }
+      })}
     />
   );
 

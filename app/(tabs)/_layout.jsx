@@ -68,15 +68,13 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={[
               styles.tabItem,
               isFocused ? styles.tabItemFocused : styles.tabItemInactive,
-            ]}
-          >
+            ]}>
             {/* İKON HİSSƏSİ (ARTIQ IMAGE) */}
             <View
               style={{
                 marginRight: isFocused ? 8 : 0,
                 marginBottom: isFocused ? 0 : 4,
-              }}
-            >
+              }}>
               {/* Vektor ikonları əvəzinə Image işlədirik */}
               {iconSource && (
                 <Image
@@ -95,6 +93,8 @@ function MyTabBar({ state, descriptors, navigation }) {
             {/* MƏTN HİSSƏSİ */}
             <Text
               numberOfLines={2}
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.8}
               style={[
                 styles.label,
                 {
@@ -103,8 +103,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                   textAlign: isFocused ? "left" : "center",
                   lineHeight: isFocused ? 14 : 12,
                 },
-              ]}
-            >
+              ]}>
               {labelText}
             </Text>
           </TouchableOpacity>
@@ -122,8 +121,7 @@ export default function TabLayout() {
   return (
     <Tabs
       tabBar={(props) => <MyTabBar {...props} />}
-      screenOptions={{ headerShown: false }}
-    >
+      screenOptions={{ headerShown: false }}>
       <Tabs.Screen name="index" options={{ title: t("tabs.home") }} />
       <Tabs.Screen name="favourites" options={{ title: t("tabs.favorites") }} />
       <Tabs.Screen name="video" options={{ title: t("tabs.video") }} />
@@ -136,7 +134,7 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBarContainer: {
     position: "absolute",
-    bottom: 30,
+    bottom: 50,
     left: 20,
     right: 20,
     flexDirection: "row",

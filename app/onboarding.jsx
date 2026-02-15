@@ -117,7 +117,7 @@ const Onboarding = () => {
           </View>
 
           {/* BUTTON */}
-          <View style={styles.buttonWrapper}>
+          <View style={[styles.buttonWrapper, currentIndex !== slides.length - 1 && { alignItems: "flex-end" }]}>
             <TouchableOpacity
               style={[
                 styles.button,
@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    alignSelf: "flex-end",
     backgroundColor: "#FFFCFC",
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -258,7 +257,7 @@ const styles = StyleSheet.create({
 
   startButton: {
     backgroundColor: "#08A30D",
-    width: 347,
+    width: "100%",
     borderRadius: 8,
     paddingVertical: 14,
   },
