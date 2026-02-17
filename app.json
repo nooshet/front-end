@@ -5,7 +5,7 @@
     "slug": "NooshEt",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -28,10 +28,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font",
-      "expo-localization"
-    ],
+    "plugins": ["expo-font", "expo-localization"],
     "extra": {
       "eas": {
         "projectId": "39525875-f731-4845-8580-3090a460c672"

@@ -64,7 +64,10 @@ const HomeScreen = () => {
             filter
           />
           <Banner />
-          <SectionHeader title={t("home.categories")} onPress={handleCategoryPress} />
+          <SectionHeader
+            title={t("home.categories")}
+            onPress={handleCategoryPress}
+          />
         </Container>
 
         <View>
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-       paddingTop: 40,
+    paddingTop: 0,
     paddingBottom: 50,
   },
   categoriesScroll: {
