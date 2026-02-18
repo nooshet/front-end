@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "#eee",
     position: "relative",
-    // Standard shadow for Android consistency
+  
     elevation: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

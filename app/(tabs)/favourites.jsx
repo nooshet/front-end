@@ -12,15 +12,13 @@ import ProfileVideoCard from "../../components/ProfileVideoCard";
 
 import { useTranslation } from "react-i18next";
 
-// ...
 
 const FavouriteScreen = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
   
-  // Initialize with the translation of the first tab or maintain state ID based logic
-  // Better to use IDs for logic and translate display text
+
   const [activeTabId, setActiveTabId] = useState(1); 
 
   const CUSTOM_BUTTONS = [
