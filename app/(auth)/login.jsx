@@ -19,6 +19,9 @@ import Qeydiyyat from "../../assets/qeydiyyat.png";
 import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
 import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
+// stores
+import useUserStore from "../../store/useUserStore";
+
 const Login = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
@@ -90,12 +93,10 @@ const Login = () => {
         <View style={styles.bottomSection}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
+            style={{ flex: 1 }}>
             <ScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}
-            >
+              contentContainerStyle={styles.scrollContent}>
               <Text style={styles.title}>Daxil ol</Text>
 
               <View style={styles.form}>
@@ -138,8 +139,7 @@ const Login = () => {
                   />
                   <View style={styles.rightIcons}>
                     <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                    >
+                      onPress={() => setShowPassword(!showPassword)}>
                       <Ionicons
                         name={showPassword ? "eye-off-outline" : "eye-outline"}
                         size={20}
@@ -158,8 +158,7 @@ const Login = () => {
                 <View style={styles.row}>
                   <TouchableOpacity
                     onPress={() => setAgree(!agree)}
-                    style={styles.checkbox}
-                  >
+                    style={styles.checkbox}>
                     {agree ? (
                       <Ionicons name="checkbox" size={24} color="#00C853" />
                     ) : (
@@ -179,14 +178,12 @@ const Login = () => {
                         pathname: "/(auth)/forgotPassword",
                         params: { role },
                       })
-                    }
-                  >
+                    }>
                     <Text
                       style={[
                         styles.forgotText,
                         passwordError && { color: "red" }, // Şifrə səhvdirsə qırmızı göstər
-                      ]}
-                    >
+                      ]}>
                       Şifrəni unutmusan?
                     </Text>
                   </TouchableOpacity>
@@ -195,8 +192,7 @@ const Login = () => {
                 {/* Buttons */}
                 <TouchableOpacity
                   style={[styles.button, { backgroundColor: "#00AA13" }]}
-                  onPress={handleLogin}
-                >
+                  onPress={handleLogin}>
                   <Text style={[styles.buttonText, { color: "#fff" }]}>
                     Daxil ol
                   </Text>
@@ -212,8 +208,7 @@ const Login = () => {
                       marginTop: 10,
                     },
                   ]}
-                  onPress={() => router.push("/(auth)/register")}
-                >
+                  onPress={() => router.push("/(auth)/register")}>
                   <Text style={[styles.buttonText, { color: "#08A30D" }]}>
                     Qeydiyyatdan keç
                   </Text>

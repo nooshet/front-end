@@ -22,13 +22,22 @@ import Qeydiyyat from "../../assets/qeydiyyat.png";
 import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
 import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
+import useUserStore from "../../store/useUserStore";
+
 const Verification = () => {
   const router = useRouter();
   const { email: emailParam, role } = useLocalSearchParams();
   const displayEmail = emailParam || "goycekqaloyeva@gmail.com";
 
-  const [otp, setOtp] = useState(["", "", "", ""]);
-  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
   const [timer, setTimer] = useState(180); // 3 minutes
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -58,9 +67,9 @@ const Verification = () => {
     setOtp(newOtp);
 
     // Auto-focus next input
-    if (value && index < 3) {
+    if (value && index < 5) {
       inputRefs[index + 1].current.focus();
-    } else if (value && index === 3) {
+    } else if (value && index === 5) {
       Keyboard.dismiss();
     }
   };
@@ -73,13 +82,23 @@ const Verification = () => {
 
   const handleVerify = () => {
     const code = otp.join("");
-    if (code.length < 4) {
+    if (code.length < 6) {
       showToast("Zəhmət olmasa doğrulama kodunu tam daxil edin");
       return;
     }
-    console.log("Verifying OTP:", code);
+    
+    const { verifyOtp } = useUserStore.getState();
+
+    verifyOtp(code)
+      .then(() => {
+        showToast("Doğrulanma uğurla başa çatdı");
+        router.push({ pathname: "/(auth)/thanks", params: { role } });
+      })
+      .catch((err) => {
+        showToast(err.message || "Kod yanlışdır");
+      });
+
     Keyboard.dismiss();
-    router.push({ pathname: "/(auth)/newpassword", params: { role } });
   };
 
   // Determine illustration based on role
@@ -144,7 +163,7 @@ const Verification = () => {
 
                 <Text style={styles.infoText}>
                   Biz <Text style={styles.boldText}>{displayEmail}</Text>{" "}
-                  e-poçtunuza dörd rəqəmli doğrulama kodu göndərdik. Gələnlər
+                  e-poçtunuza altı rəqəmli doğrulama kodu göndərdik. Gələnlər
                   qutusunu yoxlaya bilərsiniz
                 </Text>
 
@@ -201,7 +220,7 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   otpInput: {
-    width: 60,
+    width: 45,
     height: 50,
     borderBottomWidth: 1.5,
     borderBottomColor: "#0B0E0B",
