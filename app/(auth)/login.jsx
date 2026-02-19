@@ -25,6 +25,7 @@ import useUserStore from "../../store/useUserStore";
 const Login = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
+  const { login, isLoading } = useUserStore();
 
   // Determine illustration based on role
   const getIllustration = () => {
@@ -50,8 +51,7 @@ const Login = () => {
     setToastMessage(message);
     setTimeout(() => setToastMessage(null), 3000);
   };
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setPasswordError(false);
 
     if (!email || !password) {
@@ -59,14 +59,13 @@ const Login = () => {
       return;
     }
 
-    if (password.length < 8) {
-      setPasswordError(true);
-      showToast("Şifrə ən azı 8 simvol olmalıdır");
-      return;
+    try {
+      await login({ email, password });
+      showToast("Giriş uğurlu oldu");
+      router.push("/(tabs)/home");
+    } catch (err) {
+      showToast(err.message || "Giriş zamanı xəta baş verdi");
     }
-
-    console.log("Login:", { email, password, role });
-    router.push("/thanks");
   };
 
   return (
@@ -192,9 +191,10 @@ const Login = () => {
                 {/* Buttons */}
                 <TouchableOpacity
                   style={[styles.button, { backgroundColor: "#00AA13" }]}
-                  onPress={handleLogin}>
+                  onPress={handleLogin}
+                  disabled={isLoading}>
                   <Text style={[styles.buttonText, { color: "#fff" }]}>
-                    Daxil ol
+                    {isLoading ? "Giriş edilir..." : "Daxil ol"}
                   </Text>
                 </TouchableOpacity>
 

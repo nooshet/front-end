@@ -27,6 +27,7 @@ import useUserStore from "../../store/useUserStore";
 const Verification = () => {
   const router = useRouter();
   const { email: emailParam, role } = useLocalSearchParams();
+  const { verifyOtp, isLoading } = useUserStore();
   const displayEmail = emailParam || "goycekqaloyeva@gmail.com";
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -80,23 +81,20 @@ const Verification = () => {
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const code = otp.join("");
     if (code.length < 6) {
       showToast("Zəhmət olmasa doğrulama kodunu tam daxil edin");
       return;
     }
     
-    const { verifyOtp } = useUserStore.getState();
-
-    verifyOtp(code)
-      .then(() => {
-        showToast("Doğrulanma uğurla başa çatdı");
-        router.push({ pathname: "/(auth)/thanks", params: { role } });
-      })
-      .catch((err) => {
-        showToast(err.message || "Kod yanlışdır");
-      });
+    try {
+      await verifyOtp(code);
+      showToast("Doğrulanma uğurla başa çatdı");
+      router.push({ pathname: "/(auth)/thanks", params: { role } });
+    } catch (err) {
+      showToast(err.message || "Kod yanlışdır");
+    }
 
     Keyboard.dismiss();
   };
@@ -172,8 +170,13 @@ const Verification = () => {
                   <Text style={styles.timerValue}>{formatTime(timer)}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={handleVerify}>
-                  <Text style={styles.buttonText}>Doğrulayın</Text>
+                <TouchableOpacity 
+                  style={[styles.button, isLoading && { opacity: 0.7 }]} 
+                  onPress={handleVerify}
+                  disabled={isLoading}>
+                  <Text style={styles.buttonText}>
+                    {isLoading ? "Yüklənir..." : "Doğrulayın"}
+                  </Text>
                 </TouchableOpacity>
               </ScrollView>
             </KeyboardAvoidingView>

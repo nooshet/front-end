@@ -27,6 +27,7 @@ import useUserStore from "../../store/useUserStore";
 const Register = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
+  const { register, isLoading } = useUserStore();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,7 +60,7 @@ const Register = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // Basic validation
     setPasswordError(false);
 
@@ -115,18 +116,15 @@ const Register = () => {
         passwordConfirm: confirmPassword,
       };
 
-      const { register } = useUserStore.getState();
-
-      register(registerData)
-        .then(() => {
-          router.push({
-            pathname: "/(auth)/verification",
-            params: { email, role: role || "user" },
-          });
-        })
-        .catch((err) => {
-          showToast(err.message || "Qeydiyyat zamanı xəta baş verdi");
+      try {
+        await register(registerData);
+        router.push({
+          pathname: "/(auth)/verification",
+          params: { email, role: role || "user" },
         });
+      } catch (err) {
+        showToast(err.message || "Qeydiyyat zamanı xəta baş verdi");
+      }
       return;
     }
 
@@ -503,9 +501,10 @@ const Register = () => {
                 </View>
 
                 <Button
-                  title="Qeydiyyatdan keç"
+                  title={isLoading ? "Yüklənir..." : "Qeydiyyatdan keç"}
                   onPress={handleRegister}
                   style={styles.button}
+                  disabled={isLoading}
                 />
 
                 <View style={styles.footer}>
