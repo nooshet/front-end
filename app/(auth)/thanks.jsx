@@ -3,11 +3,22 @@ import React from "react";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import useUserStore from "../../store/useUserStore";
+
 // Şəkil
 import Thank from "../../assets/thanks.png";
 
 const Thanks = () => {
   const router = useRouter();
+  const { token } = useUserStore();
+
+  const handleNext = () => {
+    if (token) {
+      router.replace("/(tabs)");
+    } else {
+      router.replace("/(auth)/login");
+    }
+  };
 
   return (
     <>
@@ -26,7 +37,7 @@ const Thanks = () => {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => router.replace("/(auth)/login")}>
+            onPress={handleNext}>
             <Text style={styles.buttonText}>İrəli</Text>
           </TouchableOpacity>
         </View>

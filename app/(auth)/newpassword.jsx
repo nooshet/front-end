@@ -19,9 +19,13 @@ import Toast from "../../components/Toast";
 import Qeydiyyat from "../../assets/qeydiyyat.png";
 import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
 import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
+
+// stores
+import useUserStore from "../../store/useUserStore";
 const NewPassword = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
+  const { resetPassword, isLoading } = useUserStore();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +45,7 @@ const NewPassword = () => {
   const allRequirementsMet =
     hasMinLength && hasNumber && hasSpecialChar && hasUppercase;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!password || !confirmPassword) {
       showToast("Zəhmət olmasa bütün xanaları doldurun");
       return;
@@ -57,7 +61,13 @@ const NewPassword = () => {
       return;
     }
 
-    router.push({ pathname: "/(auth)/login", params: { role } });
+    try {
+      await resetPassword(password, confirmPassword);
+      showToast("Şifrə uğurla dəyişdirildi");
+      router.push({ pathname: "/(auth)/login", params: { role } });
+    } catch (err) {
+      showToast(err.message || "Xəta baş verdi");
+    }
   };
 
   // Determine illustration based on role
@@ -195,11 +205,17 @@ const NewPassword = () => {
                 <TouchableOpacity
                   style={[
                     styles.button,
-                    !allRequirementsMet && styles.buttonDisabled,
+                    ((!allRequirementsMet && password.length > 0) ||
+                      isLoading) &&
+                      styles.buttonDisabled,
                   ]}
                   onPress={handleContinue}
-                  disabled={!allRequirementsMet && password.length > 0}>
-                  <Text style={styles.buttonText}>Davam et</Text>
+                  disabled={
+                    (!allRequirementsMet && password.length > 0) || isLoading
+                  }>
+                  <Text style={styles.buttonText}>
+                    {isLoading ? "Yüklənir..." : "Davam et"}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>

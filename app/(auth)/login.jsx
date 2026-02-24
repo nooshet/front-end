@@ -62,7 +62,7 @@ const Login = () => {
     try {
       await login({ email, password });
       showToast("Giriş uğurlu oldu");
-      router.push("/(tabs)/home");
+      router.push("/(tabs)");
     } catch (err) {
       showToast(err.message || "Giriş zamanı xəta baş verdi");
     }

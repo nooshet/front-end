@@ -27,7 +27,7 @@ import useUserStore from "../../store/useUserStore";
 const Register = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
-  const { register, isLoading } = useUserStore();
+  const { register, registerChef, registerCourier, isLoading } = useUserStore();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -102,11 +102,11 @@ const Register = () => {
       return;
     }
 
-    if (role === "user" || !role) {
-      const nameParts = name.trim().split(" ");
-      const firstName = nameParts[0];
-      const lastName = nameParts.slice(1).join(" ") || "";
+    const nameParts = name.trim().split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ") || "";
 
+    if (role === "user" || !role) {
       const registerData = {
         firstName,
         lastName,
@@ -128,18 +128,73 @@ const Register = () => {
       return;
     }
 
-    // Existing logic for other roles (chef/courier) - for now keep as is or update if needed
-    console.log("Register:", {
-      name,
-      phone,
-      email,
-      password,
-      role,
-      storeAddress,
-      bankAccount,
-      kitchenImage,
-    });
-    router.push("/thanks");
+    if (role === "chef") {
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("phoneNumber", phone);
+      formData.append("password", password);
+      formData.append("passwordConfirm", confirmPassword);
+      formData.append("storeAddress", storeAddress);
+      formData.append("bankAccount", bankAccount);
+
+      if (kitchenImage) {
+        const filename = kitchenImage.split("/").pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
+        formData.append("kitchenImage", {
+          uri: kitchenImage,
+          name: filename,
+          type,
+        });
+      }
+
+      try {
+        await registerChef(formData);
+        router.push({
+          pathname: "/(auth)/verification",
+          params: { email, role },
+        });
+      } catch (err) {
+        showToast(err.message || "Aşpaz qeydiyyatı zamanı xəta baş verdi");
+      }
+      return;
+    }
+
+    if (role === "courier") {
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("phoneNumber", phone);
+      formData.append("password", password);
+      formData.append("passwordConfirm", confirmPassword);
+      formData.append("bankAccount", bankAccount);
+      formData.append("vehicleType", vehicleType);
+
+      if (vehicleImage) {
+        const filename = vehicleImage.split("/").pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
+        formData.append("vehicleImage", {
+          uri: vehicleImage,
+          name: filename,
+          type,
+        });
+      }
+
+      try {
+        await registerCourier(formData);
+        router.push({
+          pathname: "/(auth)/verification",
+          params: { email, role },
+        });
+      } catch (err) {
+        showToast(err.message || "Kuryer qeydiyyatı zamanı xəta baş verdi");
+      }
+      return;
+    }
   };
 
   const pickImage = async (target) => {

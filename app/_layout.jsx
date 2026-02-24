@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
+import useUserStore from "../store/useUserStore";
 
 import "./i18n";
 
@@ -19,6 +20,12 @@ const RootLayout = () => {
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+
+  const { loadStoredUser } = useUserStore();
+
+  useEffect(() => {
+    loadStoredUser();
+  }, []);
 
   useEffect(() => {
     if (loaded) {

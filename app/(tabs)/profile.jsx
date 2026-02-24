@@ -17,10 +17,13 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import useUserStore from "../../store/useUserStore";
+
 import { useTranslation } from "react-i18next";
 
 const ProfileScreen = () => {
   const router = useRouter();
+  const { logout } = useUserStore();
   const { t } = useTranslation();
   const [image, setImage] = useState(null);
   const [name, setName] = useState("Qaloyeva Göyçək");
@@ -138,8 +141,9 @@ const ProfileScreen = () => {
       id: "6",
       title: t("profile.menu.logout"),
       icon: <Feather name="log-out" size={24} color="#FF3D00" />,
-      onPress: () => {
-        router.push("/(auth)/login");
+      onPress: async () => {
+        await logout();
+        router.replace("/(auth)/login");
       },
       isLogout: true,
     },

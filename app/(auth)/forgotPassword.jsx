@@ -19,9 +19,13 @@ import Qeydiyyat from "../../assets/qeydiyyat.png";
 import AspazQeydiyyat from "../../assets/aspazQeydiyyatı.png";
 import KuryerQeydiyyat from "../../assets/kuryerQeydiyyatı.png";
 
+// stores
+import useUserStore from "../../store/useUserStore";
+
 const ForgotPassword = () => {
   const router = useRouter();
   const { role } = useLocalSearchParams();
+  const { requestPasswordReset, isLoading } = useUserStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +53,7 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleForgotPassword = () => {
+  const handleForgotPassword = async () => {
     setPasswordError(false);
 
     if (!email) {
@@ -57,8 +61,16 @@ const ForgotPassword = () => {
       return;
     }
 
-    console.log("ForgotPassword:", { email, role });
-    router.push({ pathname: "/(auth)/verification", params: { email, role } });
+    try {
+      await requestPasswordReset(email);
+      showToast("Doğrulanma kodu göndərildi");
+      router.push({ 
+        pathname: "/(auth)/verification", 
+        params: { email, role, isReset: "true" } 
+      });
+    } catch (err) {
+      showToast(err.message || "Xəta baş verdi");
+    }
   };
 
   return (
@@ -111,13 +123,14 @@ const ForgotPassword = () => {
                 />
 
                 {/* Buttons */}
-                <TouchableOpacity
-                  style={[styles.button, { backgroundColor: "#00AA13" }]}
-                  onPress={handleForgotPassword}>
-                  <Text style={[styles.buttonText, { color: "#fff" }]}>
-                    Göndər
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.button, { backgroundColor: "#00AA13" }, isLoading && { opacity: 0.7 }]}
+                    onPress={handleForgotPassword}
+                    disabled={isLoading}>
+                    <Text style={[styles.buttonText, { color: "#fff" }]}>
+                      {isLoading ? "Göndərilir..." : "Göndər"}
+                    </Text>
+                  </TouchableOpacity>
               </View>
             </ScrollView>
           </KeyboardAvoidingView>

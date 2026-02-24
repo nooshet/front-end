@@ -26,8 +26,8 @@ import useUserStore from "../../store/useUserStore";
 
 const Verification = () => {
   const router = useRouter();
-  const { email: emailParam, role } = useLocalSearchParams();
-  const { verifyOtp, isLoading } = useUserStore();
+  const { email: emailParam, role, isReset } = useLocalSearchParams();
+  const { verifyOtp, verifyResetOtp, completeRegistration, resendOtp, resendAvailableInSeconds, isLoading } = useUserStore();
   const displayEmail = emailParam || "goycekqaloyeva@gmail.com";
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -39,7 +39,7 @@ const Verification = () => {
     useRef(null),
     useRef(null),
   ];
-  const [timer, setTimer] = useState(180); // 3 minutes
+  const [timer, setTimer] = useState(resendAvailableInSeconds || 180);
   const [toastMessage, setToastMessage] = useState(null);
 
   const showToast = (message) => {
@@ -53,6 +53,23 @@ const Verification = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (resendAvailableInSeconds) {
+      setTimer(resendAvailableInSeconds);
+    }
+  }, [resendAvailableInSeconds]);
+
+  const handleResend = async () => {
+    if (timer > 0) return;
+
+    try {
+      await resendOtp();
+      showToast("Kod yenidən göndərildi");
+    } catch (err) {
+      showToast(err.message || "Kod göndərilərkən xəta baş verdi");
+    }
+  };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -89,11 +106,28 @@ const Verification = () => {
     }
     
     try {
-      await verifyOtp(code);
-      showToast("Doğrulanma uğurla başa çatdı");
-      router.push({ pathname: "/(auth)/thanks", params: { role } });
+      console.log("HandleVerify code:", code);
+      if (isReset === "true") {
+        console.log("Flow: Password Reset - Verifying OTP...");
+        const res = await verifyResetOtp(code);
+        console.log("Password reset OTP verified. Navigating to newpassword.");
+        showToast("Doğrulanma uğurla başa çatdı");
+        router.push({ 
+          pathname: "/(auth)/newpassword", 
+          params: { role } 
+        });
+      } else {
+        console.log("Flow: Registration");
+        await verifyOtp(code);
+        console.log("OTP verified successfully, completing registration...");
+        // For registration, we need to call completeRegistration to finalize
+        await completeRegistration();
+        console.log("Registration completed successfully!");
+        showToast("Qeydiyyat uğurla başa çatdı");
+        router.push({ pathname: "/(auth)/thanks", params: { role } });
+      }
     } catch (err) {
-      showToast(err.message || "Kod yanlışdır");
+      showToast(err.message || "Xəta baş verdi");
     }
 
     Keyboard.dismiss();
@@ -166,12 +200,24 @@ const Verification = () => {
                 </Text>
 
                 <View style={styles.timerContainer}>
-                  <Text style={styles.timerLabel}>Kodu yenidən göndər</Text>
-                  <Text style={styles.timerValue}>{formatTime(timer)}</Text>
+                  <TouchableOpacity
+                    onPress={handleResend}
+                    disabled={timer > 0 || isLoading}>
+                    <Text
+                      style={[
+                        styles.timerLabel,
+                        timer === 0 && { color: "#00AA13", fontWeight: "bold" },
+                      ]}>
+                      Kodu yenidən göndər
+                    </Text>
+                  </TouchableOpacity>
+                  {timer > 0 && (
+                    <Text style={styles.timerValue}>{formatTime(timer)}</Text>
+                  )}
                 </View>
 
-                <TouchableOpacity 
-                  style={[styles.button, isLoading && { opacity: 0.7 }]} 
+                <TouchableOpacity
+                  style={[styles.button, isLoading && { opacity: 0.7 }]}
                   onPress={handleVerify}
                   disabled={isLoading}>
                   <Text style={styles.buttonText}>
