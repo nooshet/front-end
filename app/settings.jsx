@@ -7,14 +7,26 @@ import {
   SafeAreaView,
   Switch,
   ScrollView,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from "react-native";
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 import { Stack, useRouter } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
+import useThemeStore from "../store/useThemeStore";
+import useColors from "../hooks/useColors";
 
-const SettingToggle = ({ label, value, onValueChange, activeColor }) => (
+const SettingToggle = ({ label, value, onValueChange, activeColor, colors, styles }) => (
   <View style={styles.settingItem}>
-    <Text style={styles.settingLabel}>{label}</Text>
+    <Text style={[styles.settingLabel, { color: colors["--text-color"] }]}>{label}</Text>
     <Switch
       value={value}
       onValueChange={onValueChange}
@@ -25,10 +37,10 @@ const SettingToggle = ({ label, value, onValueChange, activeColor }) => (
   </View>
 );
 
-const SettingLink = ({ label, onPress }) => (
+const SettingLink = ({ label, onPress, colors, styles }) => (
   <TouchableOpacity style={styles.settingItem} onPress={onPress}>
-    <Text style={styles.settingLabel}>{label}</Text>
-    <Feather name="chevron-right" size={24} color="#C7C7CC" />
+    <Text style={[styles.settingLabel, { color: colors["--text-color"] }]}>{label}</Text>
+    <Feather name="chevron-right" size={24} color={colors["--placeholder-color"]} />
   </TouchableOpacity>
 );
 
@@ -38,10 +50,18 @@ import { useTranslation } from "react-i18next";
 const Settings = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const colors = useColors();
+  const styles = getStyles(colors);
+
+  const { isDarkMode, toggleTheme } = useThemeStore();
+
+  const handleToggleTheme = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    toggleTheme();
+  };
 
   const [notifications, setNotifications] = useState(true);
   const [location, setLocation] = useState(false);
-  const [theme, setTheme] = useState(true);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +72,7 @@ const Settings = () => {
         <TouchableOpacity
           onPress={() => router.back()}
           style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
+          <Ionicons name="chevron-back" size={24} color={colors["--text-color"]} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t("settings.title")}</Text>
         <View style={{ width: 40 }} />
@@ -65,6 +85,8 @@ const Settings = () => {
             value={notifications}
             onValueChange={setNotifications}
             activeColor="#4CD964"
+            colors={colors}
+            styles={styles}
           />
           <View style={styles.separator} />
           
@@ -73,26 +95,34 @@ const Settings = () => {
             value={location}
             onValueChange={setLocation}
             activeColor="#8E8E93"
+            colors={colors}
+            styles={styles}
           />
           <View style={styles.separator} />
 
           <SettingToggle
             label={t("settings.theme")}
-            value={theme}
-            onValueChange={setTheme}
+            value={isDarkMode}
+            onValueChange={handleToggleTheme}
             activeColor="#FFCC00"
+            colors={colors}
+            styles={styles}
           />
           <View style={styles.separator} />
 
           <SettingLink
             label={t("settings.appLock")}
             onPress={() => router.push("/app-lock")}
+            colors={colors}
+            styles={styles}
           />
           <View style={styles.separator} />
 
           <SettingLink
             label={t("settings.permissions")}
             onPress={() => router.push("/permissions")}
+            colors={colors}
+            styles={styles}
           />
         </View>
       </ScrollView>
@@ -102,12 +132,11 @@ const Settings = () => {
 
 export default Settings;
 
-const styles = StyleSheet.create({
+const getStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors["--bg-white"],
     paddingTop: 60,
-
   },
   header: {
     flexDirection: "row",
@@ -122,7 +151,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontFamily: Font.bold,
-    color: "#0B0E0B",
+    color: colors["--text-color"],
   },
   content: {
     flex: 1,
@@ -140,11 +169,11 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 18,
     fontFamily: Font.regular,
-    color: "#0B0E0B",
+    color: colors["--text-color"],
   },
   separator: {
     height: 1,
-    backgroundColor: "#E5E5EA",
+    backgroundColor: colors["--border-color"],
     width: "100%",
   },
 });

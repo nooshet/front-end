@@ -4,6 +4,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 import useUserStore from "../store/useUserStore";
+import useThemeStore from "../store/useThemeStore";
 
 import "./i18n";
 
@@ -22,9 +23,11 @@ const RootLayout = () => {
   }, [error]);
 
   const { loadStoredUser } = useUserStore();
+  const { loadTheme } = useThemeStore();
 
   useEffect(() => {
     loadStoredUser();
+    loadTheme();
   }, []);
 
   useEffect(() => {
