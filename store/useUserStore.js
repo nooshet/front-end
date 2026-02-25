@@ -211,7 +211,7 @@ const useUserStore = create((set) => ({
   },
 
   // Action to complete registration
-  completeRegistration: async () => {
+  completeRegistration: async (role) => {
     const { registrationToken } = useUserStore.getState();
 
     if (!registrationToken) {
@@ -222,8 +222,16 @@ const useUserStore = create((set) => ({
 
     set({ isLoading: true, error: null });
     try {
-      console.log("Completing Registration Request:", { registrationToken });
-      const response = await fetch(`${BASE_URL}/auth/register/complete`, {
+      console.log("Completing Registration Request:", { registrationToken, role });
+      
+      let endpoint = `${BASE_URL}/auth/register/user/complete`;
+      if (role === "chef") {
+        endpoint = `${BASE_URL}/auth/register/chef/complete`;
+      } else if (role === "courier") {
+        endpoint = `${BASE_URL}/auth/register/courier/complete`;
+      }
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

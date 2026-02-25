@@ -47,8 +47,8 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
-  const showToast = (message) => {
-    setToastMessage(message);
+  const showToast = (text, type = "error") => {
+    setToastMessage({ text, type });
     setTimeout(() => setToastMessage(null), 3000);
   };
   const handleLogin = async () => {
@@ -61,7 +61,7 @@ const Login = () => {
 
     try {
       await login({ email, password });
-      showToast("Giriş uğurlu oldu");
+      showToast("Giriş uğurlu oldu", "success");
       router.push("/(tabs)");
     } catch (err) {
       showToast(err.message || "Giriş zamanı xəta baş verdi");
@@ -73,7 +73,11 @@ const Login = () => {
       <Stack.Screen options={{ headerShown: false }} />
       <StatusBar style="light" />
       {toastMessage && (
-        <Toast message={toastMessage} onHide={() => setToastMessage(null)} />
+        <Toast 
+          message={toastMessage.text} 
+          type={toastMessage.type}
+          onHide={() => setToastMessage(null)} 
+        />
       )}
 
       <View style={styles.container}>
@@ -208,7 +212,7 @@ const Login = () => {
                       marginTop: 10,
                     },
                   ]}
-                  onPress={() => router.push("/(auth)/register")}>
+                  onPress={() => router.push({ pathname: "/(auth)/register", params: { role } })}>
                   <Text style={[styles.buttonText, { color: "#08A30D" }]}>
                     Qeydiyyatdan keç
                   </Text>

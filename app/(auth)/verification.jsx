@@ -42,8 +42,8 @@ const Verification = () => {
   const [timer, setTimer] = useState(resendAvailableInSeconds || 180);
   const [toastMessage, setToastMessage] = useState(null);
 
-  const showToast = (message) => {
-    setToastMessage(message);
+  const showToast = (text, type = "error") => {
+    setToastMessage({ text, type });
     setTimeout(() => setToastMessage(null), 3000);
   };
 
@@ -65,7 +65,7 @@ const Verification = () => {
 
     try {
       await resendOtp();
-      showToast("Kod yenidən göndərildi");
+      showToast("Kod yenidən göndərildi", "success");
     } catch (err) {
       showToast(err.message || "Kod göndərilərkən xəta baş verdi");
     }
@@ -111,8 +111,8 @@ const Verification = () => {
         console.log("Flow: Password Reset - Verifying OTP...");
         const res = await verifyResetOtp(code);
         console.log("Password reset OTP verified. Navigating to newpassword.");
-        showToast("Doğrulanma uğurla başa çatdı");
-        router.push({ 
+        showToast("Doğrulanma uğurla başa çatdı", "success");
+        router.push({  
           pathname: "/(auth)/newpassword", 
           params: { role } 
         });
@@ -121,9 +121,9 @@ const Verification = () => {
         await verifyOtp(code);
         console.log("OTP verified successfully, completing registration...");
         // For registration, we need to call completeRegistration to finalize
-        await completeRegistration();
+        await completeRegistration(role);
         console.log("Registration completed successfully!");
-        showToast("Qeydiyyat uğurla başa çatdı");
+        showToast("Qeydiyyat uğurla başa çatdı", "success");
         router.push({ pathname: "/(auth)/thanks", params: { role } });
       }
     } catch (err) {
@@ -151,7 +151,11 @@ const Verification = () => {
         <Stack.Screen options={{ headerShown: false }} />
         <StatusBar style="light" />
         {toastMessage && (
-          <Toast message={toastMessage} onHide={() => setToastMessage(null)} />
+          <Toast 
+            message={toastMessage.text} 
+            type={toastMessage.type}
+            onHide={() => setToastMessage(null)} 
+          />
         )}
 
         <View style={styles.container}>

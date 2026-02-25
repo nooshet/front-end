@@ -18,6 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import useUserStore from "../../store/useUserStore";
+import Toast from "../../components/Toast";
 
 import { useTranslation } from "react-i18next";
 
@@ -31,7 +32,7 @@ const ProfileScreen = () => {
   useFocusEffect(
     React.useCallback(() => {
       loadProfile();
-    }, [])
+    }, []),
   );
 
   const loadProfile = async () => {
@@ -142,19 +143,39 @@ const ProfileScreen = () => {
       title: t("profile.menu.logout"),
       icon: <Feather name="log-out" size={24} color="#FF3D00" />,
       onPress: async () => {
-        await logout();
-        router.replace("/(auth)/login");
+        try {
+          await logout();
+          showToast("Hesabdan çıxış edildi");
+          setTimeout(() => {
+            router.replace("/(auth)/login");
+          }, 1500); // Wait for toast to be visible before navigating
+        } catch (err) {
+          showToast(t("profile.logoutError") || "Xəta baş verdi");
+        }
       },
       isLogout: true,
     },
   ];
 
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (text, type = "error") => {
+    setToastMessage({ text, type });
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      {toastMessage && (
+        <Toast
+          message={toastMessage.text}
+          type={toastMessage.type}
+          onHide={() => setToastMessage(null)}
+        />
+      )}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
+        contentContainerStyle={styles.scrollContent}>
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.avatarWrapper}>
@@ -164,8 +185,7 @@ const ProfileScreen = () => {
             />
             <TouchableOpacity
               style={styles.editIconContainer}
-              onPress={pickImage}
-            >
+              onPress={pickImage}>
               <Feather
                 name="edit-3"
                 size={18}
@@ -192,11 +212,11 @@ const ProfileScreen = () => {
             textStyle={styles.statusButtonText}
           />
           <Text style={styles.infoText}>
-             {/* Note: Bold text logic might need adjustment if using full string translation, 
+            {/* Note: Bold text logic might need adjustment if using full string translation, 
                  but for now keeping simple string concatenation or rich text if supported by translation system. 
                  My current t() is simple key-value. 
                  I'll use the plain text from translations for now. */}
-            {t("profile.statusInfo").replace(/\*\*/g, '')} 
+            {t("profile.statusInfo").replace(/\*\*/g, "")}
           </Text>
         </View>
 
@@ -208,16 +228,14 @@ const ProfileScreen = () => {
             <TouchableOpacity
               key={item.id}
               style={styles.menuItem}
-              onPress={item.onPress}
-            >
+              onPress={item.onPress}>
               <View style={styles.menuItemLeft}>
                 <View style={styles.iconWrapper}>{item.icon}</View>
                 <Text
                   style={[
                     styles.menuItemTitle,
                     item.isLogout && styles.logoutText,
-                  ]}
-                >
+                  ]}>
                   {item.title}
                 </Text>
               </View>
@@ -238,7 +256,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: ALL_COLOR["--white"],
-    
   },
   scrollContent: {
     paddingHorizontal: 20,
