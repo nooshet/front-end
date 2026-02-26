@@ -15,12 +15,14 @@ import FoodCard from "../../components/FoodCard";
 import { FOOD_DATA } from "../../mock/FOOD_DATA";
 import { ALL_COLOR } from "../../constant/all-color";
 import { Font } from "../../constant/fonts";
+import FilterModal from "../../components/FilterModal";
 
 const BasketScreen = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
+  const [filterVisible, setFilterVisible] = useState(false);
 
   const basketItems = FOOD_DATA.slice(0, 2);
   const totalPrice = basketItems.reduce((sum, item) => sum + item.price, 0);
@@ -35,6 +37,11 @@ const BasketScreen = () => {
           setSearch={setSearch}
           placeholder={t("home.searchPlaceholder")}
           filter
+          onFilterPress={() => setFilterVisible(true)}
+        />
+        <FilterModal
+          visible={filterVisible}
+          onClose={() => setFilterVisible(false)}
         />
       </Container>
 
