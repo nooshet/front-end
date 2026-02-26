@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 import Search from "../../components/Search";
 import VideoCard from "../../components/VideoCard";
+import FilterModal from "../../components/FilterModal";
 import { Font } from "../../constant/fonts";
 import { VIDEO_DATA } from "../../mock/FOOD_DATA";
 import { useRouter } from "expo-router";
@@ -14,6 +15,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const VideoScreen = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
   const inputRef = useRef(null);
   const router = useRouter();
 
@@ -50,9 +52,17 @@ const VideoScreen = () => {
             setSearch={setSearch}
             placeholder={"Kəşf et..."}
             containerStyle={styles.searchBar}
+            filter={true}
+            onFilterPress={() => setIsFilterVisible(true)}
+            darkMode={true}
           />
         </View>
       </View>
+
+      <FilterModal
+        visible={isFilterVisible}
+        onClose={() => setIsFilterVisible(false)}
+      />
 
       <FlatList
         data={VIDEO_DATA}

@@ -9,28 +9,33 @@ import {
 import SearchIcon from "../assets/search.png";
 import FilterIcon from "../assets/filter.png";
 
-const Search = ({ inputRef, search, setSearch, placeholder, filter, containerStyle }) => {
+const Search = ({ inputRef, search, setSearch, placeholder, filter, containerStyle, onFilterPress, darkMode }) => {
+  const textColor = darkMode ? "#fff" : "#000";
+  const placeholderColor = darkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)";
+  const iconTintColor = darkMode ? "#fff" : undefined;
+
   return (
     <Pressable
       onPress={() => inputRef.current?.focus()}
       style={[styles.pressable, containerStyle]}
     >
       <View style={styles.searchContainer}>
-        <Image source={SearchIcon} />
+        <Image source={SearchIcon} style={iconTintColor ? { tintColor: iconTintColor } : {}} />
         <TextInput
           ref={inputRef}
           placeholder={placeholder}
           value={search}
           onChangeText={setSearch}
+          placeholderTextColor={placeholderColor}
           autoCapitalize="none"
           keyboardType="default"
-          style={styles.searchInput}
+          style={[styles.searchInput, { color: textColor }]}
         />
       </View>
 
       {filter && (
-        <TouchableOpacity style={styles.filterBtn}>
-          <Image source={FilterIcon} />
+        <TouchableOpacity style={styles.filterBtn} onPress={onFilterPress}>
+          <Image source={FilterIcon} style={iconTintColor ? { tintColor: iconTintColor } : {}} />
         </TouchableOpacity>
       )}
     </Pressable>

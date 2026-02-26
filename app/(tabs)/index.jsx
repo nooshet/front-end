@@ -17,6 +17,7 @@ import Container from "../../components/Container";
 import FeaturesSection from "../../components/home/FeaturesSection";
 import { FOOD_DATA } from "../../mock/FOOD_DATA";
 import { router } from "expo-router";
+import FilterModal from "../../components/FilterModal";
 
 import { useTranslation } from "react-i18next";
 
@@ -24,6 +25,7 @@ const HomeScreen = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const inputRef = useRef(null);
+  const [filterVisible, setFilterVisible] = useState(false);
 
   const categories = [
     { id: 1, title: t("home.cat.daily"), active: true },
@@ -62,6 +64,11 @@ const HomeScreen = () => {
             setSearch={setSearch}
             placeholder={t("home.searchPlaceholder")}
             filter
+            onFilterPress={() => setFilterVisible(true)}
+          />
+          <FilterModal
+            visible={filterVisible}
+            onClose={() => setFilterVisible(false)}
           />
           <Banner />
           <SectionHeader
