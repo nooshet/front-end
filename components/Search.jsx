@@ -9,11 +9,11 @@ import {
 import SearchIcon from "../assets/search.png";
 import FilterIcon from "../assets/filter.png";
 
-const Search = ({ inputRef, search, setSearch, placeholder, filter }) => {
+const Search = ({ inputRef, search, setSearch, placeholder, filter, containerStyle }) => {
   return (
     <Pressable
       onPress={() => inputRef.current?.focus()}
-      style={styles.pressable}
+      style={[styles.pressable, containerStyle]}
     >
       <View style={styles.searchContainer}>
         <Image source={SearchIcon} />

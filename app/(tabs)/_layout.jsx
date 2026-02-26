@@ -26,8 +26,14 @@ const INACTIVE_COLOR = ALL_COLOR["--bg-color"];
 const WHITE = ALL_COLOR["--white"];
 
 function MyTabBar({ state, descriptors, navigation }) {
+  const currentRouteName = state.routes[state.index].name;
+  const isVideoTab = currentRouteName === "video";
+
   return (
-    <View style={styles.tabBarContainer}>
+    <View style={[
+      styles.tabBarContainer,
+      isVideoTab ? { backgroundColor: "rgba(0,0,0,0.4)", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" } : { backgroundColor: "white" }
+    ]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -56,6 +62,10 @@ function MyTabBar({ state, descriptors, navigation }) {
         // Mətn məntiqi
         const labelText = options.title;
 
+        // TikTok style colors
+        const inactiveIconColor = isVideoTab ? "rgba(255,255,255,0.6)" : INACTIVE_COLOR;
+        const activeIconColor = isVideoTab ? "#fff" : WHITE;
+
         return (
           <TouchableOpacity
             key={route.key}
@@ -68,6 +78,8 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={[
               styles.tabItem,
               isFocused ? styles.tabItemFocused : styles.tabItemInactive,
+              isFocused && isVideoTab ? { backgroundColor: "rgba(255,255,255,0.2)" } : {},
+              isFocused && !isVideoTab ? { backgroundColor: PRIMARY_GREEN } : {},
             ]}>
             {/* İKON HİSSƏSİ (ARTIQ IMAGE) */}
             <View
@@ -84,7 +96,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                     height: isFocused ? 22 : 24,
                     resizeMode: "contain",
                     // Əgər PNG-lərin rəngini kodla dəyişmək istəyirsinizsə:
-                    tintColor: isFocused ? WHITE : INACTIVE_COLOR,
+                    tintColor: isFocused ? activeIconColor : inactiveIconColor,
                   }}
                 />
               )}
@@ -98,7 +110,7 @@ function MyTabBar({ state, descriptors, navigation }) {
               style={[
                 styles.label,
                 {
-                  color: isFocused ? WHITE : INACTIVE_COLOR,
+                  color: isFocused ? activeIconColor : inactiveIconColor,
                   fontSize: isFocused ? 13 : 10,
                   textAlign: isFocused ? "left" : "center",
                   lineHeight: isFocused ? 14 : 12,
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: "white", // Default, will be overridden by dynamic style
     borderRadius: 35,
     padding: 10,
     height: 75,
@@ -160,7 +172,6 @@ const styles = StyleSheet.create({
   tabItemFocused: {
     flex: 2.5, // Genişliyi bir az artırdım (2 -> 2.5) ki, mətn tam yerləşsin
     flexDirection: "row",
-    backgroundColor: PRIMARY_GREEN,
     paddingHorizontal: 15,
   },
 
