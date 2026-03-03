@@ -135,7 +135,7 @@ const VideoCard = ({
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.sideIconBtn} onPress={handleLike}>
+          {/* <TouchableOpacity style={styles.sideIconBtn} onPress={handleLike}>
             <Animated.View style={{ transform: [{ scale: heartScale }] }}>
               <Ionicons
                 name={isLiked ? "heart" : "heart"}
@@ -144,7 +144,7 @@ const VideoCard = ({
               />
             </Animated.View>
             <Text style={styles.sideIconText}>1.2K</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity style={styles.sideIconBtn}>
             <Ionicons name="chatbubble-ellipses" size={35} color="#fff" />
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   sideIconsContainer: {
     position: "absolute",
     right: 12,
-    bottom: 160, // Above the tab bar and bottom info
+    bottom: 160, 
     gap: 15,
     zIndex: 2,
     alignItems: "center",
