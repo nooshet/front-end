@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,9 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
+  Linking,
+  Alert,
+  AppState,
 } from "react-native";
 
 if (
@@ -20,6 +23,7 @@ if (
 }
 import { Stack, useRouter } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import * as Location from "expo-location";
 import { Font } from "../constant/fonts";
 import useThemeStore from "../store/useThemeStore";
 import useColors from "../hooks/useColors";
@@ -63,6 +67,53 @@ const Settings = () => {
   const [notifications, setNotifications] = useState(true);
   const [location, setLocation] = useState(false);
 
+  // Location permission sync
+  const checkLocationPermission = useCallback(async () => {
+    const { status } = await Location.getForegroundPermissionsAsync();
+    setLocation(status === "granted");
+  }, []);
+
+  useEffect(() => {
+    checkLocationPermission();
+  }, [checkLocationPermission]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState === "active") {
+        checkLocationPermission();
+      }
+    });
+    return () => subscription.remove();
+  }, [checkLocationPermission]);
+
+  const handleLocationToggle = async (value) => {
+    if (!value) {
+      Alert.alert(
+        t("editProfile.permissionTitle"),
+        t("editProfile.permissionMsg"),
+        [
+          { text: t("common.cancel"), style: "cancel" },
+          { text: t("profile.menu.settings"), onPress: () => Linking.openSettings() },
+        ]
+      );
+      return;
+    }
+
+    const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
+    if (status === "granted") {
+      setLocation(true);
+    } else if (!canAskAgain) {
+      Alert.alert(
+        t("editProfile.permissionTitle"),
+        t("editProfile.permissionMsg"),
+        [
+          { text: t("common.cancel"), style: "cancel" },
+          { text: t("profile.menu.settings"), onPress: () => Linking.openSettings() },
+        ]
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -93,8 +144,8 @@ const Settings = () => {
           <SettingToggle
             label={t("settings.location")}
             value={location}
-            onValueChange={setLocation}
-            activeColor="#8E8E93"
+            onValueChange={handleLocationToggle}
+            activeColor="#4CD964" // Changed to green for consistency when active
             colors={colors}
             styles={styles}
           />

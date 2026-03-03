@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,29 +6,107 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Alert,
+  Platform,
+  AppState,
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
 import { useTranslation } from "react-i18next";
+import * as LocalAuthentication from "expo-local-authentication";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AppLock = () => {
   const router = useRouter();
   const { t } = useTranslation();
+
+  const [selectedOption, setSelectedOption] = useState("off");
   
-  // Note: Using translated strings as keys/values for selection state might generate mismatches 
-  // if language changes while screen is active, but for now we follow the existing pattern.
-  // Ideally, use stable IDs (e.g., 'off', 'password') for state and translate only for display.
-  // Here we will stick to the requested task of replacing strings.
-  
+  // Filter options by platform
   const options = [
-    t("appLock.off"), 
-    t("appLock.password"), 
-    t("appLock.faceId"), 
-    t("appLock.fingerPrint")
+    { id: "off", label: t("appLock.off") },
+    { id: "password", label: t("appLock.password") },
+    { id: "faceId", label: t("appLock.faceId") },
+    ...(Platform.OS === "android" ? [{ id: "fingerprint", label: t("appLock.fingerPrint") }] : []),
   ];
-  
-  const [selectedOption, setSelectedOption] = useState(options[0]); 
+
+  const loadSettings = useCallback(async () => {
+    try {
+      const savedLock = await AsyncStorage.getItem("appLockType");
+      if (savedLock) {
+        setSelectedOption(savedLock);
+      }
+    } catch (error) {
+      console.error("Failed to load app lock settings", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadSettings();
+  }, [loadSettings]);
+
+  // Sync when returning to screen
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState === "active") {
+        loadSettings();
+      }
+    });
+    return () => subscription.remove();
+  }, [loadSettings]);
+
+  const handleOptionSelect = async (optionId) => {
+    if (optionId === "off") {
+      saveOption(optionId);
+      return;
+    }
+
+    if (optionId === "password") {
+      router.push("/set-lock-code");
+      return;
+    }
+
+    if (optionId === "faceId" || optionId === "fingerprint") {
+      const hasHardware = await LocalAuthentication.hasHardwareAsync();
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+      if (!hasHardware || !isEnrolled) {
+        Alert.alert(
+          t("common.error"),
+          optionId === "faceId" 
+            ? "Cihazınızda Face ID dəstəklənmir və ya quraşdırılmayıb." 
+            : "Cihazınızda Barmaq izi dəstəklənmir və ya quraşdırılmayıb."
+        );
+        return;
+      }
+
+      // Instead of just verifying, we navigate to a "setup/confirm" screen if needed,
+      // but usually biometrics just need a verify-to-enable step.
+      // For consistency with user request, we'll verify and save.
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: t("appLock.title"),
+        fallbackLabel: t("appLock.password"),
+      });
+
+      if (result.success) {
+        saveOption(optionId);
+        Alert.alert(t("common.success"), `${t(`appLock.${optionId === 'faceId' ? 'faceId' : 'fingerPrint'}`)} aktivləşdirildi.`);
+      } else {
+        // Authenticate failed or cancelled
+      }
+      return;
+    }
+  };
+
+  const saveOption = async (optionId) => {
+    try {
+      await AsyncStorage.setItem("appLockType", optionId);
+      setSelectedOption(optionId);
+    } catch (error) {
+      console.error("Failed to save app lock setting", error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,14 +126,14 @@ const AppLock = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.optionsList}>
           {options.map((option, index) => (
-            <React.Fragment key={index}>
+            <React.Fragment key={option.id}>
               <TouchableOpacity
                 style={styles.optionItem}
-                onPress={() => setSelectedOption(option)}
+                onPress={() => handleOptionSelect(option.id)}
                 activeOpacity={0.7}>
-                <Text style={styles.optionText}>{option}</Text>
+                <Text style={styles.optionText}>{option.label}</Text>
                 <View style={styles.radioContainer}>
-                  {selectedOption === option ? (
+                  {selectedOption === option.id ? (
                     <View style={styles.radioSelected}>
                       <View style={styles.radioInner} />
                     </View>
@@ -80,7 +158,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-       paddingTop: 40,
+    paddingTop: 40,
     paddingBottom: 50,
   },
   header: {
@@ -123,7 +201,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: "#34C759", // Green color
+    backgroundColor: "#34C759",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -145,3 +223,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E5EA",
   },
 });
+
