@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,13 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  Platform,
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from "react-native-maps";
+import * as Location from "expo-location";
 import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
 import CallingScreen from "../../components/CallingScreen";
@@ -22,14 +24,34 @@ const { width, height } = Dimensions.get("window");
 const OrderDetailsPage = () => {
   const router = useRouter();
   const [callingVisible, setCallingVisible] = useState(false);
-
-  // Mock coordinates for Baku
-  const initialRegion = {
+  const [locationPermission, setLocationPermission] = useState(null);
+  const [currentRegion, setCurrentRegion] = useState({
     latitude: 40.4093,
     longitude: 49.8671,
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
-  };
+  });
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status === "granted");
+
+      if (status === "granted") {
+        try {
+          let location = await Location.getCurrentPositionAsync({});
+          setCurrentRegion({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.015,
+          });
+        } catch (error) {
+          console.error("Error fetching location:", error);
+        }
+      }
+    })();
+  }, []);
 
   const courierLocation = {
     latitude: 40.4200,
@@ -107,9 +129,11 @@ const OrderDetailsPage = () => {
         {/* Map Section */}
         <View style={styles.mapContainer}>
           <MapView
-            provider={PROVIDER_DEFAULT}
+            provider={Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
             style={styles.map}
-            initialRegion={initialRegion}
+            region={currentRegion}
+            showsUserLocation={locationPermission}
+            showsMyLocationButton={locationPermission}
           >
             {/* Courier Marker */}
             <Marker coordinate={courierLocation}>
