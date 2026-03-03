@@ -12,6 +12,7 @@ import {
 import { useRouter, Stack } from "expo-router";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
 import CallingScreen from "../../components/CallingScreen";
@@ -21,6 +22,24 @@ const { width, height } = Dimensions.get("window");
 const OrderDetailsPage = () => {
   const router = useRouter();
   const [callingVisible, setCallingVisible] = useState(false);
+
+  // Mock coordinates for Baku
+  const initialRegion = {
+    latitude: 40.4093,
+    longitude: 49.8671,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  };
+
+  const courierLocation = {
+    latitude: 40.4200,
+    longitude: 49.8500,
+  };
+
+  const deliveryLocation = {
+    latitude: 40.4000,
+    longitude: 49.8800,
+  };
 
   const StepItem = ({
     label,
@@ -85,30 +104,31 @@ const OrderDetailsPage = () => {
       />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Map Placeholder */}
+        {/* Map Section */}
         <View style={styles.mapContainer}>
-          <Image
-            source={{
-              uri: "https://miro.medium.com/max/4068/1*q3Zkv_8MInoYpwsas4sqGw.png",
-            }}
-            style={styles.mapBackground}
-            resizeMode="cover"
-          />
-          {/* Overlay Route/Markers Simulation */}
-          <View style={styles.mapOverlay}>
-            <View style={styles.courierMarker}>
+          <MapView
+            provider={PROVIDER_DEFAULT}
+            style={styles.map}
+            initialRegion={initialRegion}
+          >
+            {/* Courier Marker */}
+            <Marker coordinate={courierLocation}>
               <View style={styles.markerCircle}>
                 <Ionicons name="bus" size={20} color="#fff" />
               </View>
-            </View>
-            <View style={styles.homeMarker}>
-              <View
-                style={[styles.markerCircle, { backgroundColor: "#08A30D" }]}>
-                <MaterialIcons name="home-work" size={20} color="#fff" />
+            </Marker>
+
+            {/* Delivery/Home Marker */}
+            <Marker coordinate={deliveryLocation}>
+              <View style={styles.homeMarkerContainer}>
+                <View
+                  style={[styles.markerCircle, { backgroundColor: "#08A30D" }]}>
+                  <MaterialIcons name="home-work" size={20} color="#fff" />
+                </View>
+                <Text style={styles.markerLabel}>Evim</Text>
               </View>
-              <Text style={styles.markerLabel}>Evim</Text>
-            </View>
-          </View>
+            </Marker>
+          </MapView>
         </View>
 
         <Container>
@@ -192,25 +212,10 @@ const styles = StyleSheet.create({
     height: height * 0.4,
     backgroundColor: "#E0E0E0",
   },
-  mapBackground: {
-    width: "100%",
-    height: "100%",
-    opacity: 0.7,
-  },
-  mapOverlay: {
+  map: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: "center",
-    alignItems: "center",
   },
-  courierMarker: {
-    position: "absolute",
-    top: "20%",
-    left: "20%",
-  },
-  homeMarker: {
-    position: "absolute",
-    bottom: "30%",
-    right: "25%",
+  homeMarkerContainer: {
     alignItems: "center",
   },
   markerCircle: {
