@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,11 +14,13 @@ import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
+import CallingScreen from "../../components/CallingScreen";
 
 const { width, height } = Dimensions.get("window");
 
 const OrderDetailsPage = () => {
   const router = useRouter();
+  const [callingVisible, setCallingVisible] = useState(false);
 
   const StepItem = ({
     label,
@@ -141,7 +143,10 @@ const OrderDetailsPage = () => {
                   Əlavə məlumat üçün kuryerə zəng edin
                 </Text>
               </View>
-              <TouchableOpacity style={styles.callBtn}>
+              <TouchableOpacity
+                style={styles.callBtn}
+                onPress={() => setCallingVisible(true)}
+              >
                 <Ionicons name="call" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
@@ -162,6 +167,12 @@ const OrderDetailsPage = () => {
           </View>
         </Container>
       </ScrollView>
+
+      <CallingScreen
+        visible={callingVisible}
+        onClose={() => setCallingVisible(false)}
+        courierName="Ramin"
+      />
     </SafeAreaView>
   );
 };

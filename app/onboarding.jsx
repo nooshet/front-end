@@ -89,8 +89,7 @@ const Onboarding = () => {
                 {currentIndex < slides.length - 1 && (
                   <TouchableOpacity
                     style={styles.skipButton}
-                    onPress={handleSkip}
-                  >
+                    onPress={handleSkip}>
                     <Text style={styles.skipText}>Keç</Text>
                   </TouchableOpacity>
                 )}
@@ -117,20 +116,22 @@ const Onboarding = () => {
           </View>
 
           {/* BUTTON */}
-          <View style={[styles.buttonWrapper, currentIndex !== slides.length - 1 && { alignItems: "flex-end" }]}>
+          <View
+            style={[
+              styles.buttonWrapper,
+              currentIndex !== slides.length - 1 && { alignItems: "flex-end" },
+            ]}>
             <TouchableOpacity
               style={[
                 styles.button,
                 currentIndex === slides.length - 1 && styles.startButton,
               ]}
-              onPress={handleNext}
-            >
+              onPress={handleNext}>
               <Text
                 style={[
                   styles.buttonText,
                   currentIndex === slides.length - 1 && styles.startButtonText,
-                ]}
-              >
+                ]}>
                 {currentIndex === slides.length - 1 ? "Başla" : "Növbəti"}
               </Text>
             </TouchableOpacity>
@@ -147,7 +148,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    
   },
 
   slide: {

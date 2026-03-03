@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,14 +13,21 @@ import { Ionicons, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
+import CallingScreen from "../../components/CallingScreen";
 
 const { width } = Dimensions.get("window");
 
 const OrderTrackingPage = () => {
   const router = useRouter();
+  const [callingVisible, setCallingVisible] = useState(false);
 
-  const TrackingItem = ({ icon, title, subtitle, isBoldSubtitle }) => (
-    <View style={styles.trackingItem}>
+  const TrackingItem = ({ icon, title, subtitle, isBoldSubtitle, onPress }) => (
+    <TouchableOpacity
+      style={styles.trackingItem}
+      onPress={onPress}
+      disabled={!onPress}
+      activeOpacity={onPress ? 0.7 : 1}
+    >
       <View style={styles.iconCircle}>{icon}</View>
       <View style={styles.itemContent}>
         <Text style={styles.itemTitle}>{title}</Text>
@@ -29,7 +36,7 @@ const OrderTrackingPage = () => {
           {subtitle}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -99,6 +106,7 @@ const OrderTrackingPage = () => {
             icon={<Feather name="phone-call" size={20} color="#000" />}
             title="Kuryeyə zəng et"
             subtitle="Əlavə məlumat üçün kuryerə zəng edin"
+            onPress={() => setCallingVisible(true)}
           />
 
           <View style={styles.listDivider} />
@@ -118,6 +126,12 @@ const OrderTrackingPage = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      <CallingScreen
+        visible={callingVisible}
+        onClose={() => setCallingVisible(false)}
+        courierName="Ramin"
+      />
     </SafeAreaView>
   );
 };
