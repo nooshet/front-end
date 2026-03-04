@@ -13,6 +13,8 @@ import {
 import { useRouter, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import { Audio } from "expo-av";
+import { Vibration } from "react-native";
 import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
 
@@ -24,27 +26,44 @@ const Verification3DS = () => {
   const [timer, setTimer] = useState(161); // 2:41 in seconds
   const [showNotification, setShowNotification] = useState(false);
   
-  const notificationAnim = useRef(new Animated.Value(-100)).current;
+  const notificationAnim = useRef(new Animated.Value(-120)).current;
   const inputRefs = [useRef(), useRef(), useRef(), useRef()];
 
+  const playNotificationSound = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: "https://www.soundjay.com/buttons/beep-07.mp3" },
+        { shouldPlay: true }
+      );
+      await sound.playAsync();
+      Vibration.vibrate([0, 100, 100, 100]); // Real message feel
+    } catch (error) {
+      console.log("Error playing sound", error);
+    }
+  };
+
   useEffect(() => {
-    // Show simulated notification after 1 second
+    // Show simulated notification after 1.5 seconds
     const timerId = setTimeout(() => {
       setShowNotification(true);
+      playNotificationSound();
+      
       Animated.spring(notificationAnim, {
         toValue: 20,
+        friction: 4,
+        tension: 40,
         useNativeDriver: true,
       }).start();
       
-      // Hide notification after 6 seconds
+      // Hide notification after 8 seconds
       setTimeout(() => {
         Animated.timing(notificationAnim, {
-          toValue: -120,
-          duration: 300,
+          toValue: -150,
+          duration: 400,
           useNativeDriver: true,
         }).start(() => setShowNotification(false));
-      }, 6000);
-    }, 1000);
+      }, 8000);
+    }, 1500);
 
     // Countdown timer
     const intervalId = setInterval(() => {

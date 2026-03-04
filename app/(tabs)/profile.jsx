@@ -27,7 +27,7 @@ const ProfileScreen = () => {
   const { logout } = useUserStore();
   const { t } = useTranslation();
   const [image, setImage] = useState(null);
-  const [name, setName] = useState("Qaloyeva Göyçək");
+  const [name, setName] = useState("Jeenner Kylie");
 
   useFocusEffect(
     React.useCallback(() => {

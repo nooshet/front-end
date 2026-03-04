@@ -24,7 +24,7 @@ export const translations = {
     
     // Home
     "home.welcome": "Xoş gəlmisən!",
-    "home.userName": "Göyçək",
+    "home.userName": "Kylie",
     "home.searchPlaceholder": "Nə yemək istəyirsən?",
     "home.categories": "Kateqoriyalar",
     "home.menuOfDay": "Günün menyusu",

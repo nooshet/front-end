@@ -19,6 +19,66 @@ const PaymentPage = () => {
   const router = useRouter();
   const [saveCard, setSaveCard] = useState(false);
 
+  // Card details state
+  const [cardNumber, setCardNumber] = useState("4169738852203614");
+  const [cardName, setCardName] = useState("Kylie Jeenner");
+  const [expiryDate, setExpiryDate] = useState("16 / 29");
+  const [cvv, setCvv] = useState("356");
+
+  // State to track if we are adding a new card
+  const [isAddingNewCard, setIsAddingNewCard] = useState(false);
+  const [previousCard, setPreviousCard] = useState(null);
+
+  const handleAddNewCard = () => {
+    // Backup current card data before clearing
+    setPreviousCard({
+      cardNumber,
+      cardName,
+      expiryDate,
+      cvv,
+    });
+    setCardNumber("");
+    setCardName("");
+    setExpiryDate("");
+    setCvv("");
+    setIsAddingNewCard(true);
+  };
+
+  const handleCancel = () => {
+    if (previousCard) {
+      setCardNumber(previousCard.cardNumber);
+      setCardName(previousCard.cardName);
+      setExpiryDate(previousCard.expiryDate);
+      setCvv(previousCard.cvv);
+    }
+    setIsAddingNewCard(false);
+  };
+
+  const handleDeleteCard = () => {
+    setCardNumber("");
+    setCardName("");
+    setExpiryDate("");
+    setCvv("");
+    setIsAddingNewCard(true); // Treat as adding new card if deleted
+  };
+
+  const formatCardNumber = (number) => {
+    return number.replace(/\s?/g, "").replace(/(\d{4})/g, "$1 ").trim();
+  };
+
+  const displayCardNumber = (number) => {
+    const cleanNumber = number.replace(/\s/g, "");
+    const parts = [
+      cleanNumber.substring(0, 4) || "****",
+      cleanNumber.substring(4, 8) || "****",
+      cleanNumber.substring(8, 12) || "****",
+      cleanNumber.substring(12, 16) || "****",
+    ];
+    return parts;
+  };
+
+  const cardNumberParts = displayCardNumber(cardNumber);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
@@ -28,13 +88,23 @@ const PaymentPage = () => {
           headerTitle: "Ödəniş",
           headerTitleStyle: { fontFamily: Font.bold, fontSize: 22 },
           headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={styles.backBtn}>
               <Ionicons name="chevron-back" size={24} color="#000" />
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity style={styles.addCardBtn}>
-              <Text style={styles.addCardText}>+ Yeni kart</Text>
+            <TouchableOpacity
+              style={styles.addCardBtn}
+              onPress={isAddingNewCard ? handleCancel : handleAddNewCard}>
+              <Text
+                style={[
+                  styles.addCardText,
+                  isAddingNewCard && { color: "#EB5757" },
+                ]}>
+                {isAddingNewCard ? "Ləğv et" : "+ Yeni kart"}
+              </Text>
             </TouchableOpacity>
           ),
           headerShadowVisible: false,
@@ -42,36 +112,46 @@ const PaymentPage = () => {
         }}
       />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}>
         <Container>
           {/* Card Visualization */}
           <View style={styles.cardContainer}>
             <View style={styles.cardHeader}>
               <View style={styles.chipContainer}>
-                <Image 
-                  source={{ uri: "https://img.icons8.com/isometric/50/sim-card-chip.png" }} 
-                  style={styles.chip} 
+                <Image
+                  source={{
+                    uri: "https://img.icons8.com/isometric/50/sim-card-chip.png",
+                  }}
+                  style={styles.chip}
                 />
-                <Ionicons name="wifi-outline" size={24} color="#fff" style={styles.wifiIcon} />
+                <Ionicons
+                  name="wifi-outline"
+                  size={24}
+                  color="#fff"
+                  style={styles.wifiIcon}
+                />
               </View>
               <Text style={styles.visaText}>VISA</Text>
             </View>
 
             <View style={styles.cardNumberContainer}>
-              <Text style={styles.cardNumber}>4169</Text>
-              <Text style={styles.cardNumber}>7388</Text>
-              <Text style={styles.cardNumber}>5220</Text>
-              <Text style={styles.cardNumber}>3614</Text>
+              {cardNumberParts.map((part, index) => (
+                <Text key={index} style={styles.cardNumber}>
+                  {part}
+                </Text>
+              ))}
             </View>
 
             <View style={styles.cardFooter}>
               <View>
                 <Text style={styles.cardLabel}>Kart adı</Text>
-                <Text style={styles.cardValue}>Göyçək Qaloyeva Rzayeva</Text>
+                <Text style={styles.cardValue}>{cardName || "HOLDER NAME"}</Text>
               </View>
               <View>
                 <Text style={styles.cardLabel}>Müddət</Text>
-                <Text style={styles.cardValue}>16 / 29</Text>
+                <Text style={styles.cardValue}>{expiryDate || "MM / YY"}</Text>
               </View>
             </View>
           </View>
@@ -81,18 +161,24 @@ const PaymentPage = () => {
           {/* Form Inputs */}
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Kart nömrəsi</Text>
-            <TextInput 
-              style={styles.input} 
-              defaultValue="0508162548150090" 
+            <TextInput
+              style={styles.input}
+              value={formatCardNumber(cardNumber)}
+              onChangeText={(text) => setCardNumber(text.replace(/\s/g, ""))}
+              placeholder="0000 0000 0000 0000"
               placeholderTextColor="#BDBDBD"
+              keyboardType="number-pad"
+              maxLength={19}
             />
           </View>
 
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Kart adı</Text>
-            <TextInput 
-              style={styles.input} 
-              defaultValue="Göyçək Qaloyeva Rzayeva" 
+            <TextInput
+              style={styles.input}
+              value={cardName}
+              onChangeText={setCardName}
+              placeholder="Kylie Jeenner"
               placeholderTextColor="#BDBDBD"
             />
           </View>
@@ -100,19 +186,25 @@ const PaymentPage = () => {
           <View style={styles.row}>
             <View style={[styles.inputGroup, { flex: 1 }]}>
               <Text style={styles.inputLabel}>Müddəti</Text>
-              <TextInput 
-                style={styles.input} 
-                defaultValue="16 / 29" 
+              <TextInput
+                style={styles.input}
+                value={expiryDate}
+                onChangeText={setExpiryDate}
+                placeholder="MM / YY"
                 placeholderTextColor="#BDBDBD"
               />
             </View>
             <View style={[styles.inputGroup, { flex: 1, marginLeft: 20 }]}>
               <Text style={styles.inputLabel}>CVV</Text>
-              <TextInput 
-                style={styles.input} 
-                defaultValue="356" 
+              <TextInput
+                style={styles.input}
+                value={cvv}
+                onChangeText={setCvv}
+                placeholder="000"
                 placeholderTextColor="#BDBDBD"
                 secureTextEntry
+                keyboardType="number-pad"
+                maxLength={3}
               />
             </View>
           </View>
@@ -121,17 +213,18 @@ const PaymentPage = () => {
 
           {/* Save Card Toggle */}
           <View style={styles.actionsRow}>
-            <TouchableOpacity 
-              style={styles.checkboxContainer} 
-              onPress={() => setSaveCard(!saveCard)}
-            >
+            <TouchableOpacity
+              style={styles.checkboxContainer}
+              onPress={() => setSaveCard(!saveCard)}>
               <View style={[styles.checkbox, saveCard && styles.checked]}>
-                {saveCard && <Ionicons name="checkmark" size={16} color="#fff" />}
+                {saveCard && (
+                  <Ionicons name="checkmark" size={16} color="#fff" />
+                )}
               </View>
               <Text style={styles.checkboxLabel}>Yadda saxla</Text>
             </TouchableOpacity>
-            
-            <TouchableOpacity>
+
+            <TouchableOpacity onPress={handleDeleteCard}>
               <Text style={styles.deleteText}>Kartı sil</Text>
             </TouchableOpacity>
           </View>
@@ -140,10 +233,9 @@ const PaymentPage = () => {
 
       {/* Sticky Footer */}
       <View style={styles.footer}>
-        <TouchableOpacity 
-          style={styles.payBtn} 
-          onPress={() => router.push("/(screens)/verification-3ds")}
-        >
+        <TouchableOpacity
+          style={styles.payBtn}
+          onPress={() => router.push("/(screens)/verification-3ds")}>
           <Text style={styles.payBtnText}>Ödə</Text>
         </TouchableOpacity>
       </View>
@@ -175,7 +267,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     height: 220,
-    backgroundColor: "#7D837D", 
+    backgroundColor: "#7D837D",
     borderRadius: 20,
     padding: 24,
     justifyContent: "space-between",

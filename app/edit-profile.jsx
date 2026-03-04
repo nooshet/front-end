@@ -42,8 +42,8 @@ const EditProfile = () => {
   const { t } = useTranslation();
 
   // Form State
-  const [name, setName] = useState("Göyçək Qaloyeva");
-  const [email, setEmail] = useState("goycekqaloyeva@gmail.com");
+  const [name, setName] = useState("Kylie Jeenner");
+  const [email, setEmail] = useState("kyliejeenner@gmail.com");
   const [phone, setPhone] = useState("+994 51 855 02 74");
   const [homeAddress, setHomeAddress] = useState("Azərbaycan, Bakı, Nizami");
   const [workAddress, setWorkAddress] = useState("Azərbaycan, Bakı, Nizami");
