@@ -12,7 +12,7 @@ import {
 import React, { useState } from "react";
 import { Stack, useRouter, Link, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -50,6 +50,14 @@ const Register = () => {
   // Toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const vehicleOptions = [
+    { label: "Maşın", value: "Avtomobil", icon: "car-outline" },
+    { label: "Motosiklet", value: "Motosikl", icon: "motorbike" },
+    { label: "Velosiped", value: "Velosiped", icon: "bicycle" },
+    { label: "Piyada", value: "Piyada", icon: "walk" },
+  ];
 
   // Validation State
   const [passwordError, setPasswordError] = useState(false);
@@ -221,14 +229,6 @@ const Register = () => {
     }
   };
 
-  const selectVehicle = () => {
-    Alert.alert("Nəqliyyat vasitəsi", "Zəhmət olmasa seçin:", [
-      { text: "Velosiped", onPress: () => setVehicleType("Velosiped") },
-      { text: "Motosikl", onPress: () => setVehicleType("Motosikl") },
-      { text: "Avtomobil", onPress: () => setVehicleType("Avtomobil") },
-      { text: "Ləğv et", style: "cancel" },
-    ]);
-  };
 
   // Determine illustration based on role
   const getIllustration = () => {
@@ -483,21 +483,74 @@ const Register = () => {
                       }
                     />
 
-                    <TouchableOpacity
-                      style={styles.pickerContainer}
-                      onPress={selectVehicle}>
-                      <View style={styles.pickerLeft}>
-                        <Ionicons name="car-outline" size={24} color="#000" />
-                        <Text
-                          style={[
-                            styles.pickerText,
-                            !vehicleType && styles.placeholderText,
-                          ]}>
-                          {vehicleType || "Nəqliyyat vasitəsini seçin"}
-                        </Text>
-                      </View>
-                      <Ionicons name="chevron-down" size={24} color="#000" />
-                    </TouchableOpacity>
+                    {/* Custom Vehicle Dropdown */}
+                    <View style={styles.dropdownWrapper}>
+                      <TouchableOpacity
+                        style={[
+                          styles.pickerContainer,
+                          isDropdownOpen && styles.pickerContainerActive,
+                        ]}
+                        onPress={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        <View style={styles.pickerLeft}>
+                          {vehicleType ? (
+                            <MaterialCommunityIcons
+                              name={
+                                vehicleOptions.find(
+                                  (opt) => opt.value === vehicleType
+                                )?.icon
+                              }
+                              size={24}
+                              color="#000"
+                            />
+                          ) : (
+                            <MaterialCommunityIcons
+                              name="car-multiple"
+                              size={24}
+                              color="#000"
+                            />
+                          )}
+                          <Text
+                            style={[
+                              styles.pickerText,
+                              !vehicleType && styles.placeholderText,
+                            ]}>
+                            {vehicleType || "Nəqliyyat vasitəsini seçin"}
+                          </Text>
+                        </View>
+                        <Ionicons
+                          name={isDropdownOpen ? "chevron-up" : "chevron-down"}
+                          size={24}
+                          color="#000"
+                        />
+                      </TouchableOpacity>
+
+                      {isDropdownOpen && (
+                        <View style={styles.dropdownList}>
+                          {vehicleOptions.map((option, index) => (
+                            <React.Fragment key={option.value}>
+                              <TouchableOpacity
+                                style={styles.dropdownItem}
+                                onPress={() => {
+                                  setVehicleType(option.value);
+                                  setIsDropdownOpen(false);
+                                }}>
+                                <MaterialCommunityIcons
+                                  name={option.icon}
+                                  size={24}
+                                  color="#000"
+                                />
+                                <Text style={styles.dropdownItemText}>
+                                  {option.label}
+                                </Text>
+                              </TouchableOpacity>
+                              {index < vehicleOptions.length - 1 && (
+                                <View style={styles.dropdownSeparator} />
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </View>
+                      )}
+                    </View>
 
                     <View style={styles.imageUploadSection}>
                       <Text style={styles.uploadTitle}>
@@ -737,5 +790,38 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     color: "#999",
+  },
+  dropdownWrapper: {
+    position: "relative",
+    zIndex: 1000,
+  },
+  pickerContainerActive: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderBottomWidth: 0,
+  },
+  dropdownList: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+    borderTopWidth: 0,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    marginTop: -1,
+    paddingHorizontal: 12,
+  },
+  dropdownItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    paddingVertical: 12,
+  },
+  dropdownItemText: {
+    fontSize: 16,
+    color: "#000",
+  },
+  dropdownSeparator: {
+    height: 1,
+    backgroundColor: "#D9D9D9",
   },
 });

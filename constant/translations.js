@@ -107,6 +107,11 @@ export const translations = {
     "help.q2": "Necə satıcı ola bilərəm",
     "help.q3": "Canlı dəstəyə qoşulmaq istəyirəm",
     "help.placeholder": "Yazın...",
+    "help.micPermissionDenied": "Mikrofon icazəsi verilməyib",
+    "help.botResponsePlaceholder": "Tezliklə sizə cavab verəcəyik.",
+    "help.voiceReceived": "Səsli mesajınız qəbul edildi.",
+    "help.voiceMessage": "Səsli mesaj",
+
 
     // Orders
     "orders.title": "Sifarişlərim",
@@ -312,6 +317,11 @@ export const translations = {
     "help.q2": "How can I become a seller?",
     "help.q3": "I want to connect to live support",
     "help.placeholder": "Write...",
+    "help.micPermissionDenied": "Microphone permission denied",
+    "help.botResponsePlaceholder": "We will respond to you soon.",
+    "help.voiceReceived": "Your voice message has been received.",
+    "help.voiceMessage": "Voice message",
+
 
     // Orders
     "orders.title": "My Orders",
@@ -517,6 +527,11 @@ export const translations = {
     "help.q2": "Как я могу стать продавцом?",
     "help.q3": "Я хочу связаться с живой поддержкой",
     "help.placeholder": "Напишите...",
+    "help.micPermissionDenied": "Доступ к микрофону отклонен",
+    "help.botResponsePlaceholder": "Мы ответим вам в ближайшее время.",
+    "help.voiceReceived": "Ваше голосовое сообщение получено.",
+    "help.voiceMessage": "Голосовое сообщение",
+
 
     // Orders
     "orders.title": "Мои заказы",
