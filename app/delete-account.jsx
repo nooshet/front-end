@@ -6,34 +6,69 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../constant/fonts";
-
-const reasons = [
-  { id: "1", label: "Tətbiq mənə gözlədiyim faydanı vermir." },
-  { id: "2", label: "Nooshet telefonumu yavaşladır." },
-  { id: "3", label: "Tətbiqi istidada edərkən özümü təhlükəsiz hiss etmirəm." },
-  { id: "4", label: "Gizlilik ilə əlaqədar narahatam." },
-  {
-    id: "5",
-    label: "Bildirişlər məni narahat edir",
-    subtext:
-      "Bildirişləri tənzimləmələrdən bağlayaraq tətbiqi daha rahat istifadə edə bilərsiniz.",
-  },
-  { id: "6", label: "Digər" },
-];
+import { useTranslation } from "react-i18next";
+import useUserStore from "../store/useUserStore";
 
 const DeleteAccount = () => {
+  const { t } = useTranslation();
   const router = useRouter();
+  const { deleteAccount, isLoading } = useUserStore();
   const [selectedReason, setSelectedReason] = useState("5"); // Default as per design
+
+  const reasons = [
+    { id: "1", label: t("deleteAccount.reason1") },
+    { id: "2", label: t("deleteAccount.reason2") },
+    { id: "3", label: t("deleteAccount.reason3") },
+    { id: "4", label: t("deleteAccount.reason4") },
+    {
+      id: "5",
+      label: t("deleteAccount.reason5"),
+      subtext: t("deleteAccount.reason5Sub"),
+    },
+    { id: "6", label: t("deleteAccount.reason6") },
+  ];
+
+  const handleDelete = () => {
+    Alert.alert(
+      t("deleteAccount.confirmTitle"),
+      t("deleteAccount.confirmMsg"),
+      [
+        {
+          text: t("common.cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("common.delete"),
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              Alert.alert(t("common.success"), t("deleteAccount.success"));
+              // The store's deleteAccount calls logout(), which should ideally trigger a redirect 
+              // but we can also manually navigate if needed.
+              // Assuming the root layout handles redirection based on auth state.
+              router.replace("/(auth)/login");
+            } catch (error) {
+              Alert.alert(t("common.error"), error.message || t("deleteAccount.error"));
+            }
+          },
+        },
+      ]
+    );
+  };
 
   const RadioButton = ({ id, label, subtext, isSelected, onSelect }) => (
     <TouchableOpacity
       style={styles.reasonItem}
       onPress={() => onSelect(id)}
-      activeOpacity={0.7}>
+      activeOpacity={0.7}
+      disabled={isLoading}>
       <View style={[styles.radio, isSelected && styles.radioSelected]}>
         {isSelected && <View style={styles.radioInner} />}
       </View>
@@ -60,10 +95,11 @@ const DeleteAccount = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={styles.backButton}>
+          style={styles.backButton}
+          disabled={isLoading}>
           <Ionicons name="chevron-back" size={24} color="#0B0E0B" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Hesabı redaktə edin</Text>
+        <Text style={styles.headerTitle}>{t("editProfile.title")}</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -71,15 +107,11 @@ const DeleteAccount = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}>
         <Text style={styles.title}>
-          Hesabı silmək istədiyinizdən əminsinizmi?
+          {t("deleteAccount.title")}
         </Text>
 
         <Text style={styles.description}>
-          Hesabı silmək istəməyinizdən məyyus olduq. Siz hesabınızı sildikdən
-          sonra hesab məlumatlarınız da silinəcək. Zəhmət olmasa hesabı silmə
-          səbəbinizi bizimlə bölüşün ki, hər hansısa çətinliyiniz yaranıbsa,
-          gələcəkdə istifadəçilərin istifadəsini asanlaşdırmaq üçün yeniliklər
-          edək.
+          {t("deleteAccount.description")}
         </Text>
 
         <View style={styles.reasonsContainer}>
@@ -96,13 +128,21 @@ const DeleteAccount = () => {
         </View>
 
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.deleteButton}>
-            <Text style={styles.deleteButtonText}>Hesabı sil</Text>
+          <TouchableOpacity 
+            style={[styles.deleteButton, isLoading && { opacity: 0.7 }]} 
+            onPress={handleDelete}
+            disabled={isLoading}>
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.deleteButtonText}>{t("editProfile.deleteAccount")}</Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.cancelButton}
-            onPress={() => router.back()}>
-            <Text style={styles.cancelButtonText}>Ləğv et</Text>
+            onPress={() => router.back()}
+            disabled={isLoading}>
+            <Text style={styles.cancelButtonText}>{t("common.cancel")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

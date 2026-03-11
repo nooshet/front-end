@@ -209,6 +209,21 @@ export const translations = {
 
     // Basket
     "basket.title": "Səbət",
+
+    // Delete Account
+    "deleteAccount.title": "Hesabı silmək istədiyinizdən əminsinizmi?",
+    "deleteAccount.description": "Hesabı silmək istəməyinizdən məyyus olduq. Siz hesabınızı sildikdən sonra hesab məlumatlarınız da silinəcək. Zəhmət olmasa hesabı silmə səbəbinizi bizimlə bölüşün ki, hər hansısa çətinliyiniz yaranıbsa, gələcəkdə istifadəçilərin istifadəsini asanlaşdırmaq üçün yeniliklər edək.",
+    "deleteAccount.reason1": "Tətbiq mənə gözlədiyim faydanı vermir.",
+    "deleteAccount.reason2": "Nooshet telefonumu yavaşladır.",
+    "deleteAccount.reason3": "Tətbiqi istifadə edərkən özümü təhlükəsiz hiss etmirəm.",
+    "deleteAccount.reason4": "Gizlilik ilə əlaqədar narahatam.",
+    "deleteAccount.reason5": "Bildirişlər məni narahat edir",
+    "deleteAccount.reason5Sub": "Bildirişləri tənzimləmələrdən bağlayaraq tətbiqi daha rahat istifadə edə bilərsiniz.",
+    "deleteAccount.reason6": "Digər",
+    "deleteAccount.confirmTitle": "Hesabı sil",
+    "deleteAccount.confirmMsg": "Hesabınızı silmək istədiyinizdən əminsinizmi? Bu əməliyyat geri qaytarıla bilməz.",
+    "deleteAccount.success": "Hesabınız silindi.",
+    "deleteAccount.error": "Hesabı silmək mümkün olmadı.",
   },
   en: {
     // General
@@ -419,6 +434,21 @@ export const translations = {
 
     // Basket
     "basket.title": "Basket",
+
+    // Delete Account
+    "deleteAccount.title": "Are you sure you want to delete your account?",
+    "deleteAccount.description": "We are sorry that you want to delete your account. After you delete your account, your account information will also be deleted. Please share your reason for deleting the account with us so that if you have any difficulties, we can make updates to make it easier for users to use in the future.",
+    "deleteAccount.reason1": "The app doesn't give me the benefit I expected.",
+    "deleteAccount.reason2": "Nooshet slows down my phone.",
+    "deleteAccount.reason3": "I don't feel safe while using the app.",
+    "deleteAccount.reason4": "I am concerned about privacy.",
+    "deleteAccount.reason5": "Notifications bother me",
+    "deleteAccount.reason5Sub": "You can use the application more comfortably by turning off notifications in the settings.",
+    "deleteAccount.reason6": "Other",
+    "deleteAccount.confirmTitle": "Delete Account",
+    "deleteAccount.confirmMsg": "Are you sure you want to delete your account? This action cannot be undone.",
+    "deleteAccount.success": "Your account has been deleted.",
+    "deleteAccount.error": "Could not delete account.",
   },
   ru: {
     // General
@@ -629,5 +659,20 @@ export const translations = {
 
     // Basket
     "basket.title": "Корзина",
-  }
+
+    // Delete Account
+    "deleteAccount.title": "Вы уверены, что хотите удалить свой аккаунт?",
+    "deleteAccount.description": "Нам жаль, что вы хотите удалить свой аккаунт. После удаления аккаунта информация о нем также будет удалена. Пожалуйста, поделитесь с нами причиной удаления аккаунта, чтобы, если у вас возникнут трудности, мы могли внести обновления, чтобы упростить использование приложения пользователями в будущем.",
+    "deleteAccount.reason1": "Приложение не приносит мне ожидаемой пользы.",
+    "deleteAccount.reason2": "Nooshet замедляет работу моего телефона.",
+    "deleteAccount.reason3": "Я не чувствую себя в безопасности при использовании приложения.",
+    "deleteAccount.reason4": "Меня беспокоит конфиденциальность.",
+    "deleteAccount.reason5": "Уведомления меня беспокоят",
+    "deleteAccount.reason5Sub": "Вы можете использовать приложение более комфортно, отключив уведомления в настройках.",
+    "deleteAccount.reason6": "Другое",
+    "deleteAccount.confirmTitle": "Удалить аккаунт",
+    "deleteAccount.confirmMsg": "Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.",
+    "deleteAccount.success": "Ваш аккаунт удален.",
+    "deleteAccount.error": "Не удалось удалить аккаунт.",
+  },
 };

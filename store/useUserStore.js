@@ -578,6 +578,46 @@ const useUserStore = create((set) => ({
     }
   },
 
+  // Action to delete account
+  deleteAccount: async () => {
+    const { user, token, logout } = useUserStore.getState();
+
+    if (!user || !user.id) {
+      const msg = "İstifadəçi ID tapılmadı.";
+      set({ error: msg });
+      throw new Error(msg);
+    }
+
+    set({ isLoading: true, error: null });
+    try {
+      console.log(`Deleting Account Request for ID: ${user.id}`);
+      const response = await fetch(`${BASE_URL}/users/${user.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Delete Account Response Status:", response.status);
+
+      if (!response.ok) {
+        const rawData = await response.json().catch(() => ({}));
+        throw new Error(
+          extractErrorMessage(rawData, "Hesabın silinməsi zamanı xəta baş verdi"),
+        );
+      }
+
+      console.log("Account deleted successfully");
+      await logout();
+      set({ isLoading: false });
+    } catch (err) {
+      console.error("Delete Account Error:", err);
+      set({ error: err.message || "Xəta baş verdi", isLoading: false });
+      throw err;
+    }
+  },
+
   // Reset error state
   resetError: () => set({ error: null }),
 }));

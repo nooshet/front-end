@@ -13,7 +13,11 @@ import {
 import { useRouter, Stack } from "expo-router";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, {
+  Marker,
+  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
 import * as Location from "expo-location";
 import { Font } from "../../constant/fonts";
 import Container from "../../components/Container";
@@ -54,13 +58,13 @@ const OrderDetailsPage = () => {
   }, []);
 
   const courierLocation = {
-    latitude: 40.4200,
-    longitude: 49.8500,
+    latitude: 40.42,
+    longitude: 49.85,
   };
 
   const deliveryLocation = {
-    latitude: 40.4000,
-    longitude: 49.8800,
+    latitude: 40.4,
+    longitude: 49.88,
   };
 
   const StepItem = ({
@@ -129,12 +133,13 @@ const OrderDetailsPage = () => {
         {/* Map Section */}
         <View style={styles.mapContainer}>
           <MapView
-            provider={Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+            provider={
+              Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+            }
             style={styles.map}
             region={currentRegion}
             showsUserLocation={locationPermission}
-            showsMyLocationButton={locationPermission}
-          >
+            showsMyLocationButton={locationPermission}>
             {/* Courier Marker */}
             <Marker coordinate={courierLocation}>
               <View style={styles.markerCircle}>
@@ -189,8 +194,7 @@ const OrderDetailsPage = () => {
               </View>
               <TouchableOpacity
                 style={styles.callBtn}
-                onPress={() => setCallingVisible(true)}
-              >
+                onPress={() => setCallingVisible(true)}>
                 <Ionicons name="call" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
