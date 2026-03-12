@@ -35,7 +35,16 @@ const HelpCenter = () => {
   ]);
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [playingId, setPlayingId] = useState(null);
   const scrollViewRef = useRef();
+  const timerRef = useRef(null);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   const handleSend = (text) => {
     const msgToSend = text || message;
@@ -82,6 +91,11 @@ const HelpCenter = () => {
         );
         setRecording(newRecording);
         setIsRecording(true);
+        setRecordingTime(0);
+        
+        timerRef.current = setInterval(() => {
+          setRecordingTime((prev) => prev + 1);
+        }, 1000);
       } else {
         Alert.alert(t("help.micPermissionDenied") || "Mikrofon icazəsi verilməyib");
       }
@@ -99,9 +113,14 @@ const HelpCenter = () => {
     }
 
     try {
+      if (timerRef.current) clearInterval(timerRef.current);
+      
       const currentRecording = recording;
+      const duration = recordingTime;
+      
       setRecording(null);
       setIsRecording(false);
+      setRecordingTime(0);
 
       await currentRecording.stopAndUnloadAsync();
       const uri = currentRecording.getURI();
@@ -113,6 +132,7 @@ const HelpCenter = () => {
           type: "user",
           voice: true,
           uri: uri,
+          duration: duration,
         };
         setChatHistory((prev) => [...prev, newVoiceMsg]);
 
@@ -130,6 +150,40 @@ const HelpCenter = () => {
       console.error("Failed to stop recording", err);
     }
   }
+
+  const playVoiceMessage = async (id, uri) => {
+    if (playingId === id) {
+      // In a real app, we'd handle pause here. For now, we'll just ignore or stop
+      return;
+    }
+
+    try {
+      setPlayingId(id);
+      const { sound } = await Audio.Sound.createAsync(
+        { uri },
+        { shouldPlay: true }
+      );
+      
+      // Automatic cleanup when finished
+      sound.setOnPlaybackStatusUpdate(async (status) => {
+        if (status.didJustFinish) {
+          await sound.unloadAsync();
+          setPlayingId(null);
+        }
+      });
+
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+      });
+      
+      await sound.playAsync();
+    } catch (error) {
+      console.error("Error playing back the recording", error);
+      setPlayingId(null);
+      Alert.alert(t("help.playbackError") || "Səs səsləndirilərkən xəta baş verdi");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -176,10 +230,22 @@ const HelpCenter = () => {
               ]}
             >
               {item.voice ? (
-                <View style={styles.voiceMessage}>
-                  <Feather name="mic" size={16} color="#fff" />
-                  <Text style={styles.voiceText}>{t("help.voiceMessage") || "Səsli mesaj"}</Text>
-                </View>
+                <TouchableOpacity 
+                  style={styles.voiceMessage} 
+                  onPress={() => playVoiceMessage(item.id, item.uri)}
+                >
+                  <Ionicons 
+                    name={playingId === item.id ? "pause" : "play"} 
+                    size={20} 
+                    color="#fff" 
+                  />
+                  <View>
+                    <Text style={styles.voiceText}>{t("help.voiceMessage") || "Səsli mesaj"}</Text>
+                    {item.duration > 0 && (
+                      <Text style={styles.durationText}>{formatTime(item.duration)}</Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
               ) : (
                 <Text style={item.type === "user" ? styles.userText : styles.botText}>
                   {item.text}
@@ -210,28 +276,42 @@ const HelpCenter = () => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       >
         <View style={styles.inputArea}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Feather name="plus" size={24} color="#0B0E0B" />
-          </TouchableOpacity>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder={t("help.placeholder")}
-              value={message}
-              onChangeText={setMessage}
-              onSubmitEditing={() => handleSend()}
-            />
+          {!isRecording && (
+            <TouchableOpacity style={styles.iconButton}>
+              <Feather name="plus" size={24} color="#0B0E0B" />
+            </TouchableOpacity>
+          )}
+          
+          <View style={[styles.inputContainer, isRecording && styles.recordingContainer]}>
+            {isRecording ? (
+              <View style={styles.recordingInfo}>
+                <View style={styles.recordingDot} />
+                <Text style={styles.recordingText}>Recording {formatTime(recordingTime)}</Text>
+              </View>
+            ) : (
+              <TextInput
+                style={styles.input}
+                placeholder={t("help.placeholder")}
+                value={message}
+                onChangeText={setMessage}
+                onSubmitEditing={() => handleSend()}
+              />
+            )}
+            
             <TouchableOpacity
-              style={[styles.iconButton, isRecording && styles.recordingActive]}
+              style={[styles.iconButton, isRecording && styles.recordingMicActive]}
               onPressIn={startRecording}
               onPressOut={stopRecording}
             >
               <Feather name="mic" size={20} color={isRecording ? "#FF3B30" : "#0B0E0B"} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.sendButton} onPress={() => handleSend()}>
-            <Ionicons name="send" size={24} color="#0B0E0B" />
-          </TouchableOpacity>
+
+          {!isRecording && (
+            <TouchableOpacity style={styles.sendButton} onPress={() => handleSend()}>
+              <Ionicons name="send" size={24} color="#0B0E0B" />
+            </TouchableOpacity>
+          )}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -394,6 +474,36 @@ const styles = StyleSheet.create({
   recordingActive: {
     backgroundColor: "#FFE5E5",
     borderRadius: 15,
+  },
+  recordingContainer: {
+    backgroundColor: "#FFE5E5",
+    borderWidth: 1,
+    borderColor: "#FF3B30",
+  },
+  recordingInfo: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  recordingDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#FF3B30",
+  },
+  recordingText: {
+    color: "#FF3B30",
+    fontFamily: Font.medium,
+    fontSize: 14,
+  },
+  recordingMicActive: {
+    padding: 10,
+  },
+  durationText: {
+    fontSize: 11,
+    color: "rgba(255,255,255,0.7)",
+    fontFamily: Font.regular,
   },
 });
 
